@@ -5,8 +5,7 @@
 
 /* 增强Markdown渲染样式 */
 @theme {
-  --font-bilingual: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif,
-    "Noto Serif SC";
+  --font-bilingual: ui-serif, "Noto Serif SC", Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
 /* 表格样式增强 */
@@ -153,10 +152,12 @@
 }
 
 /* Code block styles */
+
 .code-block-container pre {
   @apply p-4 overflow-x-auto m-0 w-full;
-  background-color: #ffffff;
+  background-color: transparent;
   border: none;
+  color: inherit;
 }
 
 .code-block-container pre code {
@@ -165,7 +166,7 @@
   word-break: normal;
   white-space: pre;
   line-height: 1.5rem;
-  background-color: #ffffff;
+  background-color: transparent;
   padding: 0;
   font-size: 14px;
 }
@@ -173,4 +174,9 @@
 /* 禁止Disqus广告 */
 div#disqus_thread iframe[sandbox] {
   max-height: 0px !important;
+}
+
+/* add margin between paragraphs */
+p + p {
+  margin-top: 5px;
 }
