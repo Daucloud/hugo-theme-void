@@ -183,43 +183,33 @@ p + p {
 
 
 /* add toc support */
-.toc {
-  background-color: transparent;
-  margin-bottom: 20px;
-  border-radius: 5px;
+.toc-sidebar nav#TableOfContents ul {
+  list-style-type: none; /* Or 'decimal' if you configured ordered lists */
+  padding-left: 0;
 }
 
-.toc h2 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  font-size: 1.2em;
+.toc-sidebar nav#TableOfContents ul ul {
+  padding-left: 1rem; /* Indent sub-levels */
+  /* margin-top: 0.25rem; */
 }
 
-.toc ul {
-  padding-left: 20px;
-  margin-bottom: 0;
+.toc-sidebar nav#TableOfContents li {
+  /* margin-bottom: 0.25rem; */
 }
 
-.toc ul ul {
-  padding-left: 15px; /* Indent sub-levels */
-  font-size: 0.95em;
-}
-
-.toc li {
-  margin-bottom: 5px;
-}
-
-.toc a {
+.toc-sidebar nav#TableOfContents li a {
+  @apply text-sm text-gray-600 hover:text-blue-600 block py-1; /* Tailwind for consistency */
   text-decoration: none;
-  color: #337ab7; /* Example link color */
+  transition: color 0.2s ease-in-out;
 }
 
-.toc a:hover {
-  text-decoration: underline;
+.toc-sidebar nav#TableOfContents li a:hover {
+  @apply text-blue-700;
 }
 
-/* Specific ID Hugo generates for the TOC nav element */
-#TableOfContents {
-  /* You can add specific styles if needed,
-     but the .toc class provides a good wrapper */
+/* Optional: Active link styling (would require JavaScript to dynamically add 'active' class) */
+.toc-sidebar nav#TableOfContents li a.active {
+  @apply font-semibold text-blue-700;
+  border-left: 2px solid; /* Example: theme('colors.blue.700'); */
+  padding-left: calc(1rem - 2px); /* Adjust if you have padding on `ul ul` */
 }

@@ -46,15 +46,22 @@
       </div>
     </header>
 
+    {{/* TOC Sidebar - takes remaining space on larger screens */}}
     {{ if .TableOfContents }}
-    <div class="p-8 border-b border-gray-100">
-      <aside class="toc bg-gray-50 p-6 rounded-md">
+    <aside class="lg:w-1/4 w-full lg:mt-0 mt-8">
+      {{/* Sticky container for the TOC */}}
+      {{/* Adjust `top-28` (7rem) as needed to clear your fixed header. Header has `pt-24` (6rem). */}}
+      <div class="sticky top-[calc(6rem+1rem)] {{/* 6rem for header + 1rem margin */}}
+                  p-6 rounded-lg
+                  max-h-[calc(100vh-8rem)] {{/* Limits height and enables scrolling */}}
+                  overflow-y-auto toc-sidebar">
         <div class="toc-content">
           {{ .TableOfContents }}
         </div>
-      </aside>
-    </div>
+      </div>
+    </aside>
     {{ end }}
+
     <div class="p-8 prose prose-sm sm:prose lg:prose-lg max-w-none">
       {{ .Content }}
     </div>
