@@ -180,3 +180,46 @@ div#disqus_thread iframe[sandbox] {
 p + p {
   margin-top: 5px;
 }
+
+
+/* add toc support */
+.toc {
+  background-color: transparent;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.toc h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+.toc ul {
+  padding-left: 20px;
+  margin-bottom: 0;
+}
+
+.toc ul ul {
+  padding-left: 15px; /* Indent sub-levels */
+  font-size: 0.95em;
+}
+
+.toc li {
+  margin-bottom: 5px;
+}
+
+.toc a {
+  text-decoration: none;
+  color: #337ab7; /* Example link color */
+}
+
+.toc a:hover {
+  text-decoration: underline;
+}
+
+/* Specific ID Hugo generates for the TOC nav element */
+#TableOfContents {
+  /* You can add specific styles if needed,
+     but the .toc class provides a good wrapper */
+}

@@ -46,6 +46,15 @@
       </div>
     </header>
 
+    {{ if .TableOfContents }}
+    <div class="p-8 border-b border-gray-100">
+      <aside class="toc bg-gray-50 p-6 rounded-md">
+        <div class="toc-content">
+          {{ .TableOfContents }}
+        </div>
+      </aside>
+    </div>
+    {{ end }}
     <div class="p-8 prose prose-sm sm:prose lg:prose-lg max-w-none">
       {{ .Content }}
     </div>
