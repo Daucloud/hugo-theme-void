@@ -26,7 +26,7 @@
         <div id="category-{{ $key }}" class="category-content hidden px-6 pb-4 border-t border-gray-100">
           <div class="space-y-3 pt-3">
             {{ range .Pages }}
-              <article class="hover:bg-gray-50 rounded p-3 transition-colors cursor-pointer article-link" data-href="{{ .RelPermalink }}">
+              <article class="hover:bg-gray-50 dark:hover:bg-slate-800 rounded p-3 transition-colors cursor-pointer article-link" data-href="{{ .RelPermalink }}">
                 <h3 class="text-base font-medium mb-1 text-gray-800">
                   {{ .Title }}
                 </h3>

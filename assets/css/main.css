@@ -8,6 +8,16 @@
   --font-bilingual: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
+/* Hide elements until Alpine initializes */
+[x-cloak] { display: none !important; }
+
+/* Ensure serif font stack is actually applied when body has class */
+body.font-bilingual, .font-bilingual {
+  font-family: var(--font-bilingual) !important;
+  /* Override default font variable used by compiled stylesheet */
+  --default-font-family: var(--font-bilingual);
+}
+
 /* 表格样式增强 */
 .prose table {
   @apply w-full text-left border-collapse;
@@ -41,6 +51,9 @@
   @apply font-bold text-gray-900 scroll-mt-20;
 }
 
+/* 任何带 id 的内容作为锚点时，考虑固定头部的偏移量 */
+.prose [id] { scroll-margin-top: 6.5rem; }
+
 .prose h1 {
   @apply text-3xl mt-8 mb-4 pb-2 border-b border-gray-200;
 }
@@ -55,11 +68,28 @@
 
 /* 列表样式增强 */
 .prose ul {
-  @apply list-disc pl-5 space-y-1;
+  @apply list-disc pl-5 space-y-1 mt-4 mb-4;
 }
 
 .prose ol {
-  @apply list-decimal pl-5 space-y-1;
+  @apply list-decimal pl-5 space-y-1 mt-4 mb-4;
+}
+
+/* 嵌套列表更紧凑 */
+.prose li > ul,
+.prose li > ol {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+
+/* 列表结束后紧跟段落/小标题时增加顶部间距 */
+.prose ul + p,
+.prose ol + p,
+.prose ul + h2,
+.prose ol + h2,
+.prose ul + h3,
+.prose ol + h3 {
+  margin-top: 1rem;
 }
 
 /* 任务列表样式增强 */
@@ -114,6 +144,41 @@
 .prose .footnotes li {
   @apply text-gray-700;
 }
+
+/* Anchor highlight for in-page navigation (TOC, hash links) */
+.anchor-highlight {
+  background-color: #FEF3C7; /* amber-200 */
+  outline: 2px solid rgba(245, 158, 11, 0.35); /* amber-500 @ 35% */
+  outline-offset: 2px;
+  border-radius: 6px;
+  transition: background-color .4s ease, outline-color .4s ease;
+}
+
+/* Table of Contents styling */
+#TableOfContents { font-size: .95rem; }
+#TableOfContents ul { list-style: none; padding-left: 0; margin: 0; }
+#TableOfContents li { margin: 0; }
+#TableOfContents > ul > li + li { margin-top: .35rem; }
+#TableOfContents a {
+  display: block;
+  padding: .375rem .5rem; /* 6px 8px */
+  border-radius: .375rem; /* rounded-md */
+  color: #374151; /* gray-700 */
+  text-decoration: none;
+  transition: background-color .15s ease, color .15s ease;
+}
+#TableOfContents a:hover { background-color: #eef2ff; color: #1f2937; }
+#TableOfContents ul ul {
+  margin-top: .15rem;
+  margin-left: .5rem;
+  padding-left: .75rem;
+  border-left: 1.5px solid #e5e7eb; /* gray-200 */
+}
+#TableOfContents ul ul a { font-size: .92em; padding-left: .25rem; }
+/* active item */
+#TableOfContents a.toc-active { background-color: #eef2ff; color: #3730a3; } /* indigo */
+/* focus visibility */
+#TableOfContents a:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
 
 /* Code block enhancements */
 .code-block-container {
@@ -176,7 +241,123 @@ div#disqus_thread iframe[sandbox] {
   max-height: 0px !important;
 }
 
-/* add margin between paragraphs */
-p + p {
-  margin-top: 5px;
+/* Improve spacing for paragraphs inside article content */
+.prose p { margin-bottom: 1rem; }
+.prose p + p { margin-top: 1rem; }
+
+/* --------------------------- */
+/* Dark mode overrides         */
+/* --------------------------- */
+/* Animated theme toggle icons (cross-fade + rotate) */
+.theme-toggle { position: relative; }
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+  position: absolute;
+  inset: 0;
+  transition: opacity .25s ease, transform .25s ease, color .2s ease;
+  vertical-align: middle;
+  pointer-events: none;
+}
+.icon-sun { opacity: 1; transform: rotate(0deg) scale(1); }
+.icon-moon { opacity: 0; transform: rotate(-90deg) scale(.6); }
+.dark .icon-sun { opacity: 0; transform: rotate(90deg) scale(.6); }
+.dark .icon-moon { opacity: 1; transform: rotate(0deg) scale(1); }
+.theme-toggle-btn { transition: transform .15s ease, color .2s ease; cursor: pointer; }
+.theme-toggle-btn:active { transform: scale(0.92); }
+/* Hover affordance */
+.theme-toggle-btn:hover { transform: scale(1.08); }
+.theme-toggle-btn:hover .icon-sun { transform: rotate(12deg) scale(1.08); }
+.theme-toggle-btn:hover .icon-moon { transform: rotate(-12deg) scale(1.08); }
+/* Keyboard focus */
+.theme-toggle-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,.45); border-radius: 6px; }
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle .icon-sun,
+  .theme-toggle .icon-moon,
+  .theme-toggle-btn { transition: none !important; }
+}
+.dark body { background-color: #0b1220 !important; }
+.dark .bg-white { background-color: #0f172a !important; }
+.dark .bg-gray-100 { background-color: #111827 !important; }
+.dark .border-gray-100 { border-color: #1f2937 !important; }
+.dark .bg-gray-50 { background-color: #0b1220 !important; }
+.dark .border-gray-200 { border-color: #334155 !important; }
+.dark .text-gray-900 { color: #e5e7eb !important; }
+.dark .text-gray-800 { color: #e5e7eb !important; }
+.dark .text-gray-700 { color: #e5e7eb !important; }
+.dark .text-gray-600 { color: #cbd5e1 !important; }
+.dark .text-gray-500 { color: #94a3b8 !important; }
+.dark .text-blue-700 { color: #93c5fd !important; }
+
+.dark .prose { color: #e5e7eb; }
+.dark .prose a { color: #60a5fa; }
+.dark .prose a:hover { color: #93c5fd; }
+.dark .prose h1,
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4,
+.dark .prose h5,
+.dark .prose h6 { color: #e5e7eb; }
+
+/* 全局标题在暗色模式下的可读性 */
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 { color: #e5e7eb !important; }
+.dark .prose h1 { border-color: #374151; }
+.dark .prose h2 { border-color: #1f2937; }
+.dark .prose hr { border-color: #334155; }
+
+.dark #toc-content { background-color: #0f172a; border-color: #1f2937; }
+.dark #TableOfContents a { color: #e5e7eb; }
+.dark #TableOfContents a:hover { background-color: #1e293b; color: #e5e7eb; }
+.dark #TableOfContents a.toc-active { background-color: #1e293b; color: #93c5fd; }
+.dark #TableOfContents ul ul { border-left-color: #334155; }
+
+.dark .code-block-container { background-color: #0b1220; border-color: #1f2937; }
+.dark .code-block-header { background-color: #111827; color: #e5e7eb; border-color: #1f2937; }
+.dark .code-language-label { background-color: #374151; color: #e5e7eb; }
+.dark .copy-button { background-color: #111827; color: #e5e7eb; border-color: #374151; }
+.dark .copy-button:hover { background-color: #1f2937; }
+
+.dark .anchor-highlight { background-color: rgba(245, 158, 11, 0.18); outline-color: rgba(245, 158, 11, 0.5); }
+
+/* theme card (e.g., disqus container) */
+.dark .theme-card { background-color: #0f172a !important; }
+
+/* About page card separation in dark mode */
+.dark .about-card { background-color: #0f172a !important; border: 1px solid #1f2937 !important; }
+
+/* Dark-mode hover adjustments to avoid bright white backgrounds */
+.dark .hover\:bg-gray-50:hover { background-color: #1f2937 !important; }
+.dark .hover\:bg-gray-100:hover { background-color: #1f2937 !important; }
+.dark .hover\:bg-blue-50:hover { background-color: rgba(59,130,246,0.18) !important; }
+.dark .bg-blue-50 { background-color: rgba(59,130,246,0.18) !important; }
+
+/* -------- Tag chips dark mode fallback (works even if Tailwind dark: classes are purged) -------- */
+.dark .tag-chip { background-color: #1f2937 !important; color: #cbd5e1 !important; border-color: #334155 !important; }
+.dark .tag-chip:hover { background-color: #334155 !important; color: #93c5fd !important; }
+.dark .tag-chip .count-badge { background-color: #374151 !important; color: #93c5fd !important; }
+.dark .tags-container a { background-color: #1f2937 !important; color: #93c5fd !important; }
+.dark .tags-container a:hover { background-color: #334155 !important; }
+
+/* -------- Inline code & blockquotes: light + dark adaptations -------- */
+/* Inline code (avoid pre>code) */
+.prose :not(pre) > code {
+  background-color: #f3f4f6;
+  color: #111827;
+  padding: .125rem .35rem;
+  border-radius: .375rem; /* rounded-md */
+  border: 1px solid #e5e7eb;
+  box-shadow: inset 0 1px 0 rgba(0,0,0,.04);
+  font-size: .95em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.dark .prose :not(pre) > code {
+  background-color: #0f172a;
+  color: #e5e7eb;
+  border-color: #374151;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+/* Blockquote dark mode */
+.dark .prose blockquote {
+  border-color: #60a5fa; /* blue-400 */
+  background-color: rgba(59, 130, 246, 0.12); /* blue-500 @ 12% */
 }

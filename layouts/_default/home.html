@@ -1,13 +1,11 @@
 {{ define "main" }}
   <div class="max-w-3xl mx-auto min-h-[70vh] flex items-center justify-center px-4 relative">
-    <!-- 微妙的背景装饰 -->
-    <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-blue-50 to-transparent rounded-full opacity-70 -z-10 blur-3xl"></div>
-    <div class="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-blue-50 to-transparent rounded-full opacity-70 -z-10 blur-3xl"></div>
+    <!-- 背景装饰已移除 -->
     
     <div class="w-full text-center">
       {{ with .Site.Params.avatar }}
       <div class="mx-auto mb-10 w-32 h-32 md:w-40 md:h-40 relative group">
-        <div class="absolute inset-0 rounded-full bg-gradient-to-br from-blue-100 to-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-700 -z-10 transform scale-110"></div>
+        <!-- 头像装饰光晕移除，保持简洁 -->
         <div class="rounded-full overflow-hidden border-2 border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 relative">
           <img src="{{ .url }}" alt="{{ $.Site.Title }}" class="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105">
         </div>
@@ -21,9 +19,9 @@
       {{ if .Site.Menus.main }}
       <div class="mt-12 flex flex-wrap justify-center gap-3">
         {{ range .Site.Menus.main }}
-        <a href="{{ .URL }}" class="relative px-5 py-2.5 rounded-full text-blue-700 group overflow-hidden">
+        <a href="{{ .URL }}" class="relative px-5 py-2.5 rounded-full text-blue-700 dark:text-blue-300 group overflow-hidden">
           <!-- 背景效果 -->
-          <span class="absolute inset-0 w-full h-full bg-blue-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+          <span class="absolute inset-0 w-full h-full bg-blue-50 dark:bg-slate-700/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
           <!-- 文字内容 -->
           <span class="relative z-10 transition-colors duration-300">{{ .Name }}</span>
         </a>

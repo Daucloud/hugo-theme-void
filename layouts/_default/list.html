@@ -7,10 +7,10 @@
       <div class="relative">
         <!-- 年份指示器 -->
         <div class="mb-6 flex items-center">
-          <div class="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center text-blue-700 font-bold text-xl shadow-sm">
+          <div class="flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 dark:from-slate-700/40 dark:to-slate-800/40 flex items-center justify-center text-blue-700 dark:text-blue-300 font-bold text-xl shadow-sm">
             {{ .Key }}
           </div>
-          <div class="ml-4 h-px bg-gradient-to-r from-blue-200 to-transparent flex-grow"></div>
+          <div class="ml-4 h-px bg-gradient-to-r from-blue-200 dark:from-slate-600 to-transparent flex-grow"></div>
         </div>
         
         <!-- 文章列表 -->
@@ -18,13 +18,13 @@
           {{ range .Pages.ByDate.Reverse }}
           <div class="relative">
             <a href="{{ .RelPermalink }}" class="absolute inset-0 z-10" aria-label="{{ .Title }}"></a>
-            <div class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden group">
+            <div class="bg-white dark:bg-slate-900 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden group">
               <div class="p-5">
                 <div class="flex flex-col sm:flex-row sm:items-baseline justify-between mb-3">
-                  <h3 class="text-xl font-medium text-gray-800 group-hover:text-blue-600 transition-colors">
+                  <h3 class="text-xl font-medium text-gray-800 dark:text-gray-100 group-hover:text-blue-600 transition-colors">
                     {{ .Title }}
                   </h3>
-                  <time class="text-sm text-gray-500 mt-1 sm:mt-0 sm:ml-4 flex-shrink-0 flex items-center">
+                  <time class="text-sm text-gray-500 dark:text-gray-400 mt-1 sm:mt-0 sm:ml-4 flex-shrink-0 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
@@ -33,7 +33,7 @@
                 </div>
                 
                 {{ if .Summary }}
-                <div class="text-gray-600 text-sm line-clamp-2">
+                <div class="text-gray-600 dark:text-gray-300 text-sm line-clamp-2">
                   {{ .Summary | plainify | truncate 140 }}
                 </div>
                 {{ end }}
@@ -42,7 +42,7 @@
                 <div class="mt-3 flex flex-wrap gap-2 relative z-20">
                   {{ range .Params.tags }}
                   <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" 
-                     class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded hover:bg-gray-200 transition-colors"
+                     class="tag-chip text-xs bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
                      onclick="event.stopPropagation();">
                     {{ . }}
                   </a>
@@ -70,7 +70,7 @@
     {{ if or .Paginator.HasPrev .Paginator.HasNext }}
     <div class="mt-12 flex justify-between">
       {{ if .Paginator.HasPrev }}
-      <a href="{{ .Paginator.Prev.URL }}" class="px-4 py-2 bg-white shadow-sm rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
+      <a href="{{ .Paginator.Prev.URL }}" class="px-4 py-2 bg-white dark:bg-slate-900 shadow-sm rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
         &larr; {{ i18n "pagination_previous" | default "上一页" }}
       </a>
       {{ else }}
@@ -78,7 +78,7 @@
       {{ end }}
       
       {{ if .Paginator.HasNext }}
-      <a href="{{ .Paginator.Next.URL }}" class="px-4 py-2 bg-white shadow-sm rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
+      <a href="{{ .Paginator.Next.URL }}" class="px-4 py-2 bg-white dark:bg-slate-900 shadow-sm rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
         {{ i18n "pagination_next" | default "下一页" }} &rarr;
       </a>
       {{ else }}

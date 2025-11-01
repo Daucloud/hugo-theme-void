@@ -48,7 +48,6 @@
       // Create code block container
       const container = document.createElement('div');
       container.className = 'code-block-container';
-      container.style.backgroundColor = '#ffffff';
       
       // Create header bar
       const header = document.createElement('div');
@@ -90,9 +89,7 @@
         pre.parentNode.removeChild(pre);
       }
       
-      // Ensure code has proper background
-      pre.style.backgroundColor = '#ffffff';
-      codeBlock.style.backgroundColor = '#ffffff';
+      // Background colors handled by CSS (supports dark mode)
       
       // Reassemble DOM structure
       container.appendChild(header);
@@ -102,13 +99,7 @@
       wrapper.appendChild(container);
       
       // Apply syntax highlighting
-      hljs.highlightElement(codeBlock);
-      
-      // Ensure background colors remain correct after highlighting
-      setTimeout(() => {
-        pre.style.backgroundColor = '#ffffff';
-        codeBlock.style.backgroundColor = '#ffffff';
-      }, 50);
+      if (window.hljs) hljs.highlightElement(codeBlock);
     });
   });
 </script>
@@ -145,3 +136,149 @@
   });
 </script>
 
+<!-- 页内跳转目标高亮（TOC/哈希链接） -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // --- Theme (dark / light) ---
+    (function themeInit() {
+      const storageKey = 'theme';
+      const root = document.documentElement;
+      const btn = document.getElementById('theme-toggle');
+      const hlLight = document.getElementById('hljs-theme-light');
+      const hlDark = document.getElementById('hljs-theme-dark');
+
+      function systemPrefersDark() {
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+
+      function currentPref() {
+        const v = localStorage.getItem(storageKey);
+        if (v === 'dark') return 'dark';
+        if (v === 'light') return 'light';
+        return systemPrefersDark() ? 'dark' : 'light';
+      }
+
+      function apply(theme) {
+        root.classList.toggle('dark', theme === 'dark');
+        btn?.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+        if (btn) btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        if (hlLight && hlDark) { hlLight.disabled = theme === 'dark'; hlDark.disabled = theme !== 'dark'; }
+      }
+
+      let theme = currentPref();
+      apply(theme);
+
+      btn?.addEventListener('click', function () {
+        theme = theme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem(storageKey, theme);
+        apply(theme);
+      });
+
+      // Watch system preference changes when user has no explicit choice
+      try {
+        const media = window.matchMedia('(prefers-color-scheme: dark)');
+        media.addEventListener?.('change', () => {
+          const explicit = localStorage.getItem(storageKey);
+          if (!explicit) { theme = currentPref(); apply(theme); }
+        });
+      } catch (_) {}
+    })();
+    let currentHighlighted = null;
+    let scrollArmTimer = null;
+
+    function removeHandlers() {
+      window.removeEventListener('scroll', clearOnce);
+      window.removeEventListener('keydown', clearOnce);
+      window.removeEventListener('pointerdown', clearOnce);
+      window.removeEventListener('touchstart', clearOnce);
+    }
+
+    function clearOnce() {
+      if (currentHighlighted) {
+        currentHighlighted.classList.remove('anchor-highlight');
+        currentHighlighted = null;
+      }
+      removeHandlers();
+    }
+
+    function headerHeight() {
+      const hd = document.querySelector('body > header');
+      return hd ? hd.getBoundingClientRect().height : 0;
+    }
+
+    function scrollToTarget(el) {
+      if (!el) return;
+      const offset = headerHeight() + 8; // 头部高度 + 细微间距
+      const rect = el.getBoundingClientRect();
+      const top = window.pageYOffset + rect.top - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+
+    function highlightById(id) {
+      if (!id) return;
+      try { id = decodeURIComponent(id); } catch (e) {}
+      const el = document.getElementById(id);
+      if (!el) return;
+      const target = el; // 精确高亮目标元素自身（包括 span 等内联元素）
+      if (currentHighlighted && currentHighlighted !== target) {
+        currentHighlighted.classList.remove('anchor-highlight');
+      }
+      target.classList.add('anchor-highlight');
+      currentHighlighted = target;
+      // 高亮 TOC 中对应项
+      setTocActive(id);
+      scrollToTarget(target);
+      // 下一次交互或超时清除
+      removeHandlers();
+      // 立刻监听键盘/指针，但延迟武装 scroll 清除，避免平滑滚动立即清掉高亮
+      window.addEventListener('keydown', clearOnce, { once: true });
+      window.addEventListener('pointerdown', clearOnce, { once: true });
+      window.addEventListener('touchstart', clearOnce, { once: true });
+      if (scrollArmTimer) clearTimeout(scrollArmTimer);
+      scrollArmTimer = setTimeout(() => {
+        window.addEventListener('scroll', clearOnce, { once: true });
+      }, 1500);
+    }
+
+    // 页面初次加载带 hash
+    if (location.hash && location.hash.length > 1) {
+      // 等待初始布局完成再滚动与高亮
+      setTimeout(() => highlightById(location.hash.slice(1)), 0);
+    }
+
+    // hash 变化时处理
+    window.addEventListener('hashchange', function () {
+      if (location.hash && location.hash.length > 1) {
+        highlightById(location.hash.slice(1));
+      }
+    });
+
+    // 事件委托：监听任意哈希内链（更稳健，兼容后续动态生成的目录等）
+    document.addEventListener('click', function (e) {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      if (!href || href === '#' || href.length < 2) return;
+      const id = href.slice(1);
+      if (!document.getElementById(id)) return; // 不是有效锚点
+      e.preventDefault();
+      if (history.pushState) { history.pushState(null, '', '#' + id); }
+      else { location.hash = id; }
+      highlightById(id);
+    }, true);
+
+    // 浏览器前进/后退时也处理
+    window.addEventListener('popstate', function () {
+      if (location.hash && location.hash.length > 1) highlightById(location.hash.slice(1));
+    });
+
+    function setTocActive(id) {
+      try { id = decodeURIComponent(id); } catch (e) {}
+      const toc = document.getElementById('TableOfContents');
+      if (!toc) return;
+      toc.querySelectorAll('a.toc-active').forEach(a => a.classList.remove('toc-active'));
+      const link = toc.querySelector(`a[href="#${CSS.escape(id)}"]`);
+      if (link) link.classList.add('toc-active');
+    }
+  });
+</script>
