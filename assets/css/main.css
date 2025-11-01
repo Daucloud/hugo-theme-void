@@ -8,6 +8,9 @@
   --font-bilingual: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
+/* Hide elements until Alpine initializes */
+[x-cloak] { display: none !important; }
+
 /* 表格样式增强 */
 .prose table {
   @apply w-full text-left border-collapse;
@@ -176,7 +179,6 @@ div#disqus_thread iframe[sandbox] {
   max-height: 0px !important;
 }
 
-/* add margin between paragraphs */
-p + p {
-  margin-top: 5px;
-}
+/* Improve spacing for paragraphs inside article content */
+.prose p { margin-bottom: 1rem; }
+.prose p + p { margin-top: 1rem; }
