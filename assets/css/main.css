@@ -51,6 +51,9 @@ body.font-bilingual, .font-bilingual {
   @apply font-bold text-gray-900 scroll-mt-20;
 }
 
+/* 任何带 id 的内容作为锚点时，考虑固定头部的偏移量 */
+.prose [id] { scroll-margin-top: 6.5rem; }
+
 .prose h1 {
   @apply text-3xl mt-8 mb-4 pb-2 border-b border-gray-200;
 }
@@ -140,6 +143,15 @@ body.font-bilingual, .font-bilingual {
 
 .prose .footnotes li {
   @apply text-gray-700;
+}
+
+/* Anchor highlight for in-page navigation (TOC, hash links) */
+.anchor-highlight {
+  background-color: #FEF3C7; /* amber-200 */
+  outline: 2px solid rgba(245, 158, 11, 0.35); /* amber-500 @ 35% */
+  outline-offset: 2px;
+  border-radius: 6px;
+  transition: background-color .4s ease, outline-color .4s ease;
 }
 
 /* Code block enhancements */
