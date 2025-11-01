@@ -48,7 +48,6 @@
       // Create code block container
       const container = document.createElement('div');
       container.className = 'code-block-container';
-      container.style.backgroundColor = '#ffffff';
       
       // Create header bar
       const header = document.createElement('div');
@@ -90,9 +89,7 @@
         pre.parentNode.removeChild(pre);
       }
       
-      // Ensure code has proper background
-      pre.style.backgroundColor = '#ffffff';
-      codeBlock.style.backgroundColor = '#ffffff';
+      // Background colors handled by CSS (supports dark mode)
       
       // Reassemble DOM structure
       container.appendChild(header);
@@ -102,13 +99,7 @@
       wrapper.appendChild(container);
       
       // Apply syntax highlighting
-      hljs.highlightElement(codeBlock);
-      
-      // Ensure background colors remain correct after highlighting
-      setTimeout(() => {
-        pre.style.backgroundColor = '#ffffff';
-        codeBlock.style.backgroundColor = '#ffffff';
-      }, 50);
+      if (window.hljs) hljs.highlightElement(codeBlock);
     });
   });
 </script>
@@ -148,6 +139,50 @@
 <!-- 页内跳转目标高亮（TOC/哈希链接） -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+    // --- Theme (dark / light) ---
+    (function themeInit() {
+      const storageKey = 'theme';
+      const root = document.documentElement;
+      const btn = document.getElementById('theme-toggle');
+      const hlLight = document.getElementById('hljs-theme-light');
+      const hlDark = document.getElementById('hljs-theme-dark');
+
+      function systemPrefersDark() {
+        return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      }
+
+      function currentPref() {
+        const v = localStorage.getItem(storageKey);
+        if (v === 'dark') return 'dark';
+        if (v === 'light') return 'light';
+        return systemPrefersDark() ? 'dark' : 'light';
+      }
+
+      function apply(theme) {
+        root.classList.toggle('dark', theme === 'dark');
+        btn?.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+        if (btn) btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+        if (hlLight && hlDark) { hlLight.disabled = theme === 'dark'; hlDark.disabled = theme !== 'dark'; }
+      }
+
+      let theme = currentPref();
+      apply(theme);
+
+      btn?.addEventListener('click', function () {
+        theme = theme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem(storageKey, theme);
+        apply(theme);
+      });
+
+      // Watch system preference changes when user has no explicit choice
+      try {
+        const media = window.matchMedia('(prefers-color-scheme: dark)');
+        media.addEventListener?.('change', () => {
+          const explicit = localStorage.getItem(storageKey);
+          if (!explicit) { theme = currentPref(); apply(theme); }
+        });
+      } catch (_) {}
+    })();
     let currentHighlighted = null;
     let scrollArmTimer = null;
 

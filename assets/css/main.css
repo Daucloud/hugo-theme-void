@@ -244,3 +244,112 @@ div#disqus_thread iframe[sandbox] {
 /* Improve spacing for paragraphs inside article content */
 .prose p { margin-bottom: 1rem; }
 .prose p + p { margin-top: 1rem; }
+
+/* --------------------------- */
+/* Dark mode overrides         */
+/* --------------------------- */
+/* Animated theme toggle icons (cross-fade + rotate) */
+.theme-toggle { position: relative; }
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+  position: absolute;
+  inset: 0;
+  transition: opacity .25s ease, transform .25s ease, color .2s ease;
+  vertical-align: middle;
+  pointer-events: none;
+}
+.icon-sun { opacity: 1; transform: rotate(0deg) scale(1); }
+.icon-moon { opacity: 0; transform: rotate(-90deg) scale(.6); }
+.dark .icon-sun { opacity: 0; transform: rotate(90deg) scale(.6); }
+.dark .icon-moon { opacity: 1; transform: rotate(0deg) scale(1); }
+.theme-toggle-btn { transition: transform .15s ease, color .2s ease; cursor: pointer; }
+.theme-toggle-btn:active { transform: scale(0.92); }
+/* Hover affordance */
+.theme-toggle-btn:hover { transform: scale(1.08); }
+.theme-toggle-btn:hover .icon-sun { transform: rotate(12deg) scale(1.08); }
+.theme-toggle-btn:hover .icon-moon { transform: rotate(-12deg) scale(1.08); }
+/* Keyboard focus */
+.theme-toggle-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,.45); border-radius: 6px; }
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle .icon-sun,
+  .theme-toggle .icon-moon,
+  .theme-toggle-btn { transition: none !important; }
+}
+.dark body { background-color: #0b1220 !important; }
+.dark .bg-white { background-color: #0f172a !important; }
+.dark .bg-gray-100 { background-color: #111827 !important; }
+.dark .border-gray-100 { border-color: #1f2937 !important; }
+.dark .bg-gray-50 { background-color: #0b1220 !important; }
+.dark .border-gray-200 { border-color: #334155 !important; }
+.dark .text-gray-900 { color: #e5e7eb !important; }
+.dark .text-gray-800 { color: #e5e7eb !important; }
+.dark .text-gray-700 { color: #e5e7eb !important; }
+.dark .text-gray-600 { color: #cbd5e1 !important; }
+.dark .text-gray-500 { color: #94a3b8 !important; }
+.dark .text-blue-700 { color: #93c5fd !important; }
+
+.dark article { background-color: #0f172a !important; }
+.dark .prose { color: #e5e7eb; }
+.dark .prose a { color: #60a5fa; }
+.dark .prose a:hover { color: #93c5fd; }
+.dark .prose h1,
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4,
+.dark .prose h5,
+.dark .prose h6 { color: #e5e7eb; }
+
+/* 全局标题在暗色模式下的可读性 */
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 { color: #e5e7eb !important; }
+.dark .prose h1 { border-color: #374151; }
+.dark .prose h2 { border-color: #1f2937; }
+.dark .prose hr { border-color: #334155; }
+
+.dark #toc-content { background-color: #0f172a; border-color: #1f2937; }
+.dark #TableOfContents a { color: #e5e7eb; }
+.dark #TableOfContents a:hover { background-color: #111827; color: #e5e7eb; }
+.dark #TableOfContents a.toc-active { background-color: #1e293b; color: #93c5fd; }
+.dark #TableOfContents ul ul { border-left-color: #334155; }
+
+.dark .code-block-container { background-color: #0b1220; border-color: #1f2937; }
+.dark .code-block-header { background-color: #111827; color: #e5e7eb; border-color: #1f2937; }
+.dark .code-language-label { background-color: #374151; color: #e5e7eb; }
+.dark .copy-button { background-color: #111827; color: #e5e7eb; border-color: #374151; }
+.dark .copy-button:hover { background-color: #1f2937; }
+
+.dark .anchor-highlight { background-color: rgba(245, 158, 11, 0.18); outline-color: rgba(245, 158, 11, 0.5); }
+
+/* theme card (e.g., disqus container) */
+.dark .theme-card { background-color: #0f172a !important; }
+
+/* -------- Tag chips dark mode fallback (works even if Tailwind dark: classes are purged) -------- */
+.dark .tag-chip { background-color: #1f2937 !important; color: #cbd5e1 !important; border-color: #334155 !important; }
+.dark .tag-chip:hover { background-color: #334155 !important; color: #93c5fd !important; }
+.dark .tag-chip .count-badge { background-color: #374151 !important; color: #93c5fd !important; }
+.dark .tags-container a { background-color: #1f2937 !important; color: #93c5fd !important; }
+.dark .tags-container a:hover { background-color: #334155 !important; }
+
+/* -------- Inline code & blockquotes: light + dark adaptations -------- */
+/* Inline code (avoid pre>code) */
+.prose :not(pre) > code {
+  background-color: #f3f4f6;
+  color: #111827;
+  padding: .125rem .35rem;
+  border-radius: .375rem; /* rounded-md */
+  border: 1px solid #e5e7eb;
+  box-shadow: inset 0 1px 0 rgba(0,0,0,.04);
+  font-size: .95em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+.dark .prose :not(pre) > code {
+  background-color: #0f172a;
+  color: #e5e7eb;
+  border-color: #374151;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+/* Blockquote dark mode */
+.dark .prose blockquote {
+  border-color: #60a5fa; /* blue-400 */
+  background-color: rgba(59, 130, 246, 0.12); /* blue-500 @ 12% */
+}

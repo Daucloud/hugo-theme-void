@@ -1,8 +1,7 @@
 {{ define "main" }}
   <article class="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
     <header class="p-8 border-b border-gray-100 relative overflow-hidden">
-      <!-- 装饰背景 -->
-      <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-blue-50 to-transparent rounded-full opacity-70 -z-0 blur-2xl transform translate-x-1/4 -translate-y-1/4"></div>
+      <!-- 装饰背景已移除，避免明暗模式下干扰 -->
       
       <!-- 文章元数据 -->
       {{ if .Params.categories }}
@@ -134,7 +133,7 @@
   </article>
 
   <!-- 使用懒加载Disqus评论 -->
-  <div class="max-w-4xl mx-auto mt-8 bg-white rounded-lg shadow-md overflow-hidden" style="--tw-prose-body: #374151; --tw-prose-headings: #111827; --tw-prose-links: #2563eb; --tw-prose-links-hover: #1d4ed8; --tw-prose-code-bg: #f3f4f6; color: #374151; background-color: #ffffff;">
+  <div class="max-w-4xl mx-auto mt-8 bg-white rounded-lg shadow-md overflow-hidden theme-card" style="--tw-prose-body: #374151; --tw-prose-headings: #111827; --tw-prose-links: #2563eb; --tw-prose-links-hover: #1d4ed8; --tw-prose-code-bg: #f3f4f6; color: #374151;">
     {{ partial "disqus_lazy.html" . }}
   </div>
 {{ end }}

@@ -8,13 +8,13 @@
   </div>
   
   <!-- 标签云 -->
-  <div class="bg-white shadow-sm rounded-lg p-6">
+  <div class="bg-white dark:bg-slate-900 shadow-sm rounded-lg p-6">
     <div class="flex flex-wrap gap-3 justify-center">
       {{ range .Data.Terms.ByCount }}
         <a href="{{ .Page.RelPermalink }}" class="group">
-          <div class="flex items-center px-4 py-2 rounded-full bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors">
+          <div class="tag-chip flex items-center px-4 py-2 rounded-full bg-blue-50 dark:bg-slate-800 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-slate-700 transition-colors">
             <span class="font-medium">{{ .Page.Title }}</span>
-            <span class="ml-2 bg-white text-blue-600 px-2 py-0.5 text-xs rounded-full">
+            <span class="ml-2 count-badge bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-300 px-2 py-0.5 text-xs rounded-full">
               {{ .Count }}
             </span>
           </div>
