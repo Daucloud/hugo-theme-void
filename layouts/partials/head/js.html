@@ -190,6 +190,8 @@
       }
       target.classList.add('anchor-highlight');
       currentHighlighted = target;
+      // 高亮 TOC 中对应项
+      setTocActive(id);
       scrollToTarget(target);
       // 下一次交互或超时清除
       removeHandlers();
@@ -235,5 +237,14 @@
     window.addEventListener('popstate', function () {
       if (location.hash && location.hash.length > 1) highlightById(location.hash.slice(1));
     });
+
+    function setTocActive(id) {
+      try { id = decodeURIComponent(id); } catch (e) {}
+      const toc = document.getElementById('TableOfContents');
+      if (!toc) return;
+      toc.querySelectorAll('a.toc-active').forEach(a => a.classList.remove('toc-active'));
+      const link = toc.querySelector(`a[href="#${CSS.escape(id)}"]`);
+      if (link) link.classList.add('toc-active');
+    }
   });
 </script>
