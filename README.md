@@ -7,16 +7,14 @@ Void is a clean, modern Hugo blog theme built with [Tailwind CSS](https://tailwi
 
 ## Features
 
-- 🎨 Built with Tailwind CSS for a clean, modern design
-- 📱 Fully responsive design, works on all devices
-- 🔍 SEO optimized
-- 💡 Light mode with focus on reading experience
-- 📝 Code highlighting with customizable styles
-- 🏷️ Support for tags and categories
-- 📊 Reading time estimation
-- 🌐 Social media integration
-- 📋 Code block copy functionality
-- 🔤 Language labels for code blocks
+- 🎨 Tailwind CSS design · fully responsive
+- 🌗 Dark/Light mode with animated icon toggle (no flash on load)
+- 🧭 Collapsible Table of Contents with active item highlight
+- 🔗 In‑page anchor highlight and copy‑permalink by clicking headings
+- 🧱 Code blocks with header (language label + copy) + HLJS light/dark themes
+- 🧮 KaTeX math support (inline/display) with common macros
+- ✍️ Readability tweaks: paragraph/list spacing, footnotes, tag chips, cards
+- 🏷️ Tags & categories, reading time, social links
 
 ## Installation
 
@@ -85,7 +83,44 @@ weight = 30
 name = 'About'
 pageRef = '/about'
 weight = 40
+
+# Table of Contents (recommended)
+[markup]
+  [markup.tableOfContents]
+    startLevel = 1
+    endLevel = 6
+    ordered = false
+
+# Allow raw HTML within Markdown (for KaTeX, etc.)
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
 ```
+
+### TOC & Anchors
+- A collapsible TOC appears near the top of articles when headings exist.
+- The current item in the TOC is highlighted when navigating via TOC/hash links.
+- Targets are highlighted and scrolled with a fixed‑header offset to remain visible.
+
+### Code & Math
+- Use fenced code blocks with a language hint (```go, ```python, …).
+- Each block is wrapped with a small header showing the language and a copy button.
+- Highlight.js switches themes automatically in dark/light mode.
+- KaTeX supports `$…$` (inline) and `$$…$$` (display). Macros: `\E`, `\Var`, `\argmax`, `\argmin`.
+
+### Dark/Light Toggle
+- The toggle is a plain icon button in the header; state persists in `localStorage` and respects system preference when unset.
+- No white‑flash on initial load: the theme is applied as early as possible.
+
+### Adjust the toggle icon size
+- File: `themes/void/layouts/partials/header.html:9`
+- Change the button size classes (example):
+
+  - Current: `h-6 w-6`
+  - Smaller: `h-5 w-5`
+  - Larger: `h-7 w-7`
+
+- The two SVGs inside use `h-full w-full`, so they follow the button size.
 
 ## Development
 
@@ -94,8 +129,11 @@ If you want to modify the theme, you need to install Node.js and npm. Then:
 ```bash
 cd themes/void
 npm install
-npm run dev # Development mode with auto CSS compilation
+npm run dev   # Development mode with auto CSS compilation
+npm run build # Build once (optional)
 ```
+
+This theme ships a Tailwind v4 pipeline via Hugo assets. You normally do not need to run `build` unless you want the prebuilt CSS artifact.
 
 ## License
 
