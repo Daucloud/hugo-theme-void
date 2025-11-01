@@ -11,6 +11,13 @@
 /* Hide elements until Alpine initializes */
 [x-cloak] { display: none !important; }
 
+/* Ensure serif font stack is actually applied when body has class */
+body.font-bilingual, .font-bilingual {
+  font-family: var(--font-bilingual) !important;
+  /* Override default font variable used by compiled stylesheet */
+  --default-font-family: var(--font-bilingual);
+}
+
 /* 表格样式增强 */
 .prose table {
   @apply w-full text-left border-collapse;
@@ -58,11 +65,28 @@
 
 /* 列表样式增强 */
 .prose ul {
-  @apply list-disc pl-5 space-y-1;
+  @apply list-disc pl-5 space-y-1 mt-4 mb-4;
 }
 
 .prose ol {
-  @apply list-decimal pl-5 space-y-1;
+  @apply list-decimal pl-5 space-y-1 mt-4 mb-4;
+}
+
+/* 嵌套列表更紧凑 */
+.prose li > ul,
+.prose li > ol {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+
+/* 列表结束后紧跟段落/小标题时增加顶部间距 */
+.prose ul + p,
+.prose ol + p,
+.prose ul + h2,
+.prose ol + h2,
+.prose ul + h3,
+.prose ol + h3 {
+  margin-top: 1rem;
 }
 
 /* 任务列表样式增强 */
