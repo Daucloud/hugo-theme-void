@@ -1,20 +1,38 @@
 {{ define "main" }}
   <article class="max-w-4xl mx-auto">
-    <!-- Clean page title -->
-    <div class="mb-12 text-center">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ .Title }}</h1>
-    </div>
+    <!-- Hero -->
+    <section class="text-center mb-8">
+      {{ with site.Params.avatar.url }}
+      <div class="mx-auto w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden ring-2 ring-gray-200 dark:ring-slate-700 shadow-sm mb-4">
+        <img src="{{ . }}" alt="{{ $.Site.Title }}" class="w-full h-full object-cover">
+      </div>
+      {{ end }}
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100">{{ .Title }}</h1>
+      {{ with site.Params.social }}
+      <div class="mt-4 flex items-center justify-center gap-4 text-gray-600 dark:text-gray-300">
+        {{ with .github }}<a class="hover:text-blue-600 dark:hover:text-blue-300" href="{{ . }}" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/></svg>
+        </a>{{ end }}
+        {{ with .zhihu }}<a class="hover:text-blue-600 dark:hover:text-blue-300" href="{{ . }}" target="_blank" rel="noopener" aria-label="Zhihu">
+          <svg class="h-5 w-5" viewBox="0 0 1024 1024" fill="currentColor"><path d="M544.949 561.422s0-71.387-34.779-75.05-142.775 0-142.775 0v-219.654h161.078s-1.83-73.219-32.949-73.219h-261.755l43.93-117.148s-65.897 3.663-89.692 45.761-98.844 252.604-98.844 252.604 25.627 10.983 67.726-20.134c42.101-31.116 56.743-86.033 56.743-86.033l76.879-3.663 1.83 223.316s-133.621-1.83-161.078 0c-27.457 1.83-42.101 75.05-42.101 75.05h203.182s-18.307 124.47-69.557 214.164c-53.085 89.692-151.929 161.078-151.929 161.078s71.387 29.287 140.947-10.983c69.557-42.101 120.811-223.316 120.811-223.316l162.912 203.316s14.643-97.013-1.83-124.47c-18.307-27.457-113.49-137.283-113.49-137.283l-42.101 36.607 29.287-120.811h177.552zM587.05 188.01l-1.83 660.793h65.897l23.795 82.37 115.321-82.37h162.912v-660.793h-366.091zM879.92 775.584h-76.879l-97.013 75.05-21.965-75.05h-20.134v-512.527h215.991v512.527z"/></svg>
+        </a>{{ end }}
+        {{ with .email }}<a class="hover:text-blue-600 dark:hover:text-blue-300" href="mailto:{{ . }}" aria-label="Email">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
+        </a>{{ end }}
+      </div>
+      {{ end }}
+    </section>
 
-    <!-- Content area -->
-    <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-12">
-      <div class="p-8 sm:p-10 prose prose-sm sm:prose lg:prose-lg max-w-none">
+    <!-- Content card -->
+    <section class="about-card bg-white dark:bg-slate-900 rounded-lg shadow-sm overflow-hidden">
+      <div class="p-6 sm:p-8 prose prose-sm sm:prose lg:prose-lg max-w-none">
         {{ .Content }}
       </div>
-    </div>
+    </section>
 
-    <!-- Simple footer -->
-    <div class="flex justify-center mb-12">
-      <a href="{{ "/" | relLangURL }}" class="inline-flex items-center text-gray-600 hover:text-blue-600 transition-colors">
+    <!-- Back to home -->
+    <div class="flex justify-center mt-10">
+      <a href="{{ "/" | relLangURL }}" class="inline-flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-300 transition-colors">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
@@ -22,8 +40,4 @@
       </a>
     </div>
   </article>
-  <!-- 使用懒加载Disqus评论 -->
-  <div class="max-w-4xl mx-auto mt-8 bg-white rounded-lg shadow-md overflow-hidden" style="--tw-prose-body: #374151; --tw-prose-headings: #111827; --tw-prose-links: #2563eb; --tw-prose-links-hover: #1d4ed8; --tw-prose-code-bg: #f3f4f6; color: #374151; background-color: #ffffff;">
-    {{ partial "disqus_lazy.html" . }}
-  </div>
-{{ end }} 
+{{ end }}

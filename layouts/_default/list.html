@@ -70,7 +70,7 @@
     {{ if or .Paginator.HasPrev .Paginator.HasNext }}
     <div class="mt-12 flex justify-between">
       {{ if .Paginator.HasPrev }}
-      <a href="{{ .Paginator.Prev.URL }}" class="px-4 py-2 bg-white shadow-sm rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
+      <a href="{{ .Paginator.Prev.URL }}" class="px-4 py-2 bg-white dark:bg-slate-900 shadow-sm rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
         &larr; {{ i18n "pagination_previous" | default "上一页" }}
       </a>
       {{ else }}
@@ -78,7 +78,7 @@
       {{ end }}
       
       {{ if .Paginator.HasNext }}
-      <a href="{{ .Paginator.Next.URL }}" class="px-4 py-2 bg-white shadow-sm rounded-md text-gray-700 hover:bg-gray-50 transition-colors">
+      <a href="{{ .Paginator.Next.URL }}" class="px-4 py-2 bg-white dark:bg-slate-900 shadow-sm rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
         {{ i18n "pagination_next" | default "下一页" }} &rarr;
       </a>
       {{ else }}

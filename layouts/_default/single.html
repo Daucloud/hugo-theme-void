@@ -52,7 +52,7 @@
     {{ if gt (len ($tocClean | plainify)) 0 }}
     <div class="px-8 pt-6" x-data="{ open: false }">
       <button
-        class="w-full flex items-center justify-between text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-md px-4 py-2 transition-colors"
+        class="w-full flex items-center justify-between text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 rounded-md px-4 py-2 transition-colors"
         @click="open = !open"
         aria-controls="toc-content"
         :aria-expanded="open.toString()"
