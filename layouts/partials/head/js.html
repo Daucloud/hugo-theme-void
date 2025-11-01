@@ -202,8 +202,7 @@
       if (scrollArmTimer) clearTimeout(scrollArmTimer);
       scrollArmTimer = setTimeout(() => {
         window.addEventListener('scroll', clearOnce, { once: true });
-      }, 900);
-      setTimeout(clearOnce, 8000);
+      }, 1500);
     }
 
     // 页面初次加载带 hash
