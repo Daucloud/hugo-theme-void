@@ -110,6 +110,12 @@ weight = 40
 
 ### Callouts
 - Shortcode: `{{< callout title="Note" type="info" >}}...{{< /callout >}}`
+- Fenced syntax: 
+  ```
+  ```callout {.warning title="Caution"}
+  Content…
+  ```
+  ```
 - Supported `type` values: `info` (default), `tip`, `warning`, `danger`, `neutral`.
 - Works with regular Markdown and KaTeX math. Background/accent adapts to dark mode automatically.
 - Example:
