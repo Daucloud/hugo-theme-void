@@ -86,6 +86,7 @@ body.font-bilingual, .font-bilingual {
 /* Ensure KaTeX inherits text color and handles overflow */
 .callout-content .katex { color: inherit; }
 .callout-content .katex-display { overflow-x: auto; }
+.callout-content .callout-math { margin: 1rem 0; }
 
 /* 链接样式增强 */
 .prose a {
