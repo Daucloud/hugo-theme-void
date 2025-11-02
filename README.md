@@ -108,6 +108,19 @@ weight = 40
 - Highlight.js switches themes automatically in dark/light mode.
 - KaTeX supports `$…$` (inline) and `$$…$$` (display). Macros: `\E`, `\Var`, `\argmax`, `\argmin`.
 
+### Callouts
+- Shortcode: `{{< callout title="Note" type="info" >}}...{{< /callout >}}`
+- Supported `type` values: `info` (default), `tip`, `warning`, `danger`, `neutral`.
+- Works with regular Markdown and KaTeX math. Background/accent adapts to dark mode automatically.
+- Example:
+
+  ```markdown
+  {{< callout title="Definition" type="neutral" >}}
+  State–action value:  
+  $$ v_\pi(s_t, a_t) = \mathbb{E}_\pi\left[ \sum_{i=t}^T \gamma^{i-t} r_i \right] $$
+  {{< /callout >}}
+  ```
+
 ### Dark/Light Toggle
 - The toggle is a plain icon button in the header; state persists in `localStorage` and respects system preference when unset.
 - No white‑flash on initial load: the theme is applied as early as possible.

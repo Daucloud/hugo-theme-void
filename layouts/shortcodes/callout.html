@@ -1,0 +1,26 @@
+{{- $type := .Get "type" | default "info" -}}
+{{- $title := .Get "title" -}}
+
+<div class="callout callout-{{ $type }} not-prose">
+  {{- with $title -}}
+  <div class="callout-header">
+    <span class="callout-icon" aria-hidden="true">
+      {{- if eq $type "tip" -}}
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 3a7 7 0 00-4.546 12.248C7.907 16.169 9 17.388 9 19h6c0-1.612 1.093-2.831 2.546-3.752A7 7 0 0011 3zm1 18h-2a1 1 0 000 2h2a1 1 0 100-2z"/></svg>
+      {{- else if eq $type "warning" -}}
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4m0 4h.01"/></svg>
+      {{- else if eq $type "danger" -}}
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1010 10A10.011 10.011 0 0012 2zm1 15h-2v-2h2zm0-4h-2V7h2z"/></svg>
+      {{- else if eq $type "neutral" -}}
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 16h-1v-4h-1V9h2m-1-7a10 10 0 1010 10A10.011 10.011 0 0012 2z"/></svg>
+      {{- else -}}
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 16h-1v-4h-1V9h2m-1-7a10 10 0 1010 10A10.011 10.011 0 0012 2z"/></svg>
+      {{- end -}}
+    </span>
+    <span class="callout-title">{{ . }}</span>
+  </div>
+  {{- end -}}
+  <div class="callout-content prose prose-sm sm:prose max-w-none dark:prose-invert">
+    {{- .Inner | markdownify -}}
+  </div>
+</div>

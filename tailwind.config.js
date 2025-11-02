@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./layouts/**/*.html"],
+  darkMode: 'class',
+  content: [
+    "./layouts/**/*.html",
+    "./assets/**/*.css",
+  ],
   theme: {
     extend: {
       typography: {

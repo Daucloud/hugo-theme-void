@@ -36,6 +36,57 @@ body.font-bilingual, .font-bilingual {
   @apply border-l-4 border-blue-500 bg-blue-50 pl-4 py-2 my-4 italic;
 }
 
+/* Callout block: visually distinct from blockquote */
+.callout {
+  @apply my-6 rounded-lg shadow-sm;
+  padding: 1.1rem;
+  background-color: #f1f5f9; /* fallback neutral */
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.dark .callout {
+  background-color: #111827;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.45);
+}
+
+.callout-header {
+  @apply flex items-center gap-2 font-semibold mb-2;
+}
+
+.callout-icon { width: 1rem; height: 1rem; display: inline-block; }
+
+.callout-title { color: inherit; }
+
+/* Accent left border by type */
+.callout-info { background-color: #eff6ff; }
+.callout-tip { background-color: #ecfdf5; }
+.callout-warning { background-color: #fef3c7; }
+.callout-danger { background-color: #fee2e2; }
+.callout-neutral { background-color: #e2e8f0; }
+
+.dark .callout-info { background-color: rgba(59, 130, 246, 0.20); }
+.dark .callout-tip { background-color: rgba(16, 185, 129, 0.20); }
+.dark .callout-warning { background-color: rgba(217, 119, 6, 0.25); }
+.dark .callout-danger { background-color: rgba(239, 68, 68, 0.22); }
+.dark .callout-neutral { background-color: rgba(148, 163, 184, 0.25); }
+
+/* Color the header icon by type */
+.callout-info .callout-header { color: #1d4ed8; }
+.callout-tip .callout-header { color: #047857; }
+.callout-warning .callout-header { color: #b45309; }
+.callout-danger .callout-header { color: #b91c1c; }
+.callout-neutral .callout-header { color: #334155; }
+
+.dark .callout-info .callout-header { color: #bfdbfe; }
+.dark .callout-tip .callout-header { color: #bbf7d0; }
+.dark .callout-warning .callout-header { color: #fcd34d; }
+.dark .callout-danger .callout-header { color: #fecaca; }
+.dark .callout-neutral .callout-header { color: #e2e8f0; }
+
+/* Ensure KaTeX inherits text color and handles overflow */
+.callout-content .katex { color: inherit; }
+.callout-content .katex-display { overflow-x: auto; }
+
 /* 链接样式增强 */
 .prose a {
   @apply text-blue-600 hover:text-blue-800 transition-colors duration-200 underline underline-offset-2;
