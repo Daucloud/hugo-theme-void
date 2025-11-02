@@ -23,6 +23,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
+<!-- Speed up Busuanzi counter load -->
+<link rel="dns-prefetch" href="//busuanzi.ibruce.info">
+<link rel="preconnect" href="https://busuanzi.ibruce.info" crossorigin>
+
 <!-- Favicon configuration -->
 <link rel="icon" type="image/png" href="{{ "favicon/favicon-96x96.png" | relURL }}" sizes="96x96" />
 <link rel="icon" type="image/svg+xml" href="{{ "favicon/favicon.svg" | relURL }}" />
@@ -33,3 +37,6 @@
 
 {{ partialCached "head/css.html" . }}
 {{ partialCached "head/js.html" . }}
+
+<!-- Busuanzi page/site view counter (load early to avoid delayed render) -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
