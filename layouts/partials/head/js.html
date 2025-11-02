@@ -84,19 +84,11 @@
       
       header.appendChild(copyButton);
       
-      // Remove pre from original parent
-      if (pre.parentNode) {
-        pre.parentNode.removeChild(pre);
-      }
-      
-      // Background colors handled by CSS (supports dark mode)
-      
-      // Reassemble DOM structure
+      // Insert the container before the original pre element to keep layout order,
+      // then move the pre inside the container.
+      wrapper.insertBefore(container, pre);
       container.appendChild(header);
       container.appendChild(pre);
-      
-      // Add the complete code block to original location
-      wrapper.appendChild(container);
       
       // Apply syntax highlighting
       if (window.hljs) hljs.highlightElement(codeBlock);

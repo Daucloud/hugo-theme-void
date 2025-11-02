@@ -85,7 +85,21 @@ body.font-bilingual, .font-bilingual {
 
 /* Ensure KaTeX inherits text color and handles overflow */
 .callout-content .katex { color: inherit; }
-.callout-content .katex-display { overflow-x: auto; }
+.callout-content .katex-display,
+.prose .katex-display {
+  overflow-x: auto;
+  max-width: 100%;
+  padding-bottom: 0.5rem;
+}
+.callout-content .katex-display::-webkit-scrollbar,
+.prose .katex-display::-webkit-scrollbar {
+  height: 6px;
+}
+.callout-content .katex-display::-webkit-scrollbar-thumb,
+.prose .katex-display::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.6);
+  border-radius: 9999px;
+}
 .callout-content .callout-math { margin: 1rem 0; }
 
 /* 链接样式增强 */
@@ -279,13 +293,49 @@ body.font-bilingual, .font-bilingual {
 
 .code-block-container pre code {
   @apply w-full inline-block;
-  word-wrap: normal;
-  word-break: normal;
-  white-space: pre;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
   line-height: 1.5rem;
   background-color: transparent;
   padding: 0;
   font-size: 14px;
+}
+
+/* Fallback code blocks rendered without container */
+.prose pre {
+  @apply p-4 rounded-md text-sm overflow-x-auto;
+  background-color: #f1f5f9;
+  color: #0f172a;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.dark .prose pre {
+  background-color: rgba(15, 23, 42, 0.92);
+  color: #e2e8f0;
+}
+
+.prose pre code {
+  white-space: inherit;
+  word-break: inherit;
+  overflow-wrap: inherit;
+  display: block;
+  color: inherit;
+}
+
+/* Inline code wrapping */
+.prose code {
+  @apply px-1 py-0.5 rounded bg-slate-200 text-slate-800;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.dark .prose code {
+  background-color: rgba(15, 23, 42, 0.75);
+  color: #e2e8f0;
 }
 
 /* 禁止Disqus广告 */
