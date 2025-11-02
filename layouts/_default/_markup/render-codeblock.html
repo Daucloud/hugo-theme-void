@@ -28,5 +28,5 @@
   {{- $shortcode := printf "{{< callout type=%q%s >}}%s{{< /callout >}}" $type $titleAttr $body -}}
   {{- $shortcode | markdownify -}}
 {{- else -}}
-  <pre tabindex="0"><code{{ with $lang }} class="language-{{ . }}"{{ end }}>{{- .Inner | safeHTML -}}</code></pre>
+  <pre tabindex="0"><code{{ with $lang }} class="language-{{ . }}"{{ end }}>{{- .Inner -}}</code></pre>
 {{- end -}}

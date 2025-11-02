@@ -84,10 +84,11 @@
       
       header.appendChild(copyButton);
       
-      // Insert the container before the original pre element to keep layout order,
-      // then move the pre inside the container.
-      wrapper.insertBefore(container, pre);
       container.appendChild(header);
+      // Replace the original pre with the container, then move the pre inside.
+      if (pre.parentNode) {
+        pre.parentNode.replaceChild(container, pre);
+      }
       container.appendChild(pre);
       
       // Apply syntax highlighting
