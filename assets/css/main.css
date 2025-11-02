@@ -58,11 +58,11 @@ body.font-bilingual, .font-bilingual {
 .callout-title { color: inherit; }
 
 /* Accent left border by type */
-.callout-info { background-color: #eff6ff; }
-.callout-tip { background-color: #ecfdf5; }
-.callout-warning { background-color: #fef3c7; }
-.callout-danger { background-color: #fee2e2; }
-.callout-neutral { background-color: #e2e8f0; }
+.callout-info { background-color: #dbeafe; }
+.callout-tip { background-color: #d1fae5; }
+.callout-warning { background-color: #fde68a; }
+.callout-danger { background-color: #fecaca; }
+.callout-neutral { background-color: #cbd5f5; }
 
 .dark .callout-info { background-color: rgba(59, 130, 246, 0.20); }
 .dark .callout-tip { background-color: rgba(16, 185, 129, 0.20); }
