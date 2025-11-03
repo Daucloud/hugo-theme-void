@@ -4,6 +4,8 @@ Void is a clean, modern Hugo blog theme built with [Tailwind CSS](https://tailwi
 
 <!-- Screenshot will be added in the future -->
 <!-- ![Void Theme Preview](./static/images/screenshot.png) -->
+## Example Site
+[Daucloud's Blog](https://www.daucloud.com/)
 
 ## Features
 
