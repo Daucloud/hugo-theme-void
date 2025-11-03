@@ -268,7 +268,7 @@ blockquote.anchor-highlight {
 /* Heading anchor copy button */
 .heading-anchor { 
   display: inline-flex; align-items: center; justify-content: center;
-  margin-left: .4rem; opacity: .55; color: #64748b; text-decoration: none;
+  margin-left: .4rem; opacity: 0; color: #64748b; text-decoration: none;
   transition: opacity .15s ease, color .15s ease; vertical-align: middle;
 }
 .prose h1:hover .heading-anchor,
@@ -276,7 +276,10 @@ blockquote.anchor-highlight {
 .prose h3:hover .heading-anchor,
 .prose h4:hover .heading-anchor,
 .prose h5:hover .heading-anchor,
-.prose h6:hover .heading-anchor { opacity: 1; }
+.prose h6:hover .heading-anchor,
+.heading-anchor:focus,
+.heading-anchor:focus-visible,
+.heading-anchor:hover { opacity: 1; }
 .heading-anchor:hover { color: #2563eb; }
 .heading-anchor.copied { color: #16a34a; } /* green when copied */
 
