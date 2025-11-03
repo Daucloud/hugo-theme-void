@@ -115,7 +115,15 @@ body.font-bilingual, .font-bilingual {
 .prose h5,
 .prose h6 {
   @apply font-bold text-gray-900 scroll-mt-20;
+  position: relative;
 }
+/* Make headings feel interactive when they can be clicked to copy */
+.prose h1.heading-clickable,
+.prose h2.heading-clickable,
+.prose h3.heading-clickable,
+.prose h4.heading-clickable,
+.prose h5.heading-clickable,
+.prose h6.heading-clickable { cursor: pointer; }
 
 /* 任何带 id 的内容作为锚点时，考虑固定头部的偏移量 */
 .prose [id] { scroll-margin-top: 6.5rem; }
@@ -245,6 +253,21 @@ body.font-bilingual, .font-bilingual {
 #TableOfContents a.toc-active { background-color: #eef2ff; color: #3730a3; } /* indigo */
 /* focus visibility */
 #TableOfContents a:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
+
+/* Heading anchor copy button */
+.heading-anchor { 
+  display: inline-flex; align-items: center; justify-content: center;
+  margin-left: .4rem; opacity: .55; color: #64748b; text-decoration: none;
+  transition: opacity .15s ease, color .15s ease; vertical-align: middle;
+}
+.prose h1:hover .heading-anchor,
+.prose h2:hover .heading-anchor,
+.prose h3:hover .heading-anchor,
+.prose h4:hover .heading-anchor,
+.prose h5:hover .heading-anchor,
+.prose h6:hover .heading-anchor { opacity: 1; }
+.heading-anchor:hover { color: #2563eb; }
+.heading-anchor.copied { color: #16a34a; } /* green when copied */
 
 /* Code block enhancements */
 .code-block-container {

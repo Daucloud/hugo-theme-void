@@ -35,8 +35,13 @@
 <link rel="manifest" href="{{ "favicon/site.webmanifest" | relURL }}" />
 <!-- End of favicon configuration -->
 
-{{ partialCached "head/css.html" . }}
-{{ partialCached "head/js.html" . }}
+{{ if eq hugo.Environment "development" }}
+  {{ partial "head/css.html" . }}
+  {{ partial "head/js.html" . }}
+{{ else }}
+  {{ partialCached "head/css.html" . }}
+  {{ partialCached "head/js.html" . }}
+{{ end }}
 
 <!-- Busuanzi page/site view counter (load early to avoid delayed render) -->
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>

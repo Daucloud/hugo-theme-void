@@ -153,7 +153,7 @@
 
       function apply(theme) {
         root.classList.toggle('dark', theme === 'dark');
-        btn?.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+        if (btn) btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
         if (btn) btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
         if (hlLight && hlDark) { hlLight.disabled = theme === 'dark'; hlDark.disabled = theme !== 'dark'; }
       }
@@ -161,19 +161,23 @@
       let theme = currentPref();
       apply(theme);
 
-      btn?.addEventListener('click', function () {
-        theme = theme === 'dark' ? 'light' : 'dark';
-        localStorage.setItem(storageKey, theme);
-        apply(theme);
-      });
+      if (btn) {
+        btn.addEventListener('click', function () {
+          theme = theme === 'dark' ? 'light' : 'dark';
+          localStorage.setItem(storageKey, theme);
+          apply(theme);
+        });
+      }
 
       // Watch system preference changes when user has no explicit choice
       try {
         const media = window.matchMedia('(prefers-color-scheme: dark)');
-        media.addEventListener?.('change', () => {
+        const handler = function () {
           const explicit = localStorage.getItem(storageKey);
           if (!explicit) { theme = currentPref(); apply(theme); }
-        });
+        };
+        if (media && media.addEventListener) media.addEventListener('change', handler);
+        else if (media && media.addListener) media.addListener(handler);
       } catch (_) {}
     })();
     let currentHighlighted = null;
@@ -250,6 +254,8 @@
     document.addEventListener('click', function (e) {
       const a = e.target.closest('a[href^="#"]');
       if (!a) return;
+      // Let heading-anchor clicks go to the copy handler
+      if (a.classList && a.classList.contains('heading-anchor')) return;
       const href = a.getAttribute('href');
       if (!href || href === '#' || href.length < 2) return;
       const id = href.slice(1);
@@ -269,9 +275,82 @@
       try { id = decodeURIComponent(id); } catch (e) {}
       const toc = document.getElementById('TableOfContents');
       if (!toc) return;
+      const esc = (window.CSS && CSS.escape) ? CSS.escape : (s)=>String(s).replace(/[^a-zA-Z0-9_\-]/g, '\\$&');
       toc.querySelectorAll('a.toc-active').forEach(a => a.classList.remove('toc-active'));
-      const link = toc.querySelector(`a[href="#${CSS.escape(id)}"]`);
+      const link = toc.querySelector('a[href="#' + esc(id) + '"]');
       if (link) link.classList.add('toc-active');
     }
+
+    // Small helper to copy text to clipboard (secure + fallback)
+    function copyText(text) {
+      if (window.isSecureContext && navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text);
+      }
+      return new Promise(function (resolve, reject) {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed'; ta.style.top = '-1000px'; ta.style.left = '-1000px'; ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.focus(); ta.select();
+          try { ta.setSelectionRange(0, ta.value.length); } catch (_) {}
+          const ok = document.execCommand && document.execCommand('copy');
+          document.body.removeChild(ta);
+          ok ? resolve() : reject(new Error('copy failed'));
+        } catch (e) { reject(e); }
+      });
+    }
+
+    // Add small anchor buttons to headings that copy the section URL
+    (function addHeadingAnchorCopy() {
+      const container = document.querySelector('article .prose');
+      if (!container) return;
+      const heads = container.querySelectorAll('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]');
+      heads.forEach((h) => {
+        const id = h.getAttribute('id');
+        if (!id) return;
+        let a = h.querySelector('.heading-anchor');
+        if (!a) {
+          a = document.createElement('a');
+          a.className = 'heading-anchor';
+          a.href = '#' + id;
+          a.setAttribute('aria-label', 'Copy link to this section');
+          a.innerHTML = '<svg viewBox="0 0 1024 1024" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M633.417143 429.007238a174.567619 174.567619 0 0 1 0 246.857143l-155.306667 155.306667a186.709333 186.709333 0 1 1-264.045714-264.045715l76.483048-76.507428 51.73638 51.736381-76.507428 76.507428a113.566476 113.566476 0 1 0 160.597333 160.597334l155.306667-155.306667a101.424762 101.424762 0 0 0 0-143.408762z m208.603428-225.816381a186.709333 186.709333 0 0 1 0 264.045714L765.561905 543.744l-51.736381-51.712 76.507428-76.507429a113.566476 113.566476 0 1 0-160.597333-160.597333l-155.306667 155.306667a101.424762 101.424762 0 0 0 0 143.408762l-51.736381 51.736381a174.567619 174.567619 0 0 1 0-246.857143l155.306667-155.306667a186.709333 186.709333 0 0 1 264.045714 0z"/></svg>';
+          h.appendChild(a);
+        }
+        function copyPermalink() {
+          const url = location.origin + location.pathname + '#' + id;
+          const done = function () {
+            a.classList.add('copied');
+            a.setAttribute('aria-label', 'Copied');
+            setTimeout(() => { a.classList.remove('copied'); a.setAttribute('aria-label', 'Copy link to this section'); }, 1200);
+          };
+          copyText(url).then(done).catch(done);
+        }
+        a.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); copyPermalink(); });
+
+        // Make the whole heading clickable (except when clicking an embedded link)
+        h.classList.add('heading-clickable');
+        h.addEventListener('click', function (e) {
+          if (e.target.closest('a') && !e.target.closest('.heading-anchor')) return; // don't override normal links except our icon
+          copyPermalink();
+        });
+      });
+
+      // Also add a delegated handler so clicks are always caught
+      document.addEventListener('click', function (e) {
+        const btn = e.target.closest('a.heading-anchor');
+        if (!btn) return;
+        // Avoid interference from the global hash handler
+        e.preventDefault(); e.stopPropagation();
+        const href = btn.getAttribute('href') || '';
+        const url = href.startsWith('#') ? (location.origin + location.pathname + href) : href;
+        copyText(url).then(() => {
+          btn.classList.add('copied'); btn.setAttribute('aria-label', 'Copied');
+          setTimeout(() => { btn.classList.remove('copied'); btn.setAttribute('aria-label', 'Copy link to this section'); }, 1200);
+        });
+      }, false);
+    })();
   });
 </script>
