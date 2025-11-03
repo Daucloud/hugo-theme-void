@@ -211,12 +211,45 @@
       window.scrollTo({ top, behavior: 'smooth' });
     }
 
+    function pickHighlightTarget(el) {
+      if (!el) return null;
+      // If the anchor itself is an inline math/image span, prefer the precise node
+      // 1) Direct images
+      if (el.tagName === 'IMG') return el;
+      // 2) KaTeX nodes (inline or display)
+      if (el.classList && (el.classList.contains('katex-display') || el.classList.contains('katex'))) return el;
+      // 3) If it's a span wrapper, look for an img or KaTeX inside it
+      if (el.tagName === 'SPAN') {
+        const img = el.querySelector('img');
+        if (img) return img;
+        const kx = el.querySelector('.katex-display, .katex');
+        if (kx) return kx;
+        // Otherwise highlight the span itself (most precise inline target)
+        return el;
+      }
+      // Prefer heading container when targeting headings
+      const head = el.closest('h1,h2,h3,h4,h5,h6');
+      if (head) return head;
+      // Code block container
+      const code = el.closest('.code-block-container');
+      if (code) return code;
+      // Display math (if ancestor)
+      const math = el.closest('.katex-display');
+      if (math) return math;
+      // Other common block containers
+      const blk = el.closest('pre,figure,table,blockquote,li');
+      if (blk) return blk;
+      // Avoid wrapping entire paragraphs when the element is inline; use itself
+      if (el.closest('p')) return el;
+      return el;
+    }
+
     function highlightById(id) {
       if (!id) return;
       try { id = decodeURIComponent(id); } catch (e) {}
       const el = document.getElementById(id);
       if (!el) return;
-      const target = el; // 精确高亮目标元素自身（包括 span 等内联元素）
+      const target = pickHighlightTarget(el);
       if (currentHighlighted && currentHighlighted !== target) {
         currentHighlighted.classList.remove('anchor-highlight');
       }
@@ -345,10 +378,15 @@
         // Avoid interference from the global hash handler
         e.preventDefault(); e.stopPropagation();
         const href = btn.getAttribute('href') || '';
+        const id = href.startsWith('#') ? href.slice(1) : '';
         const url = href.startsWith('#') ? (location.origin + location.pathname + href) : href;
-        copyText(url).then(() => {
+        copyText(url).finally(() => {
           btn.classList.add('copied'); btn.setAttribute('aria-label', 'Copied');
           setTimeout(() => { btn.classList.remove('copied'); btn.setAttribute('aria-label', 'Copy link to this section'); }, 1200);
+          if (id) {
+            try { if (history.pushState) history.pushState(null, '', '#' + id); else location.hash = id; } catch (_) {}
+            try { highlightById(id); } catch (_) {}
+          }
         });
       }, false);
     })();
