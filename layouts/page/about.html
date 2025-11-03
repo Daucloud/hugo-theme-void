@@ -40,4 +40,9 @@
       </a>
     </div>
   </article>
+  
+  <!-- Comments (lazy Disqus) -->
+  <div class="max-w-4xl mx-auto mt-8 bg-white dark:bg-slate-900 rounded-lg shadow-md overflow-hidden theme-card">
+    {{ partial "disqus_lazy.html" . }}
+  </div>
 {{ end }}
