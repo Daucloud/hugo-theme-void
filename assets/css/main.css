@@ -189,6 +189,20 @@ body.font-bilingual, .font-bilingual {
 .prose .footnotes {
   @apply text-sm text-gray-600 mt-8 pt-6 border-t border-gray-200;
 }
+/* 避免脚注容器自带上边框与内部 <hr> 叠加成双线 */
+.prose .footnotes hr { display: none; }
+
+/* Dark mode: improve readability for footnotes */
+.dark .prose .footnotes {
+  @apply text-gray-300 border-slate-700;
+}
+.dark .prose .footnote-backref {
+  @apply text-blue-300 hover:text-blue-200 hover:bg-slate-700;
+}
+.dark .prose .footnote-ref,
+.dark .prose sup[id^="fnref"] {
+  @apply text-blue-300;
+}
 
 /* 添加脚注返回链接样式 */
 .prose .footnote-backref {
@@ -217,6 +231,12 @@ body.font-bilingual, .font-bilingual {
 
 .prose .footnotes li {
   @apply text-gray-700;
+}
+
+/* Dark mode footnote text color fix */
+.dark .prose .footnotes li,
+.dark .prose .footnotes p {
+  @apply text-gray-300;
 }
 
 /* Anchor highlight for in-page navigation (TOC, hash links) */
