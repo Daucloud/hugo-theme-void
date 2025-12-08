@@ -1,5 +1,9 @@
 {{- $type := .Get "type" | default "info" -}}
 {{- $title := .Get "title" -}}
+{{- $rawCollapsible := .Get "collapsible" | default "false" -}}
+{{- $rawCollapsed := .Get "collapsed" | default "false" -}}
+{{- $collapsible := eq (lower $rawCollapsible) "true" -}}
+{{- $collapsed := eq (lower $rawCollapsed) "true" -}}
 {{- $content := .Inner -}}
 {{- range $m := findRESubmatch `(?s)\$\$(.+?)\$\$` $content -}}
   {{- $full := index $m 0 -}}
@@ -9,8 +13,17 @@
 {{- end -}}
 {{- $rendered := $content | markdownify -}}
 
-<div class="callout callout-{{ $type }} not-prose">
-  <div class="callout-header">
+<div
+  class="callout callout-{{ $type }} not-prose"
+  data-collapsible="{{ if $collapsible }}true{{ else }}false{{ end }}"
+  data-collapsed="{{ if $collapsed }}true{{ else }}false{{ end }}"
+  {{- if $collapsible -}}
+    x-data="{ open: {{ if $collapsed }}false{{ else }}true{{ end }} }"
+  {{- end -}}>
+  <div class="callout-header"
+    {{- if $collapsible -}}
+      @click="open = !open"
+    {{- end -}}>
     <span class="callout-icon" aria-hidden="true">
       {{- if eq $type "info" -}}
         <svg viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true"><path d="M512 97.52381c228.912762 0 414.47619 185.563429 414.47619 414.47619S740.912762 926.47619 512 926.47619 97.52381 740.912762 97.52381 512 283.087238 97.52381 512 97.52381zm0 73.142857C323.486476 170.666667 170.666667 323.486476 170.666667 512S323.486476 853.333333 512 853.333333 853.333333 700.513524 853.333333 512 700.513524 170.666667 512 170.666667zm36.571429 268.190476v292.571428h-73.142858V438.857143h73.142858zm0-121.904762v73.142857h-73.142858v-73.142857h73.142858z"/></svg>
@@ -29,8 +42,24 @@
     {{- with $title -}}
       <span class="callout-title">{{ . }}</span>
     {{- end -}}
+    {{- if $collapsible -}}
+      <span class="callout-chevron" aria-hidden="true">
+        <span x-show="open">▾</span>
+        <span x-show="!open">▸</span>
+      </span>
+    {{- end -}}
   </div>
-  <div class="callout-content prose prose-sm sm:prose max-w-none dark:prose-invert">
+  <div class="callout-content prose prose-sm sm:prose max-w-none dark:prose-invert"
+    {{- if $collapsible -}}
+      x-show="open"
+      x-cloak
+      x-transition:enter="transition ease-out duration-300"
+      x-transition:enter-start="opacity-0 -translate-y-1"
+      x-transition:enter-end="opacity-100 translate-y-0"
+      x-transition:leave="transition ease-in duration-250"
+      x-transition:leave-start="opacity-100 translate-y-0"
+      x-transition:leave-end="opacity-0 -translate-y-1"
+    {{- end -}}>
     {{- $rendered -}}
   </div>
 </div>

@@ -25,7 +25,15 @@
   {{- if ne $title "" -}}
     {{- $titleAttr = printf " title=%q" $title -}}
   {{- end -}}
-  {{- $shortcode := printf "{{< callout type=%q%s >}}%s{{< /callout >}}" $type $titleAttr $body -}}
+  {{- $collapsibleAttr := "" -}}
+  {{- with index $attrs "collapsible" -}}
+    {{- $collapsibleAttr = printf " collapsible=%q" . -}}
+  {{- end -}}
+  {{- $collapsedAttr := "" -}}
+  {{- with index $attrs "collapsed" -}}
+    {{- $collapsedAttr = printf " collapsed=%q" . -}}
+  {{- end -}}
+  {{- $shortcode := printf "{{< callout type=%q%s%s%s >}}%s{{< /callout >}}" $type $titleAttr $collapsibleAttr $collapsedAttr $body -}}
   {{- $shortcode | markdownify -}}
 {{- else -}}
   <pre tabindex="0"><code{{ with $lang }} class="language-{{ . }}"{{ end }}>{{- .Inner -}}</code></pre>
