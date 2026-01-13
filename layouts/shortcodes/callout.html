@@ -1,5 +1,6 @@
 {{- $type := .Get "type" | default "info" -}}
 {{- $title := .Get "title" -}}
+{{- $id := .Get "id" -}}
 {{- $rawCollapsible := .Get "collapsible" | default "false" -}}
 {{- $rawCollapsed := .Get "collapsed" | default "false" -}}
 {{- $collapsible := eq (lower $rawCollapsible) "true" -}}
@@ -11,10 +12,14 @@
   {{- $replacement := printf "\n<div class=\"callout-math\">$$%s$$</div>\n" $inner -}}
   {{- $content = replace $content $full $replacement -}}
 {{- end -}}
-{{- $rendered := $content | markdownify -}}
+{{- $rendered := .Page.RenderString $content -}}
+{{- $rendered = replaceRE `href=["']https?://[^"']*/#([^"']+)["']` `href="#${1}"` $rendered -}}
+{{- $rendered = replaceRE `href=["']/#([^"']+)["']` `href="#${1}"` $rendered -}}
+{{- $rendered = $rendered | safeHTML -}}
 
 <div
   class="callout callout-{{ $type }} not-prose"
+  {{- with $id }} id="{{ . }}"{{ end }}
   data-collapsible="{{ if $collapsible }}true{{ else }}false{{ end }}"
   data-collapsed="{{ if $collapsed }}true{{ else }}false{{ end }}"
   {{- if $collapsible -}}

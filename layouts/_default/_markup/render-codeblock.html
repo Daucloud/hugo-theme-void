@@ -18,12 +18,20 @@
   {{- with index $attrs "title" -}}
     {{- $scratch.Set "title" (printf "%s" .) -}}
   {{- end -}}
+  {{- with index $attrs "id" -}}
+    {{- $scratch.Set "id" (printf "%s" .) -}}
+  {{- end -}}
   {{- $body := replace (.Inner | default "") "\r\n" "\n" -}}
   {{- $type := $scratch.Get "type" -}}
   {{- $title := $scratch.Get "title" -}}
+  {{- $id := $scratch.Get "id" -}}
   {{- $titleAttr := "" -}}
   {{- if ne $title "" -}}
     {{- $titleAttr = printf " title=%q" $title -}}
+  {{- end -}}
+  {{- $idAttr := "" -}}
+  {{- if and $id (ne $id "") -}}
+    {{- $idAttr = printf " id=%q" $id -}}
   {{- end -}}
   {{- $collapsibleAttr := "" -}}
   {{- with index $attrs "collapsible" -}}
@@ -33,7 +41,7 @@
   {{- with index $attrs "collapsed" -}}
     {{- $collapsedAttr = printf " collapsed=%q" . -}}
   {{- end -}}
-  {{- $shortcode := printf "{{< callout type=%q%s%s%s >}}%s{{< /callout >}}" $type $titleAttr $collapsibleAttr $collapsedAttr $body -}}
+  {{- $shortcode := printf "{{< callout type=%q%s%s%s%s >}}%s{{< /callout >}}" $type $titleAttr $collapsibleAttr $collapsedAttr $idAttr $body -}}
   {{- $shortcode | markdownify -}}
 {{- else -}}
   <pre tabindex="0"><code{{ with $lang }} class="language-{{ . }}"{{ end }}>{{- .Inner -}}</code></pre>
