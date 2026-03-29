@@ -119,6 +119,15 @@ weight = 40
   ```
   ```
 - Supported `type` values: `info` (default), `tip`, `warning`, `danger`, `neutral`.
+- `title` supports inline Markdown and inline math, for example `title="Definition: $V^{\\pi}(s)$"`.
+- If the title contains TeX braces such as `\mathbf{...}`, put it on the first line of the block body instead of the fence attributes:
+  ```
+  ```callout {.neutral collapsible="true"}
+  title: Proof: Invertibility for $\mathbf{I}-\gamma\mathbf{P}_{\pi}$
+
+  Content…
+  ```
+  ```
 - Works with regular Markdown and KaTeX math. Background/accent adapts to dark mode automatically.
 - Example:
 

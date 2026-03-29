@@ -6,6 +6,14 @@
 {{- $collapsible := eq (lower $rawCollapsible) "true" -}}
 {{- $collapsed := eq (lower $rawCollapsed) "true" -}}
 {{- $content := .Inner -}}
+{{- if eq $title "" -}}
+  {{- range $m := findRESubmatch `\A[ \t]*title:\s*([^\n]+)\n(?:\n)?` $content 1 -}}
+    {{- $title = index $m 1 -}}
+    {{- $title = replaceRE `^"(.*)"$` `${1}` $title -}}
+    {{- $title = replaceRE `^'(.*)'$` `${1}` $title -}}
+    {{- $content = replaceRE `\A[ \t]*title:\s*[^\n]+\n(?:\n)?` "" $content 1 -}}
+  {{- end -}}
+{{- end -}}
 {{- range $m := findRESubmatch `(?s)\$\$(.+?)\$\$` $content -}}
   {{- $full := index $m 0 -}}
   {{- $inner := index $m 1 -}}
