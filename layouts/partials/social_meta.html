@@ -1,0 +1,119 @@
+{{- $socialTitle := site.Title -}}
+{{- if not .IsHome -}}
+  {{- $socialTitle = .Title -}}
+{{- end -}}
+{{- with .Params.share_title -}}
+  {{- $socialTitle = . -}}
+{{- end -}}
+
+{{- $description := "" -}}
+{{- with .Params.share_description -}}
+  {{- $description = . -}}
+{{- end -}}
+{{- if and (not $description) .Description -}}
+  {{- $description = .Description -}}
+{{- end -}}
+{{- if and (not $description) .Summary -}}
+  {{- $description = .Summary | plainify | htmlUnescape -}}
+{{- end -}}
+{{- if and (not $description) .Content -}}
+  {{- $description = .Content | plainify -}}
+{{- end -}}
+{{- if not $description -}}
+  {{- $description = site.Title -}}
+{{- end -}}
+{{- $description = $description | plainify | htmlUnescape | replaceRE `\s+` " " | truncate 160 -}}
+
+{{- $shareImage := "" -}}
+{{- $imageCandidate := "" -}}
+{{- with .Params.share_image -}}
+  {{- $imageCandidate = . -}}
+{{- end -}}
+{{- if and (not $imageCandidate) .Params.cover -}}
+  {{- $imageCandidate = .Params.cover -}}
+{{- end -}}
+{{- if and (not $imageCandidate) .Params.image -}}
+  {{- $imageCandidate = .Params.image -}}
+{{- end -}}
+{{- if and (not $imageCandidate) .Params.featured_image -}}
+  {{- $imageCandidate = .Params.featured_image -}}
+{{- end -}}
+{{- if and (not $imageCandidate) .Params.images -}}
+  {{- if reflect.IsSlice .Params.images -}}
+    {{- with index .Params.images 0 -}}
+      {{- $imageCandidate = . -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $imageCandidate = .Params.images -}}
+  {{- end -}}
+{{- end -}}
+
+{{- with $imageCandidate -}}
+  {{- if or (hasPrefix . "http://") (hasPrefix . "https://") -}}
+    {{- $shareImage = . -}}
+  {{- else -}}
+    {{- with $.Resources.GetMatch . -}}
+      {{- $shareImage = .Permalink -}}
+    {{- else -}}
+      {{- $shareImage = . | absURL -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if and (not $shareImage) .IsPage -}}
+  {{- with .Resources.ByType "image" -}}
+    {{- with index . 0 -}}
+      {{- $shareImage = .Permalink -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $shareImage -}}
+  {{- with site.Params.share.default_image -}}
+    {{- $shareImage = . | absURL -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if not $shareImage -}}
+  {{- with site.Params.avatar.url -}}
+    {{- $shareImage = . | absURL -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $canonicalURL := .Permalink | default site.BaseURL -}}
+{{- $ogType := "website" -}}
+{{- if .IsPage -}}
+  {{- $ogType = "article" -}}
+{{- end -}}
+{{- $locale := "en_US" -}}
+{{- if eq site.Language.Lang "zh" -}}
+  {{- $locale = "zh_CN" -}}
+{{- end -}}
+
+<link rel="canonical" href="{{ $canonicalURL }}">
+<meta name="description" content="{{ $description }}">
+
+<meta property="og:site_name" content="{{ site.Title }}">
+<meta property="og:type" content="{{ $ogType }}">
+<meta property="og:title" content="{{ $socialTitle }}">
+<meta property="og:description" content="{{ $description }}">
+<meta property="og:url" content="{{ $canonicalURL }}">
+<meta property="og:locale" content="{{ $locale }}">
+{{- with $shareImage }}
+<meta property="og:image" content="{{ . }}">
+{{- end }}
+
+<meta name="twitter:card" content="{{ if $shareImage }}summary_large_image{{ else }}summary{{ end }}">
+<meta name="twitter:title" content="{{ $socialTitle }}">
+<meta name="twitter:description" content="{{ $description }}">
+{{- with $shareImage }}
+<meta name="twitter:image" content="{{ . }}">
+{{- end }}
+
+{{- if .IsPage }}
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+<meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
+{{- range .Params.tags }}
+<meta property="article:tag" content="{{ . }}">
+{{- end }}
+{{- end }}

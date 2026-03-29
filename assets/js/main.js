@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // 先把 callout 内的脚注搬到页面底部的全局脚注区域
   relocateCalloutFootnotes();
 
+  initShareWidgets();
+
   // 修复可能存在的 ID 问题
   fixFootnoteIds();
 
@@ -133,4 +135,74 @@ function relocateCalloutFootnotes() {
     // 移除空容器
     block.remove();
   });
+}
+
+function initShareWidgets() {
+  const widgets = document.querySelectorAll("[data-share-widget]");
+  if (widgets.length === 0) return;
+
+  widgets.forEach((widget) => {
+    const copySummaryButton = widget.querySelector("[data-share-copy-summary]");
+    const label = widget.querySelector("[data-share-label]");
+    const shareData = {
+      title: widget.dataset.shareTitle || document.title,
+      text: widget.dataset.shareText || "",
+      url: widget.dataset.shareUrl || window.location.href,
+    };
+    const shareSummary = [shareData.title, shareData.text, shareData.url]
+      .filter(Boolean)
+      .join("\n");
+    const messages = {
+      defaultLabel: widget.dataset.shareLabelDefault || "Share",
+      successLabel: widget.dataset.shareLabelSuccess || "Copied",
+      copyFailed: widget.dataset.shareCopyFailed || "Copy failed.",
+    };
+    let feedbackTimer = null;
+
+    const setButtonState = (message, isError = false) => {
+      if (!copySummaryButton || !label) return;
+      label.textContent = message;
+      copySummaryButton.classList.toggle("text-red-500", isError);
+      copySummaryButton.classList.toggle("text-emerald-600", !isError && message === messages.successLabel);
+      copySummaryButton.classList.toggle("text-gray-500", !isError && message !== messages.successLabel);
+
+      if (feedbackTimer) window.clearTimeout(feedbackTimer);
+      feedbackTimer = window.setTimeout(() => {
+        label.textContent = messages.defaultLabel;
+        copySummaryButton.classList.remove("text-red-500", "text-emerald-600");
+        copySummaryButton.classList.add("text-gray-500");
+      }, 1600);
+    };
+
+    if (copySummaryButton) {
+      copySummaryButton.addEventListener("click", async () => {
+        try {
+          await copyToClipboard(shareSummary);
+          setButtonState(messages.successLabel);
+        } catch (_) {
+          setButtonState(messages.copyFailed, true);
+        }
+      });
+    }
+  });
+}
+
+async function copyToClipboard(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+  fallbackCopyText(text);
+}
+
+function fallbackCopyText(text) {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "absolute";
+  textarea.style.left = "-9999px";
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  document.body.removeChild(textarea);
 }

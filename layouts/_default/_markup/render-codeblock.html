@@ -44,5 +44,26 @@
   {{- $shortcode := printf "{{< callout type=%q%s%s%s%s >}}%s{{< /callout >}}" $type $titleAttr $collapsibleAttr $collapsedAttr $idAttr $body -}}
   {{- $shortcode | markdownify -}}
 {{- else -}}
-  <pre tabindex="0"><code{{ with $lang }} class="language-{{ . }}"{{ end }}>{{- .Inner -}}</code></pre>
+  {{- $langLabel := lower ($lang | default "text") -}}
+  {{- $optsBase := merge .Options (dict "lineNos" "table") -}}
+  {{- $light := transform.HighlightCodeBlock . (merge $optsBase (dict "style" "github")) -}}
+  {{- $dark := transform.HighlightCodeBlock . (merge $optsBase (dict "style" "github-dark")) -}}
+  <div class="code-block-container not-prose" data-code-block>
+    <div class="code-block-header">
+      <span class="code-language-label">{{ $langLabel }}</span>
+      <button type="button" class="copy-button" aria-label="Copy code" title="Copy code">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+        </svg>
+      </button>
+    </div>
+    <div class="code-block-body">
+      <div class="code-highlight-variant code-highlight-light">
+        {{ $light.Wrapped }}
+      </div>
+      <div class="code-highlight-variant code-highlight-dark">
+        {{ $dark.Wrapped }}
+      </div>
+    </div>
+  </div>
 {{- end -}}

@@ -155,7 +155,31 @@ other = "目录"
 other = "评论"
 
 [share]
-other = "分享"
+other = "Share"
+
+[share_copy_link]
+other = "Copy link"
+
+[share_copy_summary]
+other = "Copy summary"
+
+[share_copied]
+other = "Copied"
+
+[share_native]
+other = "Share..."
+
+[share_copy_link_success]
+other = "Link copied."
+
+[share_copy_summary_success]
+other = "Share text copied."
+
+[share_copy_failed]
+other = "Copy failed."
+
+[share_native_failed]
+other = "Native sharing is unavailable."
 
 [last_updated]
 other = "最后更新于"

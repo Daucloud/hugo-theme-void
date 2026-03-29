@@ -30,69 +30,29 @@
       ],
       throwOnError: false
     });
-    
-    // Enhanced code block with language label and copy button
-    document.querySelectorAll('pre code').forEach(function(codeBlock) {
-      // Get the programming language
-      let language = '';
-      codeBlock.className.split(' ').forEach(function(cls) {
-        if (cls.startsWith('language-')) {
-          language = cls.substring(9);
-        }
-      });
-      
-      // Get the original pre element and its parent container
-      const pre = codeBlock.parentNode;
-      const wrapper = pre.parentNode;
-      
-      // Create code block container
-      const container = document.createElement('div');
-      container.className = 'code-block-container';
-      
-      // Create header bar
-      const header = document.createElement('div');
-      header.className = 'code-block-header';
-      
-      // Display language label
-      if (language) {
-        const langLabel = document.createElement('span');
-        langLabel.className = 'code-language-label';
-        langLabel.textContent = language.toUpperCase();
-        header.appendChild(langLabel);
-      }
-      
-      // Add copy button
-      const copyButton = document.createElement('button');
-      copyButton.className = 'copy-button';
-      copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg> Copy';
-      
+
+    document.querySelectorAll('[data-code-block]').forEach(function(block) {
+      const copyButton = block.querySelector('.copy-button');
+      if (!copyButton) return;
+
       copyButton.addEventListener('click', function() {
-        // Get code content
-        const code = codeBlock.textContent;
-        
-        // Copy to clipboard
+        const codeElement = block.querySelector('.code-highlight-variant code');
+        if (!codeElement) return;
+
+        const code = (codeElement.textContent || '').replace(/\n$/, '');
+
         navigator.clipboard.writeText(code).then(function() {
-          // Success, update button text
-          copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> Copied!';
-          
-          // Reset after 2 seconds
+          copyButton.setAttribute('aria-label', 'Copied');
+          copyButton.setAttribute('title', 'Copied');
+          copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
+
           setTimeout(function() {
-            copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg> Copy';
-          }, 2000);
+            copyButton.setAttribute('aria-label', 'Copy code');
+            copyButton.setAttribute('title', 'Copy code');
+            copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>';
+          }, 1600);
         });
       });
-      
-      header.appendChild(copyButton);
-      
-      container.appendChild(header);
-      // Replace the original pre with the container, then move the pre inside.
-      if (pre.parentNode) {
-        pre.parentNode.replaceChild(container, pre);
-      }
-      container.appendChild(pre);
-      
-      // Apply syntax highlighting
-      if (window.hljs) hljs.highlightElement(codeBlock);
     });
   });
 </script>
@@ -137,8 +97,6 @@
       const storageKey = 'theme';
       const root = document.documentElement;
       const btn = document.getElementById('theme-toggle');
-      const hlLight = document.getElementById('hljs-theme-light');
-      const hlDark = document.getElementById('hljs-theme-dark');
 
       function systemPrefersDark() {
         return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -155,7 +113,6 @@
         root.classList.toggle('dark', theme === 'dark');
         if (btn) btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
         if (btn) btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
-        if (hlLight && hlDark) { hlLight.disabled = theme === 'dark'; hlDark.disabled = theme !== 'dark'; }
       }
 
       let theme = currentPref();

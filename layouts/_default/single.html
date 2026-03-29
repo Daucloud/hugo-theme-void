@@ -1,6 +1,6 @@
 {{ define "main" }}
   <article class="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-    <header class="p-8 border-b border-gray-100 relative overflow-hidden">
+    <header class="p-8 border-b border-gray-100 relative">
       <!-- 装饰背景已移除，避免明暗模式下干扰 -->
       
       <!-- 文章元数据 -->
@@ -15,7 +15,16 @@
       {{ end }}
       
       <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 relative">{{ .Title }}</h1>
-      
+
+      {{ $shareTitle := .Title }}
+      {{ with .Params.share_title }}{{ $shareTitle = . }}{{ end }}
+      {{ $shareText := "" }}
+      {{ with .Params.share_description }}{{ $shareText = . }}{{ end }}
+      {{ if and (not $shareText) .Description }}{{ $shareText = .Description }}{{ end }}
+      {{ if and (not $shareText) .Summary }}{{ $shareText = .Summary | plainify | htmlUnescape }}{{ end }}
+      {{ if not $shareText }}{{ $shareText = site.Title }}{{ end }}
+      {{ $shareText = $shareText | plainify | htmlUnescape | replaceRE `\s+` " " | truncate 120 }}
+
       <div class="flex flex-wrap items-center text-sm text-gray-500 gap-4 relative">
         <!-- 日期 -->
         {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
@@ -42,6 +51,32 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
           </svg><span class="whitespace-nowrap">{{ i18n "page_views" | default "阅读量" }} <span id="busuanzi_value_page_pv"></span></span>
         </span>
+
+        <div
+          class="sm:ml-auto"
+          data-share-widget
+          data-share-url="{{ .Permalink }}"
+          data-share-title="{{ $shareTitle }}"
+          data-share-text="{{ $shareText }}"
+          data-share-label-default="{{ i18n "share" | default "Share" }}"
+          data-share-label-success="{{ i18n "share_copied" | default "Copied" }}"
+          data-share-copy-summary-success="{{ i18n "share_copy_summary_success" | default "Share text copied." }}"
+          data-share-copy-failed="{{ i18n "share_copy_failed" | default "Copy failed." }}"
+        >
+          <button
+            type="button"
+            class="share-trigger inline-flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-sm text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700"
+            data-share-copy-summary
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.59 13.51l6.83 3.98M15.41 6.51L8.59 10.49" />
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+            </svg>
+            <span data-share-label>{{ i18n "share" | default "Share" }}</span>
+          </button>
+        </div>
       </div>
     </header>
 
