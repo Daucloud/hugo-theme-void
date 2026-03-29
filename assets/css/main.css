@@ -436,6 +436,7 @@ blockquote.anchor-highlight {
 
 .code-highlight-variant .highlight .lntable {
   border-spacing: 0;
+  table-layout: fixed;
 }
 
 .code-highlight-variant .highlight .lntd {
@@ -446,6 +447,10 @@ blockquote.anchor-highlight {
 .code-highlight-variant .highlight .lntd:first-child {
   border-right: 1px solid rgba(203, 213, 225, 0.78);
   user-select: none;
+}
+
+.code-highlight-variant .highlight .lntd:last-child {
+  width: 100%;
 }
 
 .code-highlight-light .highlight .lntd:first-child {
@@ -635,6 +640,17 @@ div#disqus_thread iframe[sandbox] {
 .dark .tag-chip .count-badge { background-color: #374151 !important; color: #93c5fd !important; }
 .dark .tags-container a { background-color: #1f2937 !important; color: #93c5fd !important; }
 .dark .tags-container a:hover { background-color: #334155 !important; }
+
+.dark .category-count-badge {
+  background-color: rgba(16, 185, 129, 0.16) !important;
+  color: #86efac !important;
+}
+
+.dark .year-indicator-badge {
+  background: linear-gradient(135deg, rgba(51, 65, 85, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%) !important;
+  color: #bfdbfe !important;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.32);
+}
 
 /* -------- Inline code & blockquotes: light + dark adaptations -------- */
 /* Inline code (avoid pre>code) */
