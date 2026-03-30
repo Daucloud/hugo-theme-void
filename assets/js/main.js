@@ -162,15 +162,13 @@ function initShareWidgets() {
     const setButtonState = (message, isError = false) => {
       if (!copySummaryButton || !label) return;
       label.textContent = message;
-      copySummaryButton.classList.toggle("text-red-500", isError);
-      copySummaryButton.classList.toggle("text-emerald-600", !isError && message === messages.successLabel);
-      copySummaryButton.classList.toggle("text-gray-500", !isError && message !== messages.successLabel);
+      copySummaryButton.classList.toggle("is-error", isError);
+      copySummaryButton.classList.toggle("is-success", !isError && message === messages.successLabel);
 
       if (feedbackTimer) window.clearTimeout(feedbackTimer);
       feedbackTimer = window.setTimeout(() => {
         label.textContent = messages.defaultLabel;
-        copySummaryButton.classList.remove("text-red-500", "text-emerald-600");
-        copySummaryButton.classList.add("text-gray-500");
+        copySummaryButton.classList.remove("is-error", "is-success");
       }, 1600);
     };
 
@@ -179,6 +177,7 @@ function initShareWidgets() {
         try {
           await copyToClipboard(shareSummary);
           setButtonState(messages.successLabel);
+          copySummaryButton.blur();
         } catch (_) {
           setButtonState(messages.copyFailed, true);
         }
