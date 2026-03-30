@@ -119,15 +119,14 @@
       apply(theme);
 
       if (btn) {
-        btn.addEventListener('pointerleave', function () {
-          btn.classList.remove('theme-toggle-hover-lock');
+        btn.addEventListener('mousedown', function (e) {
+          e.preventDefault();
         });
 
         btn.addEventListener('click', function () {
           theme = theme === 'dark' ? 'light' : 'dark';
           localStorage.setItem(storageKey, theme);
           apply(theme);
-          btn.classList.add('theme-toggle-hover-lock');
           btn.blur();
         });
       }

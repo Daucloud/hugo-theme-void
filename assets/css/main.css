@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Serif+SC:wght@200..900&display=swap");
 
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 @source "hugo_stats.json";
 
 /* 增强Markdown渲染样式 */
@@ -591,35 +592,10 @@ div#disqus_thread iframe[sandbox] {
 .dark .theme-toggle-btn { color: #e5e7eb; }
 .theme-toggle-btn:active { transform: scale(0.92); }
 /* Hover affordance */
-.theme-toggle-btn:hover:not(.theme-toggle-hover-lock) { transform: scale(1.08); color: #2563eb; }
-.dark .theme-toggle-btn:hover:not(.theme-toggle-hover-lock) { color: #93c5fd; }
-.theme-toggle-btn:hover:not(.theme-toggle-hover-lock) .icon-sun { transform: rotate(12deg) scale(1.08); }
-.theme-toggle-btn:hover:not(.theme-toggle-hover-lock) .icon-moon { transform: rotate(-12deg) scale(1.08); }
-.theme-toggle-btn.theme-toggle-hover-lock,
-.theme-toggle-btn.theme-toggle-hover-lock:hover {
-  transform: none;
-  color: #374151;
-}
-.theme-toggle-btn.theme-toggle-hover-lock .icon-sun,
-.theme-toggle-btn.theme-toggle-hover-lock:hover .icon-sun {
-  transform: rotate(0deg) scale(1);
-}
-.theme-toggle-btn.theme-toggle-hover-lock .icon-moon,
-.theme-toggle-btn.theme-toggle-hover-lock:hover .icon-moon {
-  transform: rotate(-90deg) scale(.6);
-}
-.dark .theme-toggle-btn.theme-toggle-hover-lock,
-.dark .theme-toggle-btn.theme-toggle-hover-lock:hover {
-  color: #e5e7eb;
-}
-.dark .theme-toggle-btn.theme-toggle-hover-lock .icon-sun,
-.dark .theme-toggle-btn.theme-toggle-hover-lock:hover .icon-sun {
-  transform: rotate(90deg) scale(.6);
-}
-.dark .theme-toggle-btn.theme-toggle-hover-lock .icon-moon,
-.dark .theme-toggle-btn.theme-toggle-hover-lock:hover .icon-moon {
-  transform: rotate(0deg) scale(1);
-}
+.theme-toggle-btn:hover { transform: scale(1.08); color: #2563eb; }
+.dark .theme-toggle-btn:hover { color: #93c5fd; }
+.theme-toggle-btn:hover .icon-sun { transform: rotate(12deg) scale(1.08); }
+.theme-toggle-btn:hover .icon-moon { transform: rotate(-12deg) scale(1.08); }
 .theme-toggle-btn:focus { outline: none; box-shadow: none; }
 /* Keyboard focus */
 .theme-toggle-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(59,130,246,.45); border-radius: 6px; }

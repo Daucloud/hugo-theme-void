@@ -16,11 +16,6 @@
   {{ end }}
 {{ end }}
 
-<!-- Tailwind CSS -->
-{{ $css := resources.Get "css/style.css" }}
-{{ $styles := $css | resources.Minify | fingerprint }}
-<link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen" integrity="{{ $styles.Data.Integrity }}">
-
 <!-- Responsive Font Support -->
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">

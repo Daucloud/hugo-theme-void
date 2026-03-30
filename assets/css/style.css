@@ -2095,37 +2095,18 @@ div#disqus_thread iframe[sandbox] {
 .theme-toggle-btn:active {
   transform: scale(0.92);
 }
-.theme-toggle-btn:hover:not(.theme-toggle-hover-lock) {
+.theme-toggle-btn:hover {
   transform: scale(1.08);
   color: #2563eb;
 }
-.dark .theme-toggle-btn:hover:not(.theme-toggle-hover-lock) {
+.dark .theme-toggle-btn:hover {
   color: #93c5fd;
 }
-.theme-toggle-btn:hover:not(.theme-toggle-hover-lock) .icon-sun {
+.theme-toggle-btn:hover .icon-sun {
   transform: rotate(12deg) scale(1.08);
 }
-.theme-toggle-btn:hover:not(.theme-toggle-hover-lock) .icon-moon {
+.theme-toggle-btn:hover .icon-moon {
   transform: rotate(-12deg) scale(1.08);
-}
-.theme-toggle-btn.theme-toggle-hover-lock, .theme-toggle-btn.theme-toggle-hover-lock:hover {
-  transform: none;
-  color: #374151;
-}
-.theme-toggle-btn.theme-toggle-hover-lock .icon-sun, .theme-toggle-btn.theme-toggle-hover-lock:hover .icon-sun {
-  transform: rotate(0deg) scale(1);
-}
-.theme-toggle-btn.theme-toggle-hover-lock .icon-moon, .theme-toggle-btn.theme-toggle-hover-lock:hover .icon-moon {
-  transform: rotate(-90deg) scale(.6);
-}
-.dark .theme-toggle-btn.theme-toggle-hover-lock, .dark .theme-toggle-btn.theme-toggle-hover-lock:hover {
-  color: #e5e7eb;
-}
-.dark .theme-toggle-btn.theme-toggle-hover-lock .icon-sun, .dark .theme-toggle-btn.theme-toggle-hover-lock:hover .icon-sun {
-  transform: rotate(90deg) scale(.6);
-}
-.dark .theme-toggle-btn.theme-toggle-hover-lock .icon-moon, .dark .theme-toggle-btn.theme-toggle-hover-lock:hover .icon-moon {
-  transform: rotate(0deg) scale(1);
 }
 .theme-toggle-btn:focus {
   outline: none;
