@@ -1570,22 +1570,36 @@ body.font-bilingual, .font-bilingual {
 }
 .callout-content .katex-display, .prose .katex-display {
   overflow-x: auto;
+  overflow-y: hidden;
   max-width: 100%;
-  padding-bottom: 0.5rem;
-  scrollbar-width: none;
+  padding-bottom: 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.callout-content .katex-display > .katex, .prose .katex-display > .katex {
+  display: inline-block;
+  min-width: max-content;
 }
 .callout-content .katex-display::-webkit-scrollbar, .prose .katex-display::-webkit-scrollbar {
-  height: 0;
+  height: 6px;
+}
+.callout-content .katex-display::-webkit-scrollbar-track, .prose .katex-display::-webkit-scrollbar-track {
+  background: transparent;
 }
 .callout-content .katex-display::-webkit-scrollbar-thumb, .prose .katex-display::-webkit-scrollbar-thumb {
-  background-color: rgba(148, 163, 184, 0.6);
+  background: transparent;
   border-radius: 9999px;
 }
-.callout-content .katex-display:hover, .callout-content .katex-display:focus-within, .callout-content .katex-display:active, .prose .katex-display:hover, .prose .katex-display:focus-within, .prose .katex-display:active {
-  scrollbar-width: thin;
+.callout-content .katex-display:hover, .callout-content .katex-display:focus-within, .prose .katex-display:hover, .prose .katex-display:focus-within {
+  scrollbar-color: rgba(148, 163, 184, 0.64) transparent;
 }
-.callout-content .katex-display:hover::-webkit-scrollbar, .callout-content .katex-display:focus-within::-webkit-scrollbar, .callout-content .katex-display:active::-webkit-scrollbar, .prose .katex-display:hover::-webkit-scrollbar, .prose .katex-display:focus-within::-webkit-scrollbar, .prose .katex-display:active::-webkit-scrollbar {
+.callout-content .katex-display:hover::-webkit-scrollbar, .callout-content .katex-display:focus-within::-webkit-scrollbar, .prose .katex-display:hover::-webkit-scrollbar, .prose .katex-display:focus-within::-webkit-scrollbar {
   height: 6px;
+}
+.callout-content .katex-display:hover::-webkit-scrollbar-thumb, .callout-content .katex-display:focus-within::-webkit-scrollbar-thumb, .prose .katex-display:hover::-webkit-scrollbar-thumb, .prose .katex-display:focus-within::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.64);
 }
 .callout-content .callout-math {
   margin: 1rem 0;
@@ -2195,6 +2209,12 @@ div#disqus_thread iframe[sandbox] {
 }
 .dark .code-block-container pre {
   color: #e2e8f0;
+}
+.dark .callout-content .katex-display:hover, .dark .callout-content .katex-display:focus-within, .dark .prose .katex-display:hover, .dark .prose .katex-display:focus-within {
+  scrollbar-color: rgba(148, 163, 184, 0.72) transparent;
+}
+.dark .callout-content .katex-display:hover::-webkit-scrollbar-thumb, .dark .callout-content .katex-display:focus-within::-webkit-scrollbar-thumb, .dark .prose .katex-display:hover::-webkit-scrollbar-thumb, .dark .prose .katex-display:focus-within::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.72);
 }
 .dark .anchor-highlight {
   background-color: rgba(245, 158, 11, 0.18);
