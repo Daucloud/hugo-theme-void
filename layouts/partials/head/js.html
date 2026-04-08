@@ -35,11 +35,25 @@
       const copyButton = block.querySelector('.copy-button');
       if (!copyButton) return;
 
-      copyButton.addEventListener('click', function() {
-        const codeElement = block.querySelector('.code-highlight-variant code');
-        if (!codeElement) return;
+      function getCodeText() {
+        const selectors = [
+          '.code-highlight-variant code[data-lang]',
+          '.code-highlight-variant td:last-child code',
+          '.code-highlight-variant code:last-of-type'
+        ];
 
-        const code = (codeElement.textContent || '').replace(/\n$/, '');
+        for (const selector of selectors) {
+          const codeElement = block.querySelector(selector);
+          const code = (codeElement && codeElement.textContent) ? codeElement.textContent.replace(/\n$/, '') : '';
+          if (code) return code;
+        }
+
+        return '';
+      }
+
+      copyButton.addEventListener('click', function() {
+        const code = getCodeText();
+        if (!code) return;
 
         navigator.clipboard.writeText(code).then(function() {
           copyButton.setAttribute('aria-label', 'Copied');
