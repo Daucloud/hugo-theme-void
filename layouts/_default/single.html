@@ -1,7 +1,8 @@
 {{ define "main" }}
   <article class="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-    <header class="p-8 border-b border-gray-100 relative">
+    <header class="border-b border-gray-100 relative">
       <!-- 装饰背景已移除，避免明暗模式下干扰 -->
+      <div class="article-inner py-8">
       
       <!-- 文章元数据 -->
       {{ if .Params.categories }}
@@ -78,6 +79,7 @@
           </button>
         </div>
       </div>
+      </div>
     </header>
 
     {{/* Collapsible Table of Contents (folded by default) */}}
@@ -96,7 +98,7 @@
         | replaceRE `href\s*=\s*'(https?://[^']*|/[^']*|mailto:[^']*|javascript:[^']*)'` `href="#"`
     }}
     {{ if gt (len ($tocSanitized | plainify)) 0 }}
-    <div class="px-8 pt-6" x-data="{ open: false }">
+    <div class="article-inner pt-6" x-data="{ open: false }">
       <button
         class="w-full flex items-center justify-between text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 rounded-md px-4 py-2 transition-colors"
         @click="open = !open"
@@ -119,7 +121,7 @@
     </div>
     {{ end }}
 
-    <div class="p-8 prose prose-sm sm:prose lg:prose-lg max-w-none">
+    <div class="article-inner article-prose py-7 prose prose-sm sm:prose lg:prose-lg max-w-none">
       {{ .Content }}
     </div>
 
@@ -127,7 +129,7 @@
     {{ $updated := .Lastmod }}
     {{ with .GitInfo }}{{ $updated = .AuthorDate }}{{ end }}
     {{ if $updated }}
-    <div class="px-8 pb-2 text-sm text-gray-500 flex items-center">
+    <div class="article-inner pb-2 text-sm text-gray-500 flex items-center">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
       </svg>
@@ -135,7 +137,8 @@
     </div>
     {{ end }}
 
-    <footer class="px-8 py-6 bg-gray-50 border-t border-gray-100">
+    <footer class="py-6 bg-gray-50 border-t border-gray-100">
+      <div class="article-inner">
       {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
       
       {{/* Previous/Next navigation */}}
@@ -177,6 +180,7 @@
           </svg>
           {{ i18n "back_to_home" | default "返回首页" }}
         </a>
+      </div>
       </div>
     </footer>
   </article>

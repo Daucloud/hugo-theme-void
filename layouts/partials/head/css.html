@@ -10,7 +10,7 @@
           <link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">
         {{ end }}
       {{ else }}
-        <link rel="stylesheet" href="{{ .RelPermalink }}">
+        <link rel="stylesheet" href="{{ .RelPermalink }}?v={{ now.Unix }}">
       {{ end }}
     {{ end }}
   {{ end }}
