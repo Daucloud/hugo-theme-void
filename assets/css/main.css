@@ -235,6 +235,35 @@ body.font-bilingual, .font-bilingual {
   @apply rounded-lg mx-auto shadow-md max-w-full my-6;
 }
 
+/* Figure and image captions */
+.prose figure {
+  @apply my-8 text-center;
+}
+
+.prose figure img {
+  @apply my-0;
+}
+
+.prose figcaption {
+  @apply mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-gray-500;
+}
+
+.prose figcaption p {
+  @apply my-0;
+}
+
+.prose figcaption p + p {
+  @apply mt-1;
+}
+
+.prose figcaption a {
+  @apply text-gray-500 underline decoration-gray-300 underline-offset-4 transition-colors duration-200;
+}
+
+.prose figcaption a:hover {
+  @apply text-gray-700 decoration-gray-500;
+}
+
 /* 水平线样式增强 */
 .prose hr {
   @apply border-t-2 border-gray-200 my-8;
@@ -620,6 +649,9 @@ div#disqus_thread iframe[sandbox] {
 .dark .prose { color: #e5e7eb; }
 .dark .prose a { color: #60a5fa; }
 .dark .prose a:hover { color: #93c5fd; }
+.dark .prose figcaption { color: #94a3b8; }
+.dark .prose figcaption a { color: #94a3b8; text-decoration-color: #475569; }
+.dark .prose figcaption a:hover { color: #cbd5e1; text-decoration-color: #94a3b8; }
 .dark .prose h1,
 .dark .prose h2,
 .dark .prose h3,
