@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Serif+SC:wght@200..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Serif+SC:wght@200..900&family=Source+Serif+4:opsz,wght@8..60,400..600&display=swap");
 
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
@@ -6,7 +6,7 @@
 
 /* 增强Markdown渲染样式 */
 @theme {
-  --font-bilingual: Georgia, Cambria, "Times New Roman", "Noto Serif SC", "Songti SC", "STSong", "Source Han Serif SC", "Source Han Serif CN", ui-serif, serif;
+  --font-bilingual: "Source Serif 4", "Noto Serif SC", "Source Han Serif SC", "Source Han Serif CN", "Songti SC", "STSong", ui-serif, serif;
   --font-code: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --font-ui: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
@@ -17,8 +17,20 @@
 /* Ensure serif font stack is actually applied when body has class */
 body.font-bilingual, .font-bilingual {
   font-family: var(--font-bilingual) !important;
+  font-variant-numeric: lining-nums proportional-nums;
   /* Override default font variable used by compiled stylesheet */
   --default-font-family: var(--font-bilingual);
+}
+
+/* Dates and counters align cleanly while prose keeps natural spacing. */
+time,
+.year-indicator-badge,
+.count-badge,
+.category-count-badge,
+#busuanzi_value_page_pv,
+#busuanzi_value_site_pv,
+#busuanzi_value_site_uv {
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 /* 表格样式增强 */
