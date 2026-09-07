@@ -6,12 +6,12 @@
       {{ with .Site.Params.avatar }}
       <div class="mx-auto mb-10 w-32 h-32 md:w-40 md:h-40 relative group">
         <!-- 头像装饰光晕移除，保持简洁 -->
-        <div class="rounded-full overflow-hidden border-2 border-gray-100 shadow-sm hover:shadow-md transition-all duration-300 relative">
+        <div class="rounded-full overflow-hidden border-2 border-line-soft shadow-sm hover:shadow-md transition-all duration-300 relative">
           <img src="{{ .url }}" alt="{{ $.Site.Title }}" class="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105">
         </div>
       </div>
       {{ end }}
-      <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6">{{ .Site.Title }}</h1>
+      <h1 class="text-3xl md:text-4xl font-bold text-fg mb-6">{{ .Site.Title }}</h1>
       <div class="prose prose-lg md:prose-xl mx-auto">
         {{ .Content }}
       </div>
@@ -21,8 +21,8 @@
         {{ range .Site.Menus.main }}
         {{- $name := .Name }}
         {{- with .Identifier }}{{ with T . }}{{ $name = . }}{{ end }}{{ end }}
-        <a href="{{ .URL }}" class="relative px-5 py-2.5 rounded-full text-blue-700 dark:text-blue-300 group overflow-hidden">
-          <span class="absolute inset-0 w-full h-full bg-blue-50 dark:bg-slate-700/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+        <a href="{{ .URL }}" class="relative px-5 py-2.5 rounded-full text-accent-strong group overflow-hidden">
+          <span class="absolute inset-0 w-full h-full bg-accent-soft opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
           <span class="relative z-10 transition-colors duration-300">{{ $name }}</span>
         </a>
         {{ end }}

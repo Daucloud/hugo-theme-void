@@ -5,10 +5,10 @@
   not exist in a plain `hugo server` session; the page then shows a notice instead.
 */ -}}
 <div class="max-w-3xl mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">{{ .Title }}</h1>
+  <h1 class="text-3xl font-bold text-center text-fg mb-8">{{ .Title }}</h1>
   <link rel="stylesheet" href="{{ "pagefind/pagefind-ui.css" | relURL }}">
   <div id="search" class="pagefind-box"></div>
-  <p id="search-unavailable" class="hidden text-center text-sm text-gray-500 mt-6">
+  <p id="search-unavailable" class="hidden text-center text-sm text-fg-faint mt-6">
     {{ i18n "search_unavailable" | default "The search index is generated at deploy time and is not available in this build." }}
   </p>
   <script src="{{ "pagefind/pagefind-ui.js" | relURL }}" onerror="document.getElementById('search-unavailable').classList.remove('hidden')"></script>

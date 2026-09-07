@@ -1,13 +1,13 @@
 {{ define "main" }}
   <div class="max-w-2xl mx-auto py-24 text-center">
-    <p class="text-7xl font-bold tracking-tight text-gray-300 dark:text-slate-600">404</p>
-    <h1 class="mt-4 text-2xl font-bold text-gray-900">{{ i18n "not_found_title" | default "Page not found" }}</h1>
-    <p class="mt-3 text-gray-600">{{ i18n "not_found_body" | default "The page you are looking for does not exist or has been moved." }}</p>
+    <p class="text-7xl font-bold tracking-tight text-line-strong">404</p>
+    <h1 class="mt-4 text-2xl font-bold text-fg-strong">{{ i18n "not_found_title" | default "Page not found" }}</h1>
+    <p class="mt-3 text-fg-muted">{{ i18n "not_found_body" | default "The page you are looking for does not exist or has been moved." }}</p>
     <div class="mt-8 flex flex-wrap justify-center gap-6 text-sm">
-      <a href="{{ "/" | relLangURL }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors">
+      <a href="{{ "/" | relLangURL }}" class="inline-flex items-center text-accent hover:text-accent-strong transition-colors">
         {{ i18n "back_to_home" | default "Back to Home" }}
       </a>
-      <a href="{{ "/posts/" | relLangURL }}" class="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors">
+      <a href="{{ "/posts/" | relLangURL }}" class="inline-flex items-center text-accent hover:text-accent-strong transition-colors">
         {{ i18n "all_posts" | default "All posts" }}
       </a>
     </div>

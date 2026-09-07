@@ -17,23 +17,23 @@
     <button
       id="load-disqus"
       type="button"
-      class="px-5 py-2.5 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md flex items-center shadow-sm hover:shadow transform hover:-translate-y-0.5 transition-all duration-200">
+      class="px-5 py-2.5 bg-accent-soft-2 hover:bg-accent-line text-accent-strong rounded-md flex items-center shadow-sm hover:shadow transform hover:-translate-y-0.5 transition-all duration-200">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
       </svg>
       {{ i18n "load_comments" }}
     </button>
   </div>
-  <div id="disqus_thread" class="rounded-lg border border-gray-100"></div>
+  <div id="disqus_thread" class="rounded-lg border border-line-soft"></div>
   <!-- Loading indicator -->
   <div id="disqus-loading" class="hidden py-12 text-center" aria-live="polite">
     <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500 mb-2"></div>
-    <p class="text-gray-500 text-sm">{{ i18n "loading_comments" }}</p>
+    <p class="text-fg-faint text-sm">{{ i18n "loading_comments" }}</p>
   </div>
   <!-- Failure notice (script blocked / timed out) -->
   <div id="disqus-error" class="hidden py-10 text-center" aria-live="polite">
-    <p class="text-gray-500 text-sm">{{ i18n "comments_load_failed" }}</p>
-    <button id="disqus-retry" type="button" class="mt-4 px-4 py-2 text-sm rounded-md border border-gray-200 text-gray-700 hover:bg-gray-100 transition-colors">
+    <p class="text-fg-faint text-sm">{{ i18n "comments_load_failed" }}</p>
+    <button id="disqus-retry" type="button" class="mt-4 px-4 py-2 text-sm rounded-md border border-line text-fg-2 hover:bg-hover transition-colors">
       {{ i18n "retry" }}
     </button>
   </div>

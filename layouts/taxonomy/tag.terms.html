@@ -1,20 +1,20 @@
 {{ define "main" }}
 <div class="max-w-4xl mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">{{.Title}}</h1>
+  <h1 class="text-3xl font-bold text-center text-fg mb-8">{{.Title}}</h1>
   
   <!-- 简洁提示信息 -->
-  <div class="mb-8 text-center text-gray-600 text-sm">
+  <div class="mb-8 text-center text-fg-muted text-sm">
     <p>{{ i18n "tags_help_text" | default "点击任意标签查看相关文章" }}</p>
   </div>
   
   <!-- 标签云 -->
-  <div class="bg-white dark:bg-slate-900 shadow-sm rounded-lg p-6">
+  <div class="bg-surface shadow-sm rounded-lg p-6">
     <div class="flex flex-wrap gap-3 justify-center">
       {{ range .Data.Terms.ByCount }}
         <a href="{{ .Page.RelPermalink }}" class="group">
-          <div class="tag-chip flex items-center px-4 py-2 rounded-full bg-blue-50 dark:bg-slate-800 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-slate-700 transition-colors">
+          <div class="tag-chip flex items-center px-4 py-2 rounded-full bg-accent-soft text-accent-strong hover:bg-accent-soft-2 transition-colors">
             <span class="font-medium">{{ .Page.Title }}</span>
-            <span class="ml-2 count-badge bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-300 px-2 py-0.5 text-xs rounded-full">
+            <span class="ml-2 count-badge bg-surface text-accent px-2 py-0.5 text-xs rounded-full">
               {{ .Count }}
             </span>
           </div>
@@ -25,7 +25,7 @@
   
   <!-- 返回首页链接 -->
   <div class="mt-10 text-center">
-    <a href="{{ "/" | relLangURL }}" class="inline-flex items-center text-gray-600 hover:text-blue-600 transition-colors">
+    <a href="{{ "/" | relLangURL }}" class="inline-flex items-center text-fg-muted hover:text-accent transition-colors">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
       </svg>

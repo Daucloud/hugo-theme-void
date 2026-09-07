@@ -182,6 +182,10 @@ weight = 40
   {{< /callout >}}
   ```
 
+### Colors and dark mode
+- All colors go through semantic tokens defined at the top of `assets/css/main.css` (`--canvas`, `--surface`, `--fg`, `--fg-muted`, `--line`, `--accent`, …). `:root` holds the light values, `.dark` the dark ones, and `@theme inline` exposes them as Tailwind utilities (`bg-surface`, `text-fg-muted`, `border-line`, `hover:bg-hover`, `text-accent`).
+- Use those utilities in templates instead of raw palette classes; there is no `dark:` variant to maintain and no override block.
+
 ### Dark/Light Toggle
 - The toggle is a plain icon button in the header; state persists in `localStorage` and respects system preference when unset.
 - No white‑flash on initial load: the theme is applied as early as possible.

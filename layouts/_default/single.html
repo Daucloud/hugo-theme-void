@@ -17,22 +17,22 @@
 
   <div class="article-layout{{ if $hasToc }} has-toc{{ end }}">
   <div class="article-main min-w-0">
-  <article class="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-    <header class="border-b border-gray-100 relative">
+  <article class="max-w-4xl mx-auto bg-surface rounded-lg shadow-md overflow-hidden">
+    <header class="border-b border-line-soft relative">
       <div class="article-inner py-8">
 
       <!-- 文章元数据 -->
       {{ if .Params.categories }}
       <div class="mb-3 flex">
         {{ range first 1 .Params.categories }}
-        <a href="{{ "/categories/" | relLangURL }}{{ . | urlize }}" class="text-xs inline-flex items-center px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors" data-pagefind-filter="category">
+        <a href="{{ "/categories/" | relLangURL }}{{ . | urlize }}" class="text-xs inline-flex items-center px-2.5 py-1 rounded-full bg-accent-soft text-accent hover:bg-accent-soft-2 transition-colors" data-pagefind-filter="category">
           {{ . }}
         </a>
         {{ end }}
       </div>
       {{ end }}
 
-      <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 relative" data-pagefind-meta="title">{{ .Title }}</h1>
+      <h1 class="text-3xl sm:text-4xl font-bold text-fg-strong mb-4 relative" data-pagefind-meta="title">{{ .Title }}</h1>
 
       {{ $shareTitle := .Title }}
       {{ with .Params.share_title }}{{ $shareTitle = . }}{{ end }}
@@ -43,12 +43,12 @@
       {{ if not $shareText }}{{ $shareText = site.Title }}{{ end }}
       {{ $shareText = $shareText | plainify | htmlUnescape | replaceRE `\s+` " " | truncate 120 }}
 
-      <div class="flex flex-wrap items-center text-sm text-gray-500 gap-4 relative">
+      <div class="flex flex-wrap items-center text-sm text-fg-faint gap-4 relative">
         <!-- 日期 -->
         {{ $dateMachine := .Date | time.Format "2006-01-02T15:04:05-07:00" }}
         {{ $dateHuman := .Date.Format "2006-01-02" }}
         <time datetime="{{ $dateMachine }}" class="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-fg-dim" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
           {{ $dateHuman }}
@@ -56,7 +56,7 @@
 
         <!-- 阅读时间：Hugo 内建估算，hasCJKLanguage 开启后按中文字符数计算 -->
         <span class="flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-fg-dim" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           {{ .ReadingTime }} {{ i18n "reading_time" }}
@@ -64,7 +64,7 @@
 
         <!-- 总阅读量 -->
         <span id="busuanzi_container_page_pv" class="inline-flex items-center whitespace-nowrap">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400 inline-block flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-fg-dim inline-block flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
           </svg><span class="whitespace-nowrap">{{ i18n "page_views" }} <span id="busuanzi_value_page_pv"></span></span>
@@ -104,7 +104,7 @@
     {{/* Table of contents: a folded <details> in the flow; on wide screens a sticky sidebar instead */}}
     {{ if $hasToc }}
     <details class="toc-inline article-inner pt-6 toc">
-      <summary class="toc-summary w-full flex items-center justify-between text-sm text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-slate-800 hover:bg-gray-100 dark:hover:bg-slate-700 border border-gray-200 dark:border-slate-700 rounded-md px-4 py-2 transition-colors cursor-pointer select-none">
+      <summary class="toc-summary w-full flex items-center justify-between text-sm text-fg-2 bg-canvas hover:bg-hover border border-line rounded-md px-4 py-2 transition-colors cursor-pointer select-none">
         <span>{{ i18n "table_of_contents" }}</span>
         <svg class="toc-icon-open h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
@@ -113,7 +113,7 @@
           <path fill-rule="evenodd" d="M5 9a1 1 0 000 2h10a1 1 0 100-2H5z" clip-rule="evenodd" />
         </svg>
       </summary>
-      <div id="toc-content" class="mt-3 border border-gray-100 rounded-md bg-white p-4 text-sm leading-relaxed">
+      <div id="toc-content" class="mt-3 border border-line-soft rounded-md bg-surface p-4 text-sm leading-relaxed">
         <div class="toc-nav prose prose-sm max-w-none">
           {{ $tocSanitized | safeHTML }}
         </div>
@@ -129,15 +129,15 @@
     {{ $updated := .Lastmod }}
     {{ with .GitInfo }}{{ $updated = .AuthorDate }}{{ end }}
     {{ if $updated }}
-    <div class="article-inner pb-2 text-sm text-gray-500 flex items-center">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div class="article-inner pb-2 text-sm text-fg-faint flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-fg-dim" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
       </svg>
       {{ i18n "last_updated" }} {{ $updated.Format "2006-01-02" }}
     </div>
     {{ end }}
 
-    <footer class="py-6 bg-gray-50 border-t border-gray-100">
+    <footer class="py-6 bg-canvas border-t border-line-soft">
       <div class="article-inner">
       {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
 
@@ -149,26 +149,26 @@
       {{ if or $prev $next }}
       <nav class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
         {{ if $prev }}
-        <a href="{{ $prev.RelPermalink }}" class="group block p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50/30 transition-colors">
-          <div class="text-xs text-gray-500 mb-1 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <a href="{{ $prev.RelPermalink }}" class="group block p-4 bg-surface border border-line rounded-lg hover:border-accent-line hover:bg-accent-soft/30 transition-colors">
+          <div class="text-xs text-fg-faint mb-1 flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-fg-dim" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
             {{ i18n "post_previous" }}
           </div>
-          <div class="text-sm font-medium text-gray-900 group-hover:text-blue-700 line-clamp-2">{{ $prev.Title }}</div>
+          <div class="text-sm font-medium text-fg-strong group-hover:text-accent-strong line-clamp-2">{{ $prev.Title }}</div>
         </a>
         {{ end }}
 
         {{ if $next }}
-        <a href="{{ $next.RelPermalink }}" class="group block p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50/30 transition-colors sm:text-right sm:col-start-2">
-          <div class="text-xs text-gray-500 mb-1 flex items-center sm:justify-end">
+        <a href="{{ $next.RelPermalink }}" class="group block p-4 bg-surface border border-line rounded-lg hover:border-accent-line hover:bg-accent-soft/30 transition-colors sm:text-right sm:col-start-2">
+          <div class="text-xs text-fg-faint mb-1 flex items-center sm:justify-end">
             <span class="sm:order-1 mr-0 sm:ml-1">{{ i18n "post_next" }}</span>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1.5 text-gray-400 sm:order-2 sm:ml-1 sm:mr-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1.5 text-fg-dim sm:order-2 sm:ml-1 sm:mr-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </div>
-          <div class="text-sm font-medium text-gray-900 group-hover:text-blue-700 line-clamp-2">{{ $next.Title }}</div>
+          <div class="text-sm font-medium text-fg-strong group-hover:text-accent-strong line-clamp-2">{{ $next.Title }}</div>
         </a>
         {{ end }}
       </nav>
@@ -176,7 +176,7 @@
 
       <!-- 返回按钮 -->
       <div class="mt-6 flex justify-center">
-        <a href="{{ "/" | relLangURL }}" class="inline-flex items-center text-gray-600 hover:text-blue-600 transition-colors">
+        <a href="{{ "/" | relLangURL }}" class="inline-flex items-center text-fg-muted hover:text-accent transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
@@ -188,14 +188,14 @@
   </article>
 
   <!-- 使用懒加载Disqus评论 -->
-  <div class="max-w-4xl mx-auto mt-8 bg-white rounded-lg shadow-md overflow-hidden theme-card" style="--tw-prose-body: #374151; --tw-prose-headings: #111827; --tw-prose-links: #2563eb; --tw-prose-links-hover: #1d4ed8; --tw-prose-code-bg: #f3f4f6; color: #374151;">
+  <div class="max-w-4xl mx-auto mt-8 bg-surface rounded-lg shadow-md overflow-hidden theme-card" style="--tw-prose-body: #374151; --tw-prose-headings: #111827; --tw-prose-links: #2563eb; --tw-prose-links-hover: #1d4ed8; --tw-prose-code-bg: #f3f4f6; color: #374151;">
     {{ partial "disqus_lazy.html" . }}
   </div>
   </div>{{/* .article-main */}}
 
   {{ if $hasToc }}
   <aside class="toc-sidebar" aria-label="{{ i18n "table_of_contents" }}">
-    <div class="toc-sidebar-title text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{{ i18n "table_of_contents" }}</div>
+    <div class="toc-sidebar-title text-xs font-semibold uppercase tracking-wide text-fg-faint mb-2">{{ i18n "table_of_contents" }}</div>
     <div class="toc-nav text-sm">
       {{ $tocSanitized | replaceRE `id="TableOfContents"` `id="TableOfContents-side"` | safeHTML }}
     </div>
