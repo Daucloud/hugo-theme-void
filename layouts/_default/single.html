@@ -25,14 +25,14 @@
       {{ if .Params.categories }}
       <div class="mb-3 flex">
         {{ range first 1 .Params.categories }}
-        <a href="{{ "/categories/" | relLangURL }}{{ . | urlize }}" class="text-xs inline-flex items-center px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors">
+        <a href="{{ "/categories/" | relLangURL }}{{ . | urlize }}" class="text-xs inline-flex items-center px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors" data-pagefind-filter="category">
           {{ . }}
         </a>
         {{ end }}
       </div>
       {{ end }}
 
-      <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 relative">{{ .Title }}</h1>
+      <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 relative" data-pagefind-meta="title">{{ .Title }}</h1>
 
       {{ $shareTitle := .Title }}
       {{ with .Params.share_title }}{{ $shareTitle = . }}{{ end }}
@@ -121,7 +121,7 @@
     </details>
     {{ end }}
 
-    <div class="article-inner article-prose py-7 prose prose-sm sm:prose lg:prose-lg max-w-none">
+    <div class="article-inner article-prose py-7 prose prose-sm sm:prose lg:prose-lg max-w-none" data-pagefind-body>
       {{ .Content }}
     </div>
 

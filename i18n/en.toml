@@ -246,3 +246,20 @@ other = "Multi-part posts, in reading order"
 [all_series]
 other = "All series"
 
+
+# Search (Pagefind)
+[search]
+other = "Search"
+
+[search_unavailable]
+other = "The search index is generated at deploy time and is not available in this build."
+
+[search_zero_results]
+other = "No results for [SEARCH_TERM]"
+
+[search_clear]
+other = "Clear"
+
+[search_load_more]
+other = "Load more results"
+

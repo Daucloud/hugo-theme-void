@@ -6,6 +6,9 @@
   </div>
   <div class="flex items-center gap-2">
     {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
+    <a href="{{ "/search/" | relLangURL }}" class="search-link inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors" aria-label="{{ i18n "search" | default "Search" }}" title="{{ i18n "search" | default "Search" }}">
+      <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z" /></svg>
+    </a>
     <button id="menu-toggle" type="button" class="menu-toggle sm:hidden inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">
       <svg class="menu-icon-open h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
       <svg class="menu-icon-close h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>

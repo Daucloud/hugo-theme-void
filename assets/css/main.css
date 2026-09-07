@@ -878,6 +878,26 @@ div#disqus_thread iframe[sandbox] {
 .dark .related-posts a:hover { border-color: #3b82f6 !important; }
 .series-nav a, .related-posts a { text-decoration: none; }
 
+/* Pagefind search UI theming */
+.pagefind-box {
+  --pagefind-ui-scale: .9;
+  --pagefind-ui-primary: #2563eb;
+  --pagefind-ui-text: #1f2937;
+  --pagefind-ui-background: #fff;
+  --pagefind-ui-border: #e5e7eb;
+  --pagefind-ui-tag: #eef2ff;
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: .5rem;
+  --pagefind-ui-font: var(--font-bilingual);
+}
+.dark .pagefind-box {
+  --pagefind-ui-primary: #93c5fd;
+  --pagefind-ui-text: #e5e7eb;
+  --pagefind-ui-background: #0f172a;
+  --pagefind-ui-border: #334155;
+  --pagefind-ui-tag: #1e293b;
+}
+
 /* theme card (e.g., disqus container) */
 .dark .theme-card { background-color: #0f172a !important; }
 
