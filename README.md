@@ -11,10 +11,12 @@ Void is a clean, modern Hugo blog theme built with [Tailwind CSS](https://tailwi
 
 - 🎨 Tailwind CSS design · fully responsive
 - 🌗 Dark/Light mode with animated icon toggle (no flash on load)
-- 🧭 Collapsible Table of Contents with active item highlight
+- 🧭 Collapsible Table of Contents (native details) with active item highlight
 - 🔗 In‑page anchor highlight and copy‑permalink by clicking headings
-- 🧱 Code blocks with header (language label + copy button), Chroma light/dark highlighting
-- 🧮 KaTeX math support (inline/display)
+- 🧱 Code blocks with header (language label + copy button), class-based Chroma light/dark palettes
+- 🧮 KaTeX math rendered at build time (no client-side JavaScript), CSS/fonts self-hosted
+- 🔤 Self-hosted fonts (Source Serif 4, Noto Serif SC, IBM Plex Mono), nothing from Google Fonts
+- 🖼️ Responsive WebP images with srcset and intrinsic sizes via a render-image hook
 - 🌐 Per-post `language` front matter for a correct `<html lang>` on mixed-language blogs
 - 📰 Full-content RSS feed, 404 page, lazy-loaded Disqus with offline fallback
 - ✍️ Readability tweaks: paragraph/list spacing, footnotes, tag chips, cards
@@ -93,6 +95,24 @@ name = 'About'
 pageRef = '/about'
 weight = 40
 
+# Required for the theme's code blocks (class-based Chroma output)
+[markup.highlight]
+  noClasses = false
+  lineNos = true
+  lineNumbersInTable = true
+
+# Math: KaTeX is rendered at build time from these passthrough delimiters
+[markup.goldmark.extensions.passthrough]
+  enable = true
+  [markup.goldmark.extensions.passthrough.delimiters]
+    block = [['$$', '$$'], ['\\[', '\\]']]
+    inline = [['$', '$'], ['\\(', '\\)']]
+
+# Image processing defaults used by the render-image hook / figure shortcode
+[imaging]
+  quality = 85
+  resampleFilter = 'Lanczos'
+
 # Table of Contents (recommended)
 [markup]
   [markup.tableOfContents]
@@ -114,12 +134,20 @@ weight = 40
 ### Code & Math
 - Use fenced code blocks with a language hint (```go, ```python, …).
 - Each block is wrapped with a small header showing the language and a copy button.
-- Chroma highlighting switches themes automatically in dark/light mode.
-- KaTeX supports `$…$` (inline) and `$$…$$` (display).
+- Chroma highlighting switches themes automatically in dark/light mode (`markup.highlight.noClasses = false` required, see below).
+- KaTeX supports `$…$` (inline) and `$$…$$` (display), rendered at build time by `transform.ToMath`; append `{#some-id}` on the line after a display block to make it linkable.
 
 ### Mixed-language content
 - UI strings follow the site language: `defaultContentLanguage` picks `i18n/<lang>.toml`.
 - `languageCode` is the default `<html lang>`. Any page may override it with `language = "en"` (or `"zh-CN"`, …) in front matter, so a mostly-Chinese blog can keep `languageCode = 'zh-CN'` and tag its English posts. Hugo reserves the key `lang`, hence `language`.
+
+### Fonts (self-hosted)
+- Body: Source Serif 4 (Latin) + Noto Serif SC (CJK); code: IBM Plex Mono. Nothing is fetched from Google Fonts.
+- Files live in `static/fonts/`, `@font-face` rules in `assets/css/fonts/`. The CJK declaration is loaded as a
+  separate non-blocking stylesheet because its ~200 unicode-range slices are large; a page only downloads the
+  slices it needs, and `local()` sources skip the download for visitors who have the font installed.
+- Regenerate with `tools/build-fonts.py` (Source Serif 4 from the desktop TTFs) and
+  `tools/fetch-google-font.py` (mirrors a Google Fonts family). See `static/fonts/README.md` for licenses.
 
 ### Feeds, 404, comments
 - `index.xml` is a full-content RSS feed (`content:encoded`) limited to the `posts` section; the head carries the autodiscovery link.

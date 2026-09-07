@@ -1,4 +1,10 @@
 @import "tailwindcss";
+/* Self-hosted Latin web fonts (see tools/build-fonts.py, tools/fetch-google-font.py).
+   The CJK face (fonts/noto-serif-sc.css, ~200 unicode-range slices) is large, so
+   head/css.html loads it as a separate non-blocking stylesheet instead. */
+@import "./fonts/source-serif-4.css";
+@import "./fonts/ibm-plex-mono.css";
+/* Syntax highlighting palettes */
 @import "./chroma-light.css";
 @import "./chroma-dark.css";
 @custom-variant dark (&:where(.dark, .dark *));
@@ -8,7 +14,7 @@
 @theme {
   --font-bilingual: "Source Serif 4", "Noto Serif SC", "Source Han Serif SC", "Source Han Serif CN", "Songti SC", "STSong", ui-serif, serif;
   --font-code: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --font-ui: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-ui: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 /* Skip link: visually hidden until focused via keyboard */

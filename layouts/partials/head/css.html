@@ -16,6 +16,14 @@
   {{ end }}
 {{ end }}
 
-{{/* Web fonts. Loaded as a <link> rather than a CSS @import so the request is not
-     chained behind the stylesheet. To be replaced by self-hosted fonts. */}}
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Serif+SC:wght@200..900&family=Source+Serif+4:opsz,wght@8..60,400..600&display=swap">
+{{/* Fonts are self-hosted under static/fonts/ and declared in assets/css/fonts/*.css.
+     Latin faces are part of main.css; preload the body face. The CJK face declaration
+     (~200 unicode-range slices, ~60 KB gzipped) is loaded without blocking first paint:
+     text shows in the system CJK font and swaps once the needed slices arrive. */}}
+<link rel="preload" href="{{ "fonts/source-serif-4-400.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+{{ with resources.Get "css/fonts/noto-serif-sc.css" }}
+  {{ $cjk := . }}
+  {{ if hugo.IsProduction }}{{ $cjk = $cjk | minify | fingerprint }}{{ end }}
+<link rel="stylesheet" href="{{ $cjk.RelPermalink }}" media="print" onload="this.media='all'"{{ if hugo.IsProduction }} integrity="{{ $cjk.Data.Integrity }}" crossorigin="anonymous"{{ end }}>
+<noscript><link rel="stylesheet" href="{{ $cjk.RelPermalink }}"></noscript>
+{{ end }}
