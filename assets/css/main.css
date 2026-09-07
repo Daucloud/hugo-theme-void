@@ -291,15 +291,18 @@ details.callout[open] > summary .callout-chevron::after { content: "\25BE"; } /*
   font-weight: 400;
   line-height: 1.8;
   letter-spacing: 0;
-  /* CSS Text 4: quarter-em gap between Han and Latin/digits; tighter consecutive CJK punctuation.
-     Baseline browsers apply these, older ones ignore them. */
-  text-autospace: normal;
-  text-spacing-trim: normal;
   font-kerning: normal;
   text-rendering: optimizeLegibility;
   hanging-punctuation: allow-end;
 }
 
+
+/* CSS Text 4 on Chinese pages only: quarter-em gap between Han and Latin/digits, tighter
+   consecutive CJK punctuation. Baseline browsers apply these, older ones ignore them. */
+html[lang^="zh"] .article-prose {
+  text-autospace: normal;
+  text-spacing-trim: normal;
+}
 
 /* ---- Paragraphs: left aligned, separated by spacing (no first-line indent) ---- */
 .prose.article-prose p {
