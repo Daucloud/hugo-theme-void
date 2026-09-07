@@ -1,0 +1,33 @@
+{{- /*
+  Series navigation for multi-part posts (taxonomy `series`).
+  Lists every post of the series in chronological order and marks the current one.
+*/ -}}
+{{- with .GetTerms "series" }}
+  {{- $current := $ }}
+  {{- range . }}
+    {{- $posts := .Pages.ByDate }}
+    {{- if gt (len $posts) 1 }}
+    <nav class="series-nav article-inner pt-6" aria-label="{{ i18n "series" | default "Series" }}">
+      <div class="series-nav-box rounded-md border border-gray-200 bg-gray-50 px-4 py-3 text-sm">
+        <div class="text-gray-600">
+          {{ i18n "series_part_of" | default "Part of the series" }}
+          <a href="{{ .RelPermalink }}" class="font-medium text-blue-700 hover:text-blue-900 no-underline">{{ .LinkTitle }}</a>
+          <span class="text-gray-400">· {{ len $posts }} {{ i18n "articles" | default "articles" }}</span>
+        </div>
+        <ol class="series-nav-list mt-2 space-y-1">
+          {{- range $i, $p := $posts }}
+          <li class="flex items-baseline gap-2{{ if eq $p $current }} series-current font-medium text-gray-900{{ else }} text-gray-600{{ end }}">
+            <span class="series-index w-5 shrink-0 text-right text-xs text-gray-400">{{ add $i 1 }}</span>
+            {{- if eq $p $current }}
+            <span aria-current="page">{{ $p.Title }}</span>
+            {{- else }}
+            <a href="{{ $p.RelPermalink }}" class="hover:text-blue-700 no-underline">{{ $p.Title }}</a>
+            {{- end }}
+          </li>
+          {{- end }}
+        </ol>
+      </div>
+    </nav>
+    {{- end }}
+  {{- end }}
+{{- end }}

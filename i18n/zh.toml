@@ -244,3 +244,17 @@ other = "页面不存在"
 
 [not_found_body]
 other = "你访问的页面不存在，或者已经被移动。"
+
+# Series
+[series]
+other = "系列"
+
+[series_part_of]
+other = "本文属于系列"
+
+[series_help_text]
+other = "按阅读顺序排列的多篇连载"
+
+[all_series]
+other = "所有系列"
+

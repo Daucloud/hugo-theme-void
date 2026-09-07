@@ -818,6 +818,14 @@ div#disqus_thread iframe[sandbox] {
 
 .dark .anchor-highlight { background-color: rgba(245, 158, 11, 0.18); outline-color: rgba(245, 158, 11, 0.5); }
 
+/* Series navigation / related posts in dark mode */
+.dark .series-nav-box { background-color: #0f172a !important; border-color: #1f2937 !important; }
+.dark .series-nav-box .text-gray-600, .dark .series-nav-box .text-gray-900 { color: #e5e7eb !important; }
+.dark .series-nav-box a { color: #93c5fd; }
+.dark .related-posts a { background-color: #0f172a !important; border-color: #1f2937 !important; }
+.dark .related-posts a:hover { border-color: #3b82f6 !important; }
+.series-nav a, .related-posts a { text-decoration: none; }
+
 /* theme card (e.g., disqus container) */
 .dark .theme-card { background-color: #0f172a !important; }
 

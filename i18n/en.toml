@@ -232,3 +232,17 @@ other = "Page not found"
 
 [not_found_body]
 other = "The page you are looking for does not exist or has been moved."
+
+# Series
+[series]
+other = "Series"
+
+[series_part_of]
+other = "Part of the series"
+
+[series_help_text]
+other = "Multi-part posts, in reading order"
+
+[all_series]
+other = "All series"
+

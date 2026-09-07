@@ -81,6 +81,8 @@
       </div>
     </header>
 
+    {{ partial "series-nav.html" . }}
+
     {{/* Collapsible Table of Contents (native <details>, folded by default) */}}
     {{ $tocRaw := .TableOfContents }}
     {{/* Remove empty list items that can appear from empty headings */}}
@@ -134,6 +136,8 @@
     <footer class="py-6 bg-gray-50 border-t border-gray-100">
       <div class="article-inner">
       {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+
+      {{ partial "related-posts.html" . }}
 
       {{/* Previous/Next navigation */}}
       {{ $prev := .PrevInSection }}

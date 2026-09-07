@@ -1,0 +1,27 @@
+{{- /*
+  Related posts, from Hugo's related-content index ([related] in hugo.toml: tags,
+  categories, date). Posts from the same series are left out because the series
+  navigation already lists them.
+*/ -}}
+{{- $series := .GetTerms "series" }}
+{{- $related := site.RegularPages.Related . }}
+{{- if $series }}
+  {{- $inSeries := slice }}
+  {{- range $series }}{{ $inSeries = $inSeries | append .Pages }}{{ end }}
+  {{- $related = complement $inSeries $related }}
+{{- end }}
+{{- with $related | first 3 }}
+<section class="related-posts mt-6" aria-labelledby="related-heading">
+  <h2 id="related-heading" class="text-sm font-medium text-gray-700 mb-2">{{ i18n "related_posts" | default "Related Posts" }}</h2>
+  <ul class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+    {{- range . }}
+    <li>
+      <a href="{{ .RelPermalink }}" class="group block h-full p-3 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50/30 transition-colors no-underline">
+        <div class="text-sm font-medium text-gray-900 group-hover:text-blue-700 line-clamp-2">{{ .Title }}</div>
+        <time datetime="{{ .Date.Format "2006-01-02" }}" class="mt-1 block text-xs text-gray-500">{{ .Date.Format "2006-01-02" }}</time>
+      </a>
+    </li>
+    {{- end }}
+  </ul>
+</section>
+{{- end }}
