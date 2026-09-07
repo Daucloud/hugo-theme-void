@@ -512,22 +512,27 @@ blockquote.anchor-highlight {
   .site-nav li a { display: block; padding: .6rem .75rem; }
 }
 
-/* ---- Article layout: sticky TOC sidebar on wide screens (>= 80rem) ---- */
+/* ---- Article layout: sticky TOC sidebar in the right-hand gutter ----
+   The article column stays exactly where it is on every other page (56rem, centered,
+   aligned with the header). The sidebar only appears when the viewport leaves enough
+   room beside that column: 56rem + 2 x (14rem sidebar + 1.5rem gap) + 5rem main padding. */
 .toc-sidebar { display: none; }
-@media (min-width: 80rem) {
-  .site-main { max-width: 76rem; }
+@media (min-width: 92rem) {
+  .site-main { max-width: 92rem; }
   .article-layout.has-toc {
     display: grid;
-    grid-template-columns: minmax(0, 56rem) 16rem;
-    gap: 2rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 56rem) minmax(0, 1fr);
     align-items: start;
-    justify-content: center;
   }
+  .article-layout.has-toc > .article-main { grid-column: 2; min-width: 0; }
   .article-layout.has-toc .toc-inline { display: none; }
   .toc-sidebar {
+    grid-column: 3;
     display: block;
     position: sticky;
     top: 6rem;
+    width: 14rem;
+    margin-left: 1.5rem;
     max-height: calc(100vh - 7rem);
     overflow-y: auto;
     padding-right: .25rem;

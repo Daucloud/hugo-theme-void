@@ -11,7 +11,7 @@ Void is a clean, modern Hugo blog theme built with [Tailwind CSS](https://tailwi
 
 - 🎨 Tailwind CSS design · fully responsive
 - 🌗 Dark/Light mode with animated icon toggle (no flash on load)
-- 🧭 Collapsible Table of Contents (native details) with active item highlight
+- 🧭 Table of Contents: folded <details> in the article, or a sticky sidebar in the right gutter on wide screens (>= 1472px), with scroll-spy highlighting
 - 🔗 In‑page anchor highlight and copy‑permalink by clicking headings
 - 🧱 Code blocks with header (language label + copy button), class-based Chroma light/dark palettes
 - 🧮 KaTeX math rendered at build time (no client-side JavaScript), CSS/fonts self-hosted
