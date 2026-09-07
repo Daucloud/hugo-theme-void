@@ -1,0 +1,33 @@
+{{- /*
+  Build-time math rendering for the Goldmark passthrough extension.
+
+  Inline delimiters: $…$ and \(…\)      Block delimiters: $$…$$ and \[…\]
+  (configured under markup.goldmark.extensions.passthrough in hugo.toml).
+
+  KaTeX runs inside Hugo via transform.ToMath, so no JavaScript ships to the
+  browser; only the KaTeX stylesheet + fonts are needed, and head/math.html
+  includes them just for pages that set the "hasMath" flag below.
+*/ -}}
+{{- .Page.Store.Set "hasMath" true -}}
+{{- $opts := dict
+  "displayMode" (eq .Type "block")
+  "throwOnError" false
+  "strict" "ignore"
+  "output" "htmlAndMathml"
+-}}
+{{- $rendered := "" -}}
+{{- with try (transform.ToMath .Inner $opts) -}}
+  {{- with .Err -}}
+    {{- warnf "KaTeX error in %s: %s" $.Page.File.Path . -}}
+    {{- $rendered = $.Inner -}}
+  {{- else -}}
+    {{- $rendered = .Value -}}
+  {{- end -}}
+{{- end -}}
+{{- /* Block math may carry Markdown attributes on the following line, e.g. `{#eq-regret}`,
+       to make an equation linkable. Wrap it so the attributes have an element to live on. */ -}}
+{{- if and (eq .Type "block") .Attributes -}}
+  <div class="math-block"{{ range $k, $v := .Attributes }}{{ printf " %s=%q" $k $v | safeHTMLAttr }}{{ end }}>{{ $rendered }}</div>
+{{- else -}}
+  {{- $rendered -}}
+{{- end -}}

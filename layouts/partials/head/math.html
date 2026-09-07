@@ -1,0 +1,11 @@
+{{- /*
+  KaTeX stylesheet, only for pages that actually contain math.
+  The flag is set by layouts/_default/_markup/render-passthrough.html while the
+  content renders, so head.html forces content rendering ({{ $noop := .WordCount }})
+  before calling this partial. Must not be wrapped in partialCached.
+
+  The CSS and woff2 fonts are vendored in static/katex/ (KaTeX 0.16.9, MIT).
+*/ -}}
+{{- if .Store.Get "hasMath" }}
+<link rel="stylesheet" href="{{ "katex/katex.min.css" | relURL }}?v=0.16.9">
+{{- end }}

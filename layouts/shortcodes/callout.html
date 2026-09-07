@@ -14,12 +14,6 @@
     {{- $content = replaceRE `\A[ \t]*title:\s*[^\n]+\n(?:\n)?` "" $content 1 -}}
   {{- end -}}
 {{- end -}}
-{{- range $m := findRESubmatch `(?s)\$\$(.+?)\$\$` $content -}}
-  {{- $full := index $m 0 -}}
-  {{- $inner := index $m 1 -}}
-  {{- $replacement := printf "\n<div class=\"callout-math\">$$%s$$</div>\n" $inner -}}
-  {{- $content = replace $content $full $replacement -}}
-{{- end -}}
 {{- $rendered := .Page.RenderString $content -}}
 {{- $rendered = replaceRE `href=["']https?://[^"']*/#([^"']+)["']` `href="#${1}"` $rendered -}}
 {{- $rendered = replaceRE `href=["']/#([^"']+)["']` `href="#${1}"` $rendered -}}
@@ -53,7 +47,7 @@
       {{- end -}}
     </span>
     {{- with $title -}}
-      <span class="callout-title">{{ . }}</span>
+      <span class="callout-title">{{ $.Page.RenderString (dict "display" "inline") . }}</span>
     {{- end -}}
     {{- if $collapsible -}}
       <span class="callout-chevron" aria-hidden="true">

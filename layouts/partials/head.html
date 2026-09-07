@@ -40,6 +40,10 @@
 <link rel="manifest" href="{{ "favicon/site.webmanifest" | relURL }}" />
 <!-- End of favicon configuration -->
 
+{{/* Render the content first so the passthrough render hook can flag pages with math. */}}
+{{ $noop := .WordCount }}
+{{ partial "head/math.html" . }}
+
 {{ if hugo.IsProduction }}
   {{ partialCached "head/css.html" . }}
   {{ partialCached "head/js.html" . }}

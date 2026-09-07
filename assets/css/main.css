@@ -181,7 +181,6 @@ time,
 .prose .katex-display:focus-within::-webkit-scrollbar-thumb {
   background: rgba(148, 163, 184, 0.64);
 }
-.callout-content .callout-math { margin: 1rem 0; }
 
 /* Long-form article typography tuned for Chinese reading rhythm. */
 .article-inner {
