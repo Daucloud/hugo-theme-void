@@ -15,7 +15,7 @@ Void is a clean, modern Hugo blog theme built with [Tailwind CSS](https://tailwi
 - 🔗 In‑page anchor highlight and copy‑permalink by clicking headings
 - 🧱 Code blocks with header (language label + copy button), Chroma light/dark highlighting
 - 🧮 KaTeX math support (inline/display)
-- 🌐 Single-language site with per-post `language` switch for `<html lang>` and UI strings
+- 🌐 Per-post `language` front matter for a correct `<html lang>` on mixed-language blogs
 - 📰 Full-content RSS feed, 404 page, lazy-loaded Disqus with offline fallback
 - ✍️ Readability tweaks: paragraph/list spacing, footnotes, tag chips, cards
 - 🏷️ Tags & categories, reading time, social links
@@ -54,8 +54,8 @@ Add the following configuration options to your `hugo.toml` (or `config.toml`):
 
 ```toml
 baseURL = 'https://example.org/'
-languageCode = 'zh-CN'          # or 'en-US'; picks i18n/<lang>.toml for the site chrome
-defaultContentLanguage = 'zh'   # must match the i18n file name
+languageCode = 'zh-CN'          # default <html lang>; per-page override via `language` front matter
+defaultContentLanguage = 'en'   # UI language: picks i18n/en.toml
 hasCJKLanguage = true           # correct word counts / summaries for Chinese content
 enableRobotsTXT = true
 title = 'Your Site Title'
@@ -118,9 +118,8 @@ weight = 40
 - KaTeX supports `$…$` (inline) and `$$…$$` (display).
 
 ### Mixed-language content
-- The site has one language (`languageCode`), but any page may set `language = "en"` (or `"zh"`) in front matter.
-- The theme then emits `<html lang="en">` for that page and switches the article-page UI strings (reading time, TOC, prev/next, comments) using `data/ui.toml`.
-- Site-wide chrome (header, footer, list pages) always follows the site language via `i18n/`.
+- UI strings follow the site language: `defaultContentLanguage` picks `i18n/<lang>.toml`.
+- `languageCode` is the default `<html lang>`. Any page may override it with `language = "en"` (or `"zh-CN"`, …) in front matter, so a mostly-Chinese blog can keep `languageCode = 'zh-CN'` and tag its English posts. Hugo reserves the key `lang`, hence `language`.
 
 ### Feeds, 404, comments
 - `index.xml` is a full-content RSS feed (`content:encoded`) limited to the `posts` section; the head carries the autodiscovery link.
