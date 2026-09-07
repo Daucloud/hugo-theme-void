@@ -1,5 +1,4 @@
-// Site entry point. Bundled by Hugo's js.Build (esbuild) and loaded with `defer`,
-// so DOMContentLoaded fires after every deferred dependency (Alpine) ran.
+// Site entry point. Bundled by Hugo's js.Build (esbuild) and loaded with `defer`.
 import { initTheme } from "./modules/theme.js";
 import { initFootnotes } from "./modules/footnotes.js";
 import { initShareWidgets } from "./modules/share.js";
