@@ -1,0 +1,24 @@
+{{- /*
+  Markdown image render hook: ![alt](src "title")
+
+  Page-bundle and assets/ images go through partials/responsive-image.html
+  (WebP, srcset, intrinsic size, lazy loading). Remote images are left as they are,
+  only gaining lazy loading. The first image of a page is loaded eagerly.
+*/ -}}
+{{- $u := urls.Parse .Destination -}}
+{{- $img := "" -}}
+{{- if not $u.IsAbs -}}
+  {{- $path := strings.TrimPrefix "./" $u.Path -}}
+  {{- with .Page.Resources.Get $path -}}
+    {{- $img = . -}}
+  {{- else -}}
+    {{- with resources.Get (strings.TrimPrefix "/" $path) }}{{ $img = . }}{{ end -}}
+  {{- end -}}
+{{- end -}}
+{{- partial "responsive-image.html" (dict
+      "img" $img
+      "src" .Destination
+      "alt" .PlainText
+      "title" .Title
+      "loading" (cond (eq .Ordinal 0) "eager" "lazy")
+    ) -}}

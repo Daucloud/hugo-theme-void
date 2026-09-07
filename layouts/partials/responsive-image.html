@@ -1,0 +1,44 @@
+{{- /*
+  Responsive <img> for a page/asset image resource.
+
+  @param {resource|string} img   Image resource, or "" when the source is not a Hugo resource.
+  @param {string}          src   Original destination, used verbatim when img is not a resource.
+  @param {string}          alt
+  @param {string}          [title]
+  @param {string}          [loading]  "lazy" (default) or "eager".
+
+  Raster resources (not SVG/GIF) are converted to WebP at 640/960/1280/1600px (never
+  upscaled), emitted as srcset with explicit width/height to avoid layout shift, and
+  use absolute URLs so the markup also works inside the RSS feed.
+*/ -}}
+{{- $img := .img -}}
+{{- $src := .src -}}
+{{- $alt := .alt | default "" -}}
+{{- $title := .title -}}
+{{- $loading := .loading | default "lazy" -}}
+{{- $isSVG := false -}}
+{{- $processable := false -}}
+{{- if $img -}}
+  {{- $isSVG = eq $img.MediaType.SubType "svg" -}}
+  {{- $processable = and (eq $img.ResourceType "image") (not (in (slice "svg" "gif") $img.MediaType.SubType)) -}}
+{{- end -}}
+{{- if $processable -}}
+  {{- $maxW := int (math.Min $img.Width 1600) -}}
+  {{- $widths := slice -}}
+  {{- range $w := slice 640 960 1280 -}}
+    {{- if lt $w $maxW }}{{ $widths = $widths | append $w }}{{ end -}}
+  {{- end -}}
+  {{- $widths = $widths | append $maxW -}}
+  {{- $set := slice -}}
+  {{- $main := "" -}}
+  {{- range $w := $widths -}}
+    {{- $r := $img.Resize (printf "%dx webp" $w) -}}
+    {{- $set = $set | append (printf "%s %dw" $r.Permalink $r.Width) -}}
+    {{- $main = $r -}}
+  {{- end -}}
+  <img src="{{ $main.Permalink }}" srcset="{{ delimit $set ", " }}" sizes="(min-width: 48rem) 42rem, calc(100vw - 2.5rem)" width="{{ $main.Width }}" height="{{ $main.Height }}" alt="{{ $alt }}"{{ with $title }} title="{{ . }}"{{ end }} loading="{{ $loading }}" decoding="async">
+{{- else if $img -}}
+  <img src="{{ $img.Permalink }}" alt="{{ $alt }}"{{ with $title }} title="{{ . }}"{{ end }}{{ if not $isSVG }} width="{{ $img.Width }}" height="{{ $img.Height }}"{{ end }} loading="{{ $loading }}" decoding="async">
+{{- else -}}
+  <img src="{{ $src }}" alt="{{ $alt }}"{{ with $title }} title="{{ . }}"{{ end }} loading="{{ $loading }}" decoding="async">
+{{- end -}}
