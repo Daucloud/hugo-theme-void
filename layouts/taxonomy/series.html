@@ -9,7 +9,7 @@
     {{ range $i, $p := .Pages.ByDate }}
     <li class="relative">
       <a href="{{ $p.RelPermalink }}" class="absolute inset-0 z-10" aria-label="{{ $p.Title }}"></a>
-      <div class="bg-surface rounded-lg border border-line-soft hover:border-line transition-colors p-5 flex gap-4 group">
+      <div class="bg-surface rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-5 flex gap-4 group">
         <div class="series-index w-8 shrink-0 text-2xl font-bold text-blue-200 group-hover:text-blue-400 transition-colors">{{ add $i 1 }}</div>
         <div class="min-w-0">
           <h3 class="text-xl font-medium text-fg group-hover:text-accent transition-colors">{{ $p.Title }}</h3>

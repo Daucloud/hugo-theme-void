@@ -4,7 +4,7 @@
   <div class="mb-8 text-center text-fg-muted text-sm"><p>{{ i18n "series_help_text" | default "Multi-part posts, in reading order" }}</p></div>
   <div class="space-y-4">
     {{ range .Data.Terms.ByCount }}
-    <a href="{{ .Page.RelPermalink }}" class="block bg-surface rounded-lg border border-line-soft hover:border-line transition-colors p-5 no-underline group">
+    <a href="{{ .Page.RelPermalink }}" class="block bg-surface rounded-lg shadow-sm hover:shadow-md transition-shadow p-5 no-underline group">
       <div class="flex items-baseline justify-between">
         <span class="text-lg font-medium text-fg group-hover:text-accent transition-colors">{{ .Page.Title }}</span>
         <span class="category-count-badge ml-2 bg-accent-soft text-accent px-2 py-0.5 text-xs rounded-full">{{ .Count }} {{ i18n "articles" | default "articles" }}</span>

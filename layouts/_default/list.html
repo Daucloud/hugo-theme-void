@@ -1,35 +1,87 @@
 {{ define "main" }}
   <div class="max-w-4xl mx-auto px-4 py-8">
-    <h1 class="text-3xl font-semibold text-center text-fg mb-10">{{ .Title }}</h1>
-
-    <div class="space-y-12">
+    <h1 class="text-3xl font-bold text-center text-fg mb-8">{{ .Title }}</h1>
+    
+    <div class="space-y-16">
       {{ range .Pages.GroupByDate "2006" }}
-      <section aria-label="{{ .Key }}">
-        <div class="mb-4 flex items-center gap-3">
-          <span class="text-sm font-semibold tracking-wider text-fg-faint tabular-nums">{{ .Key }}</span>
-          <span class="h-px flex-1 bg-line-soft"></span>
+      <div class="relative">
+        <!-- 年份指示器 -->
+        <div class="mb-6 flex items-center">
+          <div class="year-indicator-badge flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-accent-soft to-accent-soft-2 flex items-center justify-center text-accent-strong font-bold text-xl shadow-sm">
+            {{ .Key }}
+          </div>
+          <div class="ml-4 h-px bg-gradient-to-r from-accent-line to-transparent flex-grow"></div>
         </div>
-        <div class="space-y-4">
+        
+        <!-- 文章列表 -->
+        <div class="ml-8 space-y-6">
           {{ range .Pages.ByDate.Reverse }}
-          {{ partial "post-card.html" (dict "page" .) }}
+          <div class="relative">
+            <a href="{{ .RelPermalink }}" class="absolute inset-0 z-10" aria-label="{{ .Title }}"></a>
+            <div class="bg-surface rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden group">
+              <div class="p-5">
+                <div class="flex flex-col sm:flex-row sm:items-baseline justify-between mb-3">
+                  <h3 class="text-xl font-medium text-fg group-hover:text-accent transition-colors">
+                    {{ .Title }}
+                  </h3>
+                  <time class="text-sm text-fg-faint mt-1 sm:mt-0 sm:ml-4 flex-shrink-0 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-fg-dim" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    {{ .Date.Format (i18n "date_month_day_format" | default "01月02日") }}
+                  </time>
+                </div>
+                
+                {{ with partial "summary.html" . }}
+                <div class="text-fg-muted text-sm line-clamp-2">{{ . }}</div>
+                {{ end }}
+                
+                {{ if .Params.tags }}
+                <div class="mt-3 flex flex-wrap gap-2 relative z-20">
+                  {{ range .Params.tags }}
+                  <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" 
+                     class="tag-chip text-xs bg-surface-2 text-fg-muted px-2 py-1 rounded hover:bg-hover-strong transition-colors"
+                     onclick="event.stopPropagation();">
+                    {{ . }}
+                  </a>
+                  {{ end }}
+                </div>
+                {{ end }}
+                
+                <div class="mt-4">
+                  <span class="inline-flex items-center text-accent text-sm group-hover:translate-x-1 transition-transform duration-300">
+                    {{ i18n "list_read_more" | default "阅读全文" }}
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
           {{ end }}
         </div>
-      </section>
+      </div>
       {{ end }}
     </div>
-
+    
     {{ if or .Paginator.HasPrev .Paginator.HasNext }}
     <div class="mt-12 flex justify-between">
       {{ if .Paginator.HasPrev }}
-      <a href="{{ .Paginator.Prev.URL }}" class="px-4 py-2 bg-surface border border-line-soft rounded-md text-fg-2 hover:border-line hover:bg-hover transition-colors no-underline">
-        &larr; {{ i18n "pagination_previous" | default "Previous" }}
+      <a href="{{ .Paginator.Prev.URL }}" class="px-4 py-2 bg-surface shadow-sm rounded-md text-fg-2 hover:bg-hover transition-colors">
+        &larr; {{ i18n "pagination_previous" | default "上一页" }}
       </a>
-      {{ else }}<div></div>{{ end }}
+      {{ else }}
+      <div></div>
+      {{ end }}
+      
       {{ if .Paginator.HasNext }}
-      <a href="{{ .Paginator.Next.URL }}" class="px-4 py-2 bg-surface border border-line-soft rounded-md text-fg-2 hover:border-line hover:bg-hover transition-colors no-underline">
-        {{ i18n "pagination_next" | default "Next" }} &rarr;
+      <a href="{{ .Paginator.Next.URL }}" class="px-4 py-2 bg-surface shadow-sm rounded-md text-fg-2 hover:bg-hover transition-colors">
+        {{ i18n "pagination_next" | default "下一页" }} &rarr;
       </a>
-      {{ else }}<div></div>{{ end }}
+      {{ else }}
+      <div></div>
+      {{ end }}
     </div>
     {{ end }}
   </div>
