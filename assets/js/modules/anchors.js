@@ -54,12 +54,12 @@ function pickHighlightTarget(el) {
 }
 
 function setTocActive(id) {
-  const toc = document.getElementById("TableOfContents");
-  if (!toc) return;
   const esc = window.CSS && CSS.escape ? CSS.escape : (s) => String(s).replace(/[^a-zA-Z0-9_\-]/g, "\\$&");
-  toc.querySelectorAll("a.toc-active").forEach((a) => a.classList.remove("toc-active"));
-  const link = toc.querySelector('a[href="#' + esc(id) + '"]');
-  if (link) link.classList.add("toc-active");
+  document.querySelectorAll(".toc-nav").forEach((toc) => {
+    toc.querySelectorAll("a.toc-active").forEach((a) => a.classList.remove("toc-active"));
+    const link = toc.querySelector('a[href="#' + esc(id) + '"]');
+    if (link) link.classList.add("toc-active");
+  });
 }
 
 function highlightById(id) {

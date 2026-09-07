@@ -4,6 +4,8 @@ import { initFootnotes } from "./modules/footnotes.js";
 import { initShareWidgets } from "./modules/share.js";
 import { initCodeBlocks } from "./modules/codeblock.js";
 import { initAnchors } from "./modules/anchors.js";
+import { initMenu } from "./modules/menu.js";
+import { initScrollSpy } from "./modules/scrollspy.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
@@ -11,4 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initShareWidgets();
   initCodeBlocks();
   initAnchors();
+  initMenu();
+  initScrollSpy();
 });

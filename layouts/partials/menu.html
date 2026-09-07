@@ -11,7 +11,7 @@ Renders a menu for the given menu ID.
 {{- $menuID := .menuID }}
 
 {{- with index site.Menus $menuID }}
-  <nav class="flex justify-end w-full whitespace-nowrap">
+  <nav id="site-nav" class="site-nav flex justify-end w-full whitespace-nowrap">
     <ul class="list-none flex flex-row items-center space-x-2 sm:space-x-4 md:space-x-6 py-2">
       {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
     </ul>

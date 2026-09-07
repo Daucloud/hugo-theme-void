@@ -434,6 +434,58 @@ blockquote.anchor-highlight {
   outline: 3px solid rgba(245, 158, 11, 0.45);
 }
 
+/* ---- Header navigation: inline on sm+, dropdown behind a hamburger below ---- */
+.menu-toggle .menu-icon-close { display: none; }
+.menu-open .menu-toggle .menu-icon-open { display: none; }
+.menu-open .menu-toggle .menu-icon-close { display: block; }
+@media (max-width: 39.99rem) {
+  .site-nav {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    padding: .5rem 1rem 1rem;
+    background-color: #fff;
+    border-top: 1px solid #e5e7eb;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+  }
+  .menu-open .site-nav { display: block; }
+  .site-nav ul { flex-direction: column; align-items: stretch; gap: .25rem; }
+  .site-nav ul > li + li { margin-left: 0; }
+  .site-nav li a { display: block; padding: .6rem .75rem; }
+  .dark .site-nav { background-color: #0f172a; border-top-color: #1f2937; }
+}
+
+/* ---- Article layout: sticky TOC sidebar on wide screens (>= 80rem) ---- */
+.toc-sidebar { display: none; }
+@media (min-width: 80rem) {
+  .site-main { max-width: 76rem; }
+  .article-layout.has-toc {
+    display: grid;
+    grid-template-columns: minmax(0, 56rem) 16rem;
+    gap: 2rem;
+    align-items: start;
+    justify-content: center;
+  }
+  .article-layout.has-toc .toc-inline { display: none; }
+  .toc-sidebar {
+    display: block;
+    position: sticky;
+    top: 6rem;
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+    padding-right: .25rem;
+    scrollbar-width: thin;
+  }
+  .toc-sidebar .toc-nav { font-size: .85rem; }
+  .toc-sidebar .toc-nav a { padding: .3rem .5rem; color: #4b5563; }
+  .toc-sidebar .toc-nav a.toc-active { background-color: #eef2ff; color: #3730a3; }
+  .dark .toc-sidebar .toc-nav a { color: #9ca3af; }
+  .dark .toc-sidebar .toc-nav a.toc-active { background-color: #1e293b; color: #93c5fd; }
+  .dark .toc-sidebar-title { color: #94a3b8; }
+}
+
 /* Table of Contents: native <details> */
 .toc > summary { list-style: none; }
 .toc > summary::-webkit-details-marker { display: none; }
@@ -442,11 +494,11 @@ blockquote.anchor-highlight {
 .toc[open] .toc-icon-close { display: inline; }
 
 /* Table of Contents styling */
-#TableOfContents { font-size: .95rem; }
-#TableOfContents ul { list-style: none; padding-left: 0; margin: 0; }
-#TableOfContents li { margin: 0; }
-#TableOfContents > ul > li + li { margin-top: .35rem; }
-#TableOfContents a {
+.toc-nav { font-size: .95rem; }
+.toc-nav ul { list-style: none; padding-left: 0; margin: 0; }
+.toc-nav li { margin: 0; }
+.toc-nav nav > ul > li + li { margin-top: .35rem; }
+.toc-nav a {
   display: block;
   padding: .375rem .5rem; /* 6px 8px */
   border-radius: .375rem; /* rounded-md */
@@ -454,18 +506,18 @@ blockquote.anchor-highlight {
   text-decoration: none;
   transition: background-color .15s ease, color .15s ease;
 }
-#TableOfContents a:hover { background-color: #eef2ff; color: #1f2937; }
-#TableOfContents ul ul {
+.toc-nav a:hover { background-color: #eef2ff; color: #1f2937; }
+.toc-nav ul ul {
   margin-top: .15rem;
   margin-left: .5rem;
   padding-left: .75rem;
   border-left: 1.5px solid #e5e7eb; /* gray-200 */
 }
-#TableOfContents ul ul a { font-size: .92em; padding-left: .25rem; }
+.toc-nav ul ul a { font-size: .92em; padding-left: .25rem; }
 /* active item */
-#TableOfContents a.toc-active { background-color: #eef2ff; color: #3730a3; } /* indigo */
+.toc-nav a.toc-active { background-color: #eef2ff; color: #3730a3; } /* indigo */
 /* focus visibility */
-#TableOfContents a:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
+.toc-nav a:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
 
 /* Heading anchor copy button */
 .heading-anchor { 
@@ -763,10 +815,10 @@ div#disqus_thread iframe[sandbox] {
 .dark .prose hr { border-color: #334155; }
 
 .dark #toc-content { background-color: #0f172a; border-color: #1f2937; }
-.dark #TableOfContents a { color: #e5e7eb; }
-.dark #TableOfContents a:hover { background-color: #1e293b; color: #e5e7eb; }
-.dark #TableOfContents a.toc-active { background-color: #1e293b; color: #93c5fd; }
-.dark #TableOfContents ul ul { border-left-color: #334155; }
+.dark .toc-nav a { color: #e5e7eb; }
+.dark .toc-nav a:hover { background-color: #1e293b; color: #e5e7eb; }
+.dark .toc-nav a.toc-active { background-color: #1e293b; color: #93c5fd; }
+.dark .toc-nav ul ul { border-left-color: #334155; }
 
 .dark .code-block-container {
   background-color: #0f172a;
