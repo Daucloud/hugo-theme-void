@@ -1,0 +1,25 @@
+{{- /*
+  Plain-text teaser for list pages and feeds.
+  Hugo's .Summary is derived from the rendered HTML, which (with build-time KaTeX)
+  contains MathML + TeX source + HTML spans, so plainify produced repeated garbage
+  for posts with formulas. Build the teaser from the Markdown source instead:
+  drop fenced blocks, math, shortcodes, images; unwrap links; strip markup.
+  Front matter `description`/`summary` win when present.
+*/ -}}
+{{- $s := or .Params.summary .Description "" -}}
+{{- if not $s -}}
+  {{- $s = .RawContent -}}
+  {{- $s = replaceRE "(?s)```.*?```" " " $s -}}
+  {{- $s = replaceRE "(?s)\\$\\$.*?\\$\\$" " " $s -}}
+  {{- $s = replaceRE "\\$[^$\n]+?\\$" " " $s -}}
+  {{- $s = replaceRE "(?s)\\{\\{[<%].*?[>%]\\}\\}" " " $s -}}
+  {{- $s = replaceRE "!\\[[^\\]]*\\]\\([^)]*\\)" " " $s -}}
+  {{- $s = replaceRE "\\[([^\\]]*)\\]\\([^)]*\\)" "$1" $s -}}
+  {{- $s = replaceRE "(?m)^#{1,6}[^\n]*$" " " $s -}}
+  {{- $s = replaceRE "(?m)^[ \t]*[-*+]\\s+|^[ \t]*\\d+\\.\\s+|^>\\s?" "" $s -}}
+  {{- $s = replaceRE "<[^>]+>" " " $s -}}
+  {{- $s = replaceRE "[*_`~|]+" "" $s -}}
+  {{- $s = replaceRE "\\[\\^[^\\]]+\\]" "" $s -}}
+{{- end -}}
+{{- $s = $s | plainify | replaceRE "\\s+" " " | strings.TrimSpace -}}
+{{- $s | truncate (default 140 .Params.summaryLength) -}}

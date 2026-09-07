@@ -52,7 +52,7 @@
       <author>{{ . }}{{ with site.Params.author.name }} ({{ . }}){{ end }}</author>
       {{- end }}
       <guid>{{ .Permalink }}</guid>
-      <description>{{ .Summary | plainify | transform.XMLEscape | safeHTML }}</description>
+      <description>{{ partial "summary.html" . | transform.XMLEscape | safeHTML }}</description>
       <content:encoded>{{ $content | transform.XMLEscape | safeHTML }}</content:encoded>
     </item>
     {{- end }}

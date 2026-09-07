@@ -702,7 +702,7 @@ blockquote.anchor-highlight {
 
 .code-block-body .highlight .lntable {
   border-spacing: 0;
-  table-layout: fixed;
+  table-layout: auto; /* fixed layout collapsed the line-number column to 0px */
 }
 
 .code-block-body .highlight .lntd {
@@ -711,6 +711,8 @@ blockquote.anchor-highlight {
 }
 
 .code-block-body .highlight .lntd:first-child {
+  width: 1%;
+  white-space: nowrap;
   border-right: 1px solid rgba(203, 213, 225, 0.78);
   user-select: none;
 }

@@ -14,7 +14,7 @@
         <div class="min-w-0">
           <h3 class="text-xl font-medium text-fg group-hover:text-accent transition-colors">{{ $p.Title }}</h3>
           <time class="text-sm text-fg-faint">{{ $p.Date.Format "2006-01-02" }}</time>
-          {{ with $p.Summary }}<p class="text-fg-muted text-sm mt-2 line-clamp-2">{{ . | plainify | truncate 140 }}</p>{{ end }}
+          {{ with partial "summary.html" $p }}<p class="text-fg-muted text-sm mt-2 line-clamp-2">{{ . }}</p>{{ end }}
         </div>
       </div>
     </li>

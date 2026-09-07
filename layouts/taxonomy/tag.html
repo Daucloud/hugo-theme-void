@@ -43,10 +43,8 @@
                 </time>
               </div>
               
-              {{ if .Summary }}
-              <div class="text-fg-muted text-sm">
-                {{ .Summary | plainify | truncate 140 }}
-              </div>
+              {{ with partial "summary.html" . }}
+              <div class="text-fg-muted text-sm">{{ . }}</div>
               {{ end }}
               
               {{ if .Params.tags }}
