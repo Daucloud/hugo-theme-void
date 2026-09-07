@@ -1,9 +1,8 @@
 {{ define "main" }}
   <article class="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
     <header class="border-b border-gray-100 relative">
-      <!-- 装饰背景已移除，避免明暗模式下干扰 -->
       <div class="article-inner py-8">
-      
+
       <!-- 文章元数据 -->
       {{ if .Params.categories }}
       <div class="mb-3 flex">
@@ -14,7 +13,7 @@
         {{ end }}
       </div>
       {{ end }}
-      
+
       <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 relative">{{ .Title }}</h1>
 
       {{ $shareTitle := .Title }}
@@ -36,13 +35,13 @@
           </svg>
           {{ $dateHuman }}
         </time>
-        
-        <!-- 阅读时间估计 -->
+
+        <!-- 阅读时间：Hugo 内建估算，hasCJKLanguage 开启后按中文字符数计算 -->
         <span class="flex items-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          {{ math.Round (div (countwords .Content) 200.0) }} {{ i18n "reading_time" | default "分钟阅读" }}
+          {{ .ReadingTime }} {{ partial "ui.html" (dict "page" . "key" "reading_time") }}
         </span>
 
         <!-- 总阅读量 -->
@@ -50,7 +49,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400 inline-block flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-          </svg><span class="whitespace-nowrap">{{ i18n "page_views" | default "阅读量" }} <span id="busuanzi_value_page_pv"></span></span>
+          </svg><span class="whitespace-nowrap">{{ partial "ui.html" (dict "page" . "key" "page_views") }} <span id="busuanzi_value_page_pv"></span></span>
         </span>
 
         <div
@@ -59,10 +58,10 @@
           data-share-url="{{ .Permalink }}"
           data-share-title="{{ $shareTitle }}"
           data-share-text="{{ $shareText }}"
-          data-share-label-default="{{ i18n "share" | default "Share" }}"
-          data-share-label-success="{{ i18n "share_copied" | default "Copied" }}"
-          data-share-copy-summary-success="{{ i18n "share_copy_summary_success" | default "Share text copied." }}"
-          data-share-copy-failed="{{ i18n "share_copy_failed" | default "Copy failed." }}"
+          data-share-label-default="{{ partial "ui.html" (dict "page" . "key" "share") }}"
+          data-share-label-success="{{ partial "ui.html" (dict "page" . "key" "share_copied") }}"
+          data-share-copy-summary-success="{{ partial "ui.html" (dict "page" . "key" "share_copy_summary_success") }}"
+          data-share-copy-failed="{{ partial "ui.html" (dict "page" . "key" "share_copy_failed") }}"
         >
           <button
             type="button"
@@ -75,7 +74,7 @@
               <circle cx="6" cy="12" r="3" />
               <circle cx="18" cy="19" r="3" />
             </svg>
-            <span data-share-label>{{ i18n "share" | default "Share" }}</span>
+            <span data-share-label>{{ partial "ui.html" (dict "page" . "key" "share") }}</span>
           </button>
         </div>
       </div>
@@ -105,7 +104,7 @@
         aria-controls="toc-content"
         :aria-expanded="open.toString()"
       >
-        <span>{{ i18n "table_of_contents" | default "Table of Contents" }}</span>
+        <span>{{ partial "ui.html" (dict "page" . "key" "table_of_contents") }}</span>
         <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
         </svg>
@@ -133,14 +132,14 @@
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
       </svg>
-      {{ i18n "last_updated" | default "最后更新于" }} {{ $updated.Format "2006-01-02" }}
+      {{ partial "ui.html" (dict "page" . "key" "last_updated") }} {{ $updated.Format "2006-01-02" }}
     </div>
     {{ end }}
 
     <footer class="py-6 bg-gray-50 border-t border-gray-100">
       <div class="article-inner">
-      {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
-      
+      {{ partial "terms.html" (dict "taxonomy" "tags" "page" . "label" (partial "ui.html" (dict "page" . "key" "tags_label"))) }}
+
       {{/* Previous/Next navigation */}}
       {{ $prev := .PrevInSection }}
       {{ $next := .NextInSection }}
@@ -152,7 +151,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
-            {{ i18n "pagination_previous" | default "Previous" }}
+            {{ partial "ui.html" (dict "page" . "key" "post_previous") }}
           </div>
           <div class="text-sm font-medium text-gray-900 group-hover:text-blue-700 line-clamp-2">{{ $prev.Title }}</div>
         </a>
@@ -161,7 +160,7 @@
         {{ if $next }}
         <a href="{{ $next.RelPermalink }}" class="group block p-4 bg-white border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50/30 transition-colors sm:text-right sm:col-start-2">
           <div class="text-xs text-gray-500 mb-1 flex items-center sm:justify-end">
-            <span class="sm:order-1 mr-0 sm:ml-1">{{ i18n "pagination_next" | default "Next" }}</span>
+            <span class="sm:order-1 mr-0 sm:ml-1">{{ partial "ui.html" (dict "page" . "key" "post_next") }}</span>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1.5 text-gray-400 sm:order-2 sm:ml-1 sm:mr-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
             </svg>
@@ -171,14 +170,14 @@
         {{ end }}
       </nav>
       {{ end }}
-      
+
       <!-- 返回按钮 -->
       <div class="mt-6 flex justify-center">
         <a href="{{ "/" | relLangURL }}" class="inline-flex items-center text-gray-600 hover:text-blue-600 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          {{ i18n "back_to_home" | default "返回首页" }}
+          {{ partial "ui.html" (dict "page" . "key" "back_to_home") }}
         </a>
       </div>
       </div>

@@ -1,18 +1,18 @@
 # 页脚翻译
 [footer_share_knowledge]
 other = "分享知识、经验和想法"
-  
+
 # 导航部分
 [footer_navigation]
 other = "导航"
-  
+
 # 联系部分
 [footer_stay_connected]
 other = "保持联系"
-  
+
 [footer_subscribe_contact]
 other = "订阅我的内容或联系我"
-  
+
 [footer_contact_me]
 other = "联系我"
 
@@ -25,19 +25,41 @@ other = "知乎"
 
 [footer_email]
 other = "邮箱"
-  
+
 # 版权部分
 [footer_rights_reserved]
 other = "保留所有权利"
-  
+
 [footer_built_with]
 other = "使用"
-  
+
 [footer_built]
 other = "构建"
-  
+
 [footer_theme]
 other = "主题"
+
+[footer_total_visits]
+other = "总访问量"
+
+# 主导航（菜单项通过 identifier 匹配这些键）
+[nav_home]
+other = "首页"
+
+[nav_posts]
+other = "文章"
+
+[nav_categories]
+other = "分类"
+
+[nav_tags]
+other = "标签"
+
+[nav_about]
+other = "关于"
+
+[skip_to_content]
+other = "跳到正文"
 
 # 首页
 [home_recent_posts]
@@ -70,6 +92,9 @@ other = "按分类查看"
 
 [list_article_count]
 other = "共 {{ .Count }} 篇文章"
+
+[all_posts]
+other = "所有文章"
 
 # About页面
 [about_skills]
@@ -106,8 +131,23 @@ other = "个人总结"
 [reading_time]
 other = "分钟阅读"
 
+[page_views]
+other = "阅读量"
+
 [back_to_home]
 other = "返回首页"
+
+[last_updated]
+other = "最后更新于"
+
+[post_previous]
+other = "上一篇"
+
+[post_next]
+other = "下一篇"
+
+[tags_label]
+other = "标签"
 
 # 文章日期格式
 [date_month_day_format]
@@ -125,6 +165,9 @@ other = "所有标签"
 
 [tags_help_text]
 other = "点击任意标签查看相关文章"
+
+[categories_help_text]
+other = "点击分类展开或收起文章"
 
 [articles]
 other = "篇文章"
@@ -151,41 +194,53 @@ other = "相关文章"
 [table_of_contents]
 other = "目录"
 
-[comments]
-other = "评论"
-
+# 分享
 [share]
-other = "Share"
+other = "分享"
 
 [share_copy_link]
-other = "Copy link"
+other = "复制链接"
 
 [share_copy_summary]
-other = "Copy summary"
+other = "复制摘要"
 
 [share_copied]
-other = "Copied"
+other = "已复制"
 
 [share_native]
-other = "Share..."
+other = "分享…"
 
 [share_copy_link_success]
-other = "Link copied."
+other = "链接已复制。"
 
 [share_copy_summary_success]
-other = "Share text copied."
+other = "分享内容已复制。"
 
 [share_copy_failed]
-other = "Copy failed."
+other = "复制失败。"
 
 [share_native_failed]
-other = "Native sharing is unavailable."
+other = "当前环境不支持系统分享。"
 
-[last_updated]
-other = "最后更新于"
+# 评论
+[comments]
+other = "评论"
 
 [load_comments]
 other = "加载评论"
 
-[page_views]
-other = "阅读量"
+[loading_comments]
+other = "评论加载中…"
+
+[comments_load_failed]
+other = "评论加载失败。评论系统 Disqus 在中国大陆需要代理才能访问。"
+
+[retry]
+other = "重试"
+
+# 404
+[not_found_title]
+other = "页面不存在"
+
+[not_found_body]
+other = "你访问的页面不存在，或者已经被移动。"

@@ -1,7 +1,10 @@
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
 {{ partial "social_meta.html" . }}
+{{ with site.Home.OutputFormats.Get "rss" -}}
+<link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
+{{- end }}
 
 <!-- Prevent theme flash: set dark class ASAP and background color before CSS loads -->
 <meta name="color-scheme" content="light dark">
@@ -14,13 +17,13 @@
       if (dark) document.documentElement.classList.add('dark');
     } catch (_) {}
   })();
-  </script>
+</script>
 <style>
   /* Minimal pre-CSS paint to avoid white flash on dark */
   html.dark, html.dark body { background-color: #0b1220; }
   html { color-scheme: light; }
   html.dark { color-scheme: dark; }
-  </style>
+</style>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,12 +40,12 @@
 <link rel="manifest" href="{{ "favicon/site.webmanifest" | relURL }}" />
 <!-- End of favicon configuration -->
 
-{{ if eq hugo.Environment "development" }}
-  {{ partial "head/css.html" . }}
-  {{ partial "head/js.html" . }}
-{{ else }}
+{{ if hugo.IsProduction }}
   {{ partialCached "head/css.html" . }}
   {{ partialCached "head/js.html" . }}
+{{ else }}
+  {{ partial "head/css.html" . }}
+  {{ partial "head/js.html" . }}
 {{ end }}
 
 <!-- Busuanzi page/site view counter (load early to avoid delayed render) -->

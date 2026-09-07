@@ -1,0 +1,38 @@
+# UI strings for the article page, keyed by the page language (front matter `language`).
+# Site-wide chrome (header, footer, list pages) uses i18n/<site-lang>.toml instead.
+
+[zh]
+reading_time = "分钟阅读"
+page_views = "阅读量"
+share = "分享"
+share_copied = "已复制"
+share_copy_summary_success = "分享内容已复制。"
+share_copy_failed = "复制失败。"
+table_of_contents = "目录"
+last_updated = "最后更新于"
+tags_label = "标签"
+post_previous = "上一篇"
+post_next = "下一篇"
+back_to_home = "返回首页"
+load_comments = "加载评论"
+loading_comments = "评论加载中…"
+comments_load_failed = "评论加载失败。评论系统 Disqus 在中国大陆需要代理才能访问。"
+retry = "重试"
+
+[en]
+reading_time = "min read"
+page_views = "Views"
+share = "Share"
+share_copied = "Copied"
+share_copy_summary_success = "Share text copied."
+share_copy_failed = "Copy failed."
+table_of_contents = "Table of Contents"
+last_updated = "Last updated on"
+tags_label = "Tags"
+post_previous = "Previous"
+post_next = "Next"
+back_to_home = "Back to Home"
+load_comments = "Load comments"
+loading_comments = "Loading comments…"
+comments_load_failed = "Comments failed to load. Disqus may be blocked on your network."
+retry = "Retry"

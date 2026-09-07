@@ -13,8 +13,10 @@ Void is a clean, modern Hugo blog theme built with [Tailwind CSS](https://tailwi
 - 🌗 Dark/Light mode with animated icon toggle (no flash on load)
 - 🧭 Collapsible Table of Contents with active item highlight
 - 🔗 In‑page anchor highlight and copy‑permalink by clicking headings
-- 🧱 Code blocks with header (language label + copy) + HLJS light/dark themes
-- 🧮 KaTeX math support (inline/display) with common macros
+- 🧱 Code blocks with header (language label + copy button), Chroma light/dark highlighting
+- 🧮 KaTeX math support (inline/display)
+- 🌐 Single-language site with per-post `language` switch for `<html lang>` and UI strings
+- 📰 Full-content RSS feed, 404 page, lazy-loaded Disqus with offline fallback
 - ✍️ Readability tweaks: paragraph/list spacing, footnotes, tag chips, cards
 - 🏷️ Tags & categories, reading time, social links
 
@@ -52,7 +54,10 @@ Add the following configuration options to your `hugo.toml` (or `config.toml`):
 
 ```toml
 baseURL = 'https://example.org/'
-languageCode = 'en-US'
+languageCode = 'zh-CN'          # or 'en-US'; picks i18n/<lang>.toml for the site chrome
+defaultContentLanguage = 'zh'   # must match the i18n file name
+hasCJKLanguage = true           # correct word counts / summaries for Chinese content
+enableRobotsTXT = true
 title = 'Your Site Title'
 theme = "void"
 
@@ -65,9 +70,11 @@ theme = "void"
   [params.avatar]
     url = "https://example.com/your-avatar.jpg"
 
-# Main menu
+# Main menu. `identifier` matches an i18n key (nav_home, nav_posts, ...) so the
+# label follows the site language; drop it to show `name` verbatim.
 [[menus.main]]
 name = 'Home'
+identifier = 'nav_home'
 pageRef = '/'
 weight = 10
 
@@ -107,8 +114,18 @@ weight = 40
 ### Code & Math
 - Use fenced code blocks with a language hint (```go, ```python, …).
 - Each block is wrapped with a small header showing the language and a copy button.
-- Highlight.js switches themes automatically in dark/light mode.
-- KaTeX supports `$…$` (inline) and `$$…$$` (display). Macros: `\E`, `\Var`, `\argmax`, `\argmin`.
+- Chroma highlighting switches themes automatically in dark/light mode.
+- KaTeX supports `$…$` (inline) and `$$…$$` (display).
+
+### Mixed-language content
+- The site has one language (`languageCode`), but any page may set `language = "en"` (or `"zh"`) in front matter.
+- The theme then emits `<html lang="en">` for that page and switches the article-page UI strings (reading time, TOC, prev/next, comments) using `data/ui.toml`.
+- Site-wide chrome (header, footer, list pages) always follows the site language via `i18n/`.
+
+### Feeds, 404, comments
+- `index.xml` is a full-content RSS feed (`content:encoded`) limited to the `posts` section; the head carries the autodiscovery link.
+- `layouts/404.html` is served by GitHub Pages / Netlify automatically.
+- Disqus (`[services.disqus] shortname`) loads lazily when the comment box scrolls into view; if the embed is blocked or times out, a message with a retry button replaces the spinner.
 
 ### Callouts
 - Shortcode: `{{< callout title="Note" type="info" >}}...{{< /callout >}}`
@@ -154,16 +171,18 @@ weight = 40
 
 ## Development
 
-If you want to modify the theme, you need to install Node.js and npm. Then:
+CSS is compiled by Hugo itself through `css.TailwindCSS` (Tailwind v4, CSS-first
+config in `assets/css/main.css`). The Tailwind CLI has to be resolvable from the
+**site** root, not the theme:
 
 ```bash
-cd themes/void
-npm install
-npm run dev   # Development mode with auto CSS compilation
-npm run build # Build once (optional)
+cd yourHugoSite
+npm install -D tailwindcss @tailwindcss/cli
+hugo server
 ```
 
-This theme ships a Tailwind v4 pipeline via Hugo assets. You normally do not need to run `build` unless you want the prebuilt CSS artifact.
+JavaScript lives in `assets/js/` as ES modules and is bundled by Hugo's `js.Build`
+(esbuild); `assets/js/main.js` is the entry point. No separate build step is needed.
 
 ## License
 

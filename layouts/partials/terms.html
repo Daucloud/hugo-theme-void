@@ -3,6 +3,7 @@ For a given taxonomy, renders a list of terms assigned to the page.
 
 @context {page} page The current page.
 @context {string} taxonomy The taxonomy.
+@context {string} [label] Optional label overriding the taxonomy title.
 
 @example: {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
 */}}
@@ -11,7 +12,7 @@ For a given taxonomy, renders a list of terms assigned to the page.
 {{- $taxonomy := .taxonomy }}
 
 {{- with $page.GetTerms $taxonomy }}
-  {{- $label := (index . 0).Parent.LinkTitle }}
+  {{- $label := $.label | default (index . 0).Parent.LinkTitle }}
   <div class="tags-container">
     <div class="text-gray-700 dark:text-gray-300 font-medium mb-2">{{ $label }}:</div>
     <div class="flex flex-wrap gap-2">
