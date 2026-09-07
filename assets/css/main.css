@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "./chroma-light.css";
+@import "./chroma-dark.css";
 @custom-variant dark (&:where(.dark, .dark *));
 @source "hugo_stats.json";
 
@@ -550,72 +552,66 @@ blockquote.anchor-highlight {
   overflow-x: auto;
 }
 
-.code-highlight-variant {
-  display: block;
+/* The container paints the background; Chroma's palette backgrounds would fight it. */
+.code-block-body .chroma,
+.code-block-body .chroma .lntable,
+.code-block-body .chroma .lntd,
+.dark .code-block-body .chroma,
+.dark .code-block-body .chroma .lntable,
+.dark .code-block-body .chroma .lntd {
+  background-color: transparent;
 }
 
-.code-highlight-dark {
-  display: none;
-}
-
-.dark .code-highlight-light {
-  display: none;
-}
-
-.dark .code-highlight-dark {
-  display: block;
-}
-
-.code-highlight-variant .highlight {
+.code-block-body .highlight {
   margin: 0;
 }
 
-.code-highlight-variant .highlight,
-.code-highlight-variant .highlight .chroma,
-.code-highlight-variant .highlight .lntable,
-.code-highlight-variant .highlight pre {
+.code-block-body .highlight,
+.code-block-body .highlight .chroma,
+.code-block-body .highlight .lntable,
+.code-block-body .highlight pre {
   margin: 0 !important;
   width: 100%;
 }
 
-.code-highlight-variant .highlight .lntable {
+.code-block-body .highlight .lntable {
   border-spacing: 0;
   table-layout: fixed;
 }
 
-.code-highlight-variant .highlight .lntd {
+.code-block-body .highlight .lntd {
   padding: 0;
   vertical-align: top;
 }
 
-.code-highlight-variant .highlight .lntd:first-child {
+.code-block-body .highlight .lntd:first-child {
   border-right: 1px solid rgba(203, 213, 225, 0.78);
   user-select: none;
 }
 
-.code-highlight-variant .highlight .lntd:last-child {
+.code-block-body .highlight .lntd:last-child {
   width: 100%;
 }
 
-.code-highlight-light .highlight .lntd:first-child {
+.code-block-body .highlight .lntd:first-child {
   background-color: rgba(255, 255, 255, 0.16);
 }
 
-.code-highlight-dark .highlight .lntd:first-child {
+.dark .code-block-body .highlight .lntd:first-child {
   border-color: rgba(51, 65, 85, 0.9);
   background-color: rgba(2, 6, 23, 0.12);
 }
 
-.code-highlight-variant .highlight .lntd:first-child pre {
+.code-block-body .highlight .lntd:first-child pre {
   padding: 0.8rem 0.7rem 0.9rem 0.75rem !important;
 }
 
-.code-highlight-variant .highlight .lntd:last-child pre {
+.code-block-body .highlight .lntd:last-child pre {
   padding: 0.8rem 0.9rem 0.9rem !important;
 }
 
-.code-highlight-variant .highlight .ln,
-.code-highlight-variant .highlight .lnt {
+.code-block-body .highlight .ln,
+.code-block-body .highlight .lnt {
   display: block;
   min-width: 2ch;
   text-align: right;
@@ -625,16 +621,18 @@ blockquote.anchor-highlight {
   font-variant-numeric: tabular-nums;
 }
 
-.code-highlight-variant .highlight .ln {
+.code-block-body .highlight .ln,
+.code-block-body .highlight .lnt {
   color: #94a3b8;
 }
 
-.code-highlight-dark .highlight .ln {
+.dark .code-block-body .highlight .ln,
+.dark .code-block-body .highlight .lnt {
   color: #64748b;
 }
 
-.code-highlight-variant .highlight pre,
-.code-highlight-variant .highlight code {
+.code-block-body .highlight pre,
+.code-block-body .highlight code {
   font-family: var(--font-code);
   font-size: var(--code-font-size);
   line-height: var(--code-line-height);

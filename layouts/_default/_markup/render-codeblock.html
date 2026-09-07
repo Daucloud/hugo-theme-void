@@ -45,9 +45,9 @@
   {{- $shortcode | markdownify -}}
 {{- else -}}
   {{- $langLabel := lower ($lang | default "text") -}}
-  {{- $optsBase := merge .Options (dict "lineNos" "table") -}}
-  {{- $light := transform.HighlightCodeBlock . (merge $optsBase (dict "style" "github")) -}}
-  {{- $dark := transform.HighlightCodeBlock . (merge $optsBase (dict "style" "github-dark")) -}}
+  {{- /* Class-based Chroma output (markup.highlight.noClasses = false); the light and dark
+         palettes come from assets/css/chroma-*.css, so the block is highlighted once. */ -}}
+  {{- $result := transform.HighlightCodeBlock . (merge .Options (dict "lineNos" "table")) -}}
   <div class="code-block-container not-prose" data-code-block>
     <div class="code-block-header">
       <span class="code-language-label">{{ $langLabel }}</span>
@@ -58,12 +58,7 @@
       </button>
     </div>
     <div class="code-block-body">
-      <div class="code-highlight-variant code-highlight-light">
-        {{ $light.Wrapped }}
-      </div>
-      <div class="code-highlight-variant code-highlight-dark">
-        {{ $dark.Wrapped }}
-      </div>
+      {{ $result.Wrapped }}
     </div>
   </div>
 {{- end -}}

@@ -7,9 +7,9 @@ const ICON_DONE =
 
 // The code cell of a Chroma line-number table, in order of preference.
 const CODE_SELECTORS = [
-  ".code-highlight-variant code[data-lang]",
-  ".code-highlight-variant td:last-child code",
-  ".code-highlight-variant code:last-of-type",
+  ".code-block-body code[data-lang]",
+  ".code-block-body td:last-child code",
+  ".code-block-body code:last-of-type",
 ];
 
 function getCodeText(block) {
