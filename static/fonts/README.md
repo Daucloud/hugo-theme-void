@@ -2,7 +2,7 @@
 
 | Family | Files | Source | License |
 |---|---|---|---|
-| STIX Two Text (400, 400i, 600, 700) | `stix-two-text-*.woff2` | Google Fonts latin slices, mirrored via `tools/fetch-google-font.py` | SIL OFL 1.1 |
+| Source Serif 4 (400, 400i, 600, 700, 700i) | `source-serif-4-*.woff2` | Latin subsets of Adobe's desktop TTFs (fontTools/pyftsubset) | SIL OFL 1.1 |
 | Noto Serif SC (400, 700) | `noto-serif-sc/*.woff2` | Google Fonts slices (API v35), mirrored via `tools/fetch-google-font.py` | SIL OFL 1.1 |
 | JetBrains Mono (400, 400i, 500) | `jetbrains-mono-*.woff2` | Google Fonts latin slices, mirrored via `tools/fetch-google-font.py` | SIL OFL 1.1 |
 

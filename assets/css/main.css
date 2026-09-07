@@ -2,7 +2,7 @@
 /* Self-hosted Latin web fonts (see tools/build-fonts.py, tools/fetch-google-font.py).
    The CJK face (fonts/noto-serif-sc.css, ~200 unicode-range slices) is large, so
    head/css.html loads it as a separate non-blocking stylesheet instead. */
-@import "./fonts/stix-two-text.css";
+@import "./fonts/source-serif-4.css";
 @import "./fonts/jetbrains-mono.css";
 /* Syntax highlighting palettes */
 @import "./chroma-light.css";
@@ -81,9 +81,15 @@
 
 /* 增强Markdown渲染样式 */
 @theme {
-  --font-bilingual: "STIX Two Text", "Noto Serif SC", "Source Han Serif SC", "Source Han Serif CN", "Songti SC", "STSong", ui-serif, serif;
+  --font-bilingual: "Source Serif 4", "Noto Serif SC", "Source Han Serif SC", "Source Han Serif CN", "Songti SC", "STSong", ui-serif, serif;
   --font-code: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --font-ui: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Chinese pages put the CJK face first: its Latin (a tuned Source Serif) and its punctuation
+   (——、……、“”) then come from one family. English pages keep Source Serif 4 first for real italics. */
+html[lang^="zh"] {
+  --font-bilingual: "Noto Serif SC", "Source Serif 4", "Source Han Serif SC", "Source Han Serif CN", "Songti SC", "STSong", ui-serif, serif;
 }
 
 /* Skip link: visually hidden until focused via keyboard */
@@ -283,38 +289,33 @@ details.callout[open] > summary .callout-chevron::after { content: "\25BE"; } /*
   color: var(--fg);
   font-size: 1.0625rem;
   font-weight: 400;
-  line-height: 1.85;
+  line-height: 1.8;
   letter-spacing: 0;
+  /* CSS Text 4: quarter-em gap between Han and Latin/digits; tighter consecutive CJK punctuation.
+     Baseline browsers apply these, older ones ignore them. */
+  text-autospace: normal;
+  text-spacing-trim: normal;
   font-kerning: normal;
   text-rendering: optimizeLegibility;
   hanging-punctuation: allow-end;
 }
 
 
-/* English posts read better with a slightly tighter leading than CJK text */
-html[lang="en"] .article-prose { line-height: 1.7; }
-
-/* ---- TeX-style paragraphs: justified, first line indented two ems, no gap between paragraphs ---- */
+/* ---- Paragraphs: left aligned, separated by spacing (no first-line indent) ---- */
 .prose.article-prose p {
-  margin: 0;
-  text-align: justify;
-  text-justify: inter-ideograph;
-  hyphens: auto;
-  -webkit-hyphens: auto;
-  text-indent: 2em;
+  margin: 0 0 .9em;
+  text-align: start;
 }
-/* Chinese convention indents every paragraph; English (LaTeX) does not indent the first one after a heading */
-html[lang="en"] .prose.article-prose > p:first-child,
-html[lang="en"] .prose.article-prose :is(h1, h2, h3, h4, h5, h6) + p { text-indent: 0; }
-/* No indent inside lists, quotes, callouts, captions, tables, footnotes, or for paragraphs that only hold an image / formula */
-.prose.article-prose :is(li, blockquote, .callout, figure, td, th, .footnotes) p,
-.prose.article-prose p:has(> img:only-child),
-.prose.article-prose p:has(> .katex-display:only-child) { text-indent: 0; }
 .prose.article-prose p:has(> img:only-child) { text-align: center; }
-/* Blocks that follow or precede a paragraph still need breathing room */
-.prose.article-prose p + :is(ul, ol, table, figure, blockquote),
-.prose.article-prose :is(ul, ol, table, figure, blockquote) + p { margin-top: .85em; }
-.prose.article-prose p + .math-block, .prose.article-prose p + .katex-display { margin-top: .6em; }
+
+/* Chinese emphasis: no italics in CJK type; use 着重号 (dots under the characters, clreq §5.3) */
+html[lang^="zh"] .prose em {
+  font-style: normal;
+  text-emphasis: filled dot;
+  -webkit-text-emphasis: filled dot;
+  text-emphasis-position: under right;
+  -webkit-text-emphasis-position: under right;
+}
 
 .article-prose strong {
   font-weight: 650;

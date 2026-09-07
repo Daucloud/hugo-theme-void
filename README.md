@@ -15,8 +15,8 @@ Void is a clean, modern Hugo blog theme built with [Tailwind CSS](https://tailwi
 - 🔗 In‑page anchor highlight and copy‑permalink by clicking headings
 - 🧱 Code blocks with header (language label + copy button), class-based Chroma light/dark palettes
 - 🧮 KaTeX math rendered at build time (no client-side JavaScript), CSS/fonts self-hosted
-- 🔤 Self-hosted fonts (STIX Two Text, Noto Serif SC, JetBrains Mono), nothing from Google Fonts
-- 📐 TeX-flavoured article typography: justified text, indented paragraphs, numbered sections (`numbered = false` to opt out)
+- 🔤 Self-hosted fonts (Source Serif 4, Noto Serif SC, JetBrains Mono), nothing from Google Fonts
+- 📐 Language-aware typography: CJK-first stack on Chinese pages, 着重号 emphasis, optional section numbering (`numbered = true`)
 - 🖼️ Responsive WebP images with srcset and intrinsic sizes via a render-image hook
 - 🌐 Per-post `language` front matter for a correct `<html lang>` on mixed-language blogs
 - 📰 Full-content RSS feed, 404 page, lazy-loaded Disqus with offline fallback
@@ -143,18 +143,20 @@ weight = 40
 - `languageCode` is the default `<html lang>`. Any page may override it with `language = "en"` (or `"zh-CN"`, …) in front matter, so a mostly-Chinese blog can keep `languageCode = 'zh-CN'` and tag its English posts. Hugo reserves the key `lang`, hence `language`.
 
 ### Fonts (self-hosted)
-- Body: STIX Two Text (Latin) + Noto Serif SC (CJK); code: JetBrains Mono; math: KaTeX's own fonts. Nothing is fetched from Google Fonts at runtime.
+- Body: Source Serif 4 (Latin) + Noto Serif SC (CJK); code: JetBrains Mono; math: KaTeX's own fonts. Nothing is fetched from Google Fonts at runtime.
+- Chinese pages (`<html lang="zh-…">`) put Noto Serif SC first so Latin letters, digits and punctuation come from one family; English pages keep Source Serif 4 first for real italics.
 - Files live in `static/fonts/`, `@font-face` rules in `assets/css/fonts/`. The CJK declaration is loaded as a
   separate non-blocking stylesheet because its ~200 unicode-range slices are large; a page only downloads the
   slices it needs, and `local()` sources skip the download for visitors who have the font installed.
 - Mirror a Google Fonts family with `tools/fetch-google-font.py`. See `static/fonts/README.md` for licenses.
 
-### Article typography (TeX flavour)
-- Paragraphs are justified with automatic hyphenation (driven by the page `lang`), indented two ems and set
-  without a gap between them. Chinese posts indent every paragraph; English posts skip the indent after a heading.
-- Headings use book-like proportions (1.5em / 1.25em / 1.1em) and are numbered 1, 1.1, 1.1.1 via CSS counters,
-  starting at the highest level the post uses (h1 or h2). Numbers also appear in the table of contents.
-  Set `numbered = false` in front matter to turn numbering off for a post.
+### Article typography
+- 17px body, leading 1.8, left aligned, paragraphs separated by spacing; `text-autospace` / `text-spacing-trim`
+  give quarter-em CJK–Latin gaps and tighter CJK punctuation in browsers that support them.
+- Chinese emphasis (`<em>`) renders as 着重号 (dots under the characters) instead of a slanted fake italic.
+- Headings use book proportions (1.5em / 1.25em / 1.1em). Set `numbered = true` in front matter to number
+  sections 1 / 1.1 / 1.1.1 (also in the table of contents); counters start at the post's highest heading level.
+- In `hugo server` a floating panel on article pages lets you try fonts and settings live (never rendered in production).
 
 ### Feeds, 404, comments
 - `index.xml` is a full-content RSS feed (`content:encoded`) limited to the `posts` section; the head carries the autodiscovery link.
