@@ -1,33 +1,68 @@
 {{ define "main" }}
-  <div class="max-w-3xl mx-auto min-h-[70vh] flex items-center justify-center px-4 relative">
-    <!-- 背景装饰已移除 -->
-    
-    <div class="w-full text-center">
-      {{ with .Site.Params.avatar }}
-      <div class="mx-auto mb-10 w-32 h-32 md:w-40 md:h-40 relative group">
-        <!-- 头像装饰光晕移除，保持简洁 -->
-        <div class="rounded-full overflow-hidden border-2 border-line-soft shadow-sm hover:shadow-md transition-all duration-300 relative">
-          <img src="{{ .url }}" alt="{{ $.Site.Title }}" class="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-105">
-        </div>
-      </div>
-      {{ end }}
-      <h1 class="text-3xl md:text-4xl font-bold text-fg mb-6">{{ .Site.Title }}</h1>
-      <div class="prose prose-lg md:prose-xl mx-auto">
-        {{ .Content }}
-      </div>
-      
-      {{ if .Site.Menus.main }}
-      <div class="mt-12 flex flex-wrap justify-center gap-3">
-        {{ range .Site.Menus.main }}
-        {{- $name := .Name }}
-        {{- with .Identifier }}{{ with T . }}{{ $name = . }}{{ end }}{{ end }}
-        <a href="{{ .URL }}" class="relative px-5 py-2.5 rounded-full text-accent-strong group overflow-hidden">
-          <span class="absolute inset-0 w-full h-full bg-accent-soft opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-          <span class="relative z-10 transition-colors duration-300">{{ $name }}</span>
-        </a>
-        {{ end }}
+<div class="max-w-3xl mx-auto px-4 pt-2 pb-12">
+  {{/* Who writes here */}}
+  <section class="flex items-center gap-5 sm:gap-6">
+    {{ with site.Params.avatar.url }}
+    <img src="{{ . }}" alt="{{ site.Title }}" width="96" height="96" class="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover ring-1 ring-line-soft flex-shrink-0">
+    {{ end }}
+    <div class="min-w-0">
+      <h1 class="text-2xl sm:text-3xl font-semibold text-fg-strong">{{ site.Title }}</h1>
+      {{ with site.Params.description }}<p class="mt-1 text-fg-faint">{{ . }}</p>{{ end }}
+      {{ with site.Params.social }}
+      <div class="mt-3 flex items-center gap-4 text-fg-faint">
+        {{ with .github }}<a class="hover:text-accent transition-colors" href="{{ . }}" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/></svg>
+        </a>{{ end }}
+        {{ with .zhihu }}<a class="hover:text-accent transition-colors" href="{{ . }}" target="_blank" rel="noopener" aria-label="Zhihu">
+          <svg class="h-5 w-5" viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true"><path d="M544.949 561.422s0-71.387-34.779-75.05-142.775 0-142.775 0v-219.654h161.078s-1.83-73.219-32.949-73.219h-261.755l43.93-117.148s-65.897 3.663-89.692 45.761-98.844 252.604-98.844 252.604 25.627 10.983 67.726-20.134c42.101-31.116 56.743-86.033 56.743-86.033l76.879-3.663 1.83 223.316s-133.621-1.83-161.078 0c-27.457 1.83-42.101 75.05-42.101 75.05h203.182s-18.307 124.47-69.557 214.164c-53.085 89.692-151.929 161.078-151.929 161.078s71.387 29.287 140.947-10.983c69.557-42.101 120.811-223.316 120.811-223.316l162.912 203.316s14.643-97.013-1.83-124.47c-18.307-27.457-113.49-137.283-113.49-137.283l-42.101 36.607 29.287-120.811h177.552zM587.05 188.01l-1.83 660.793h65.897l23.795 82.37 115.321-82.37h162.912v-660.793h-366.091zM879.92 775.584h-76.879l-97.013 75.05-21.965-75.05h-20.134v-512.527h215.991v512.527z"/></svg>
+        </a>{{ end }}
+        {{ with .email }}<a class="hover:text-accent transition-colors" href="mailto:{{ . }}" aria-label="Email">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/></svg>
+        </a>{{ end }}
       </div>
       {{ end }}
     </div>
-  </div>
+  </section>
+
+  {{ with .Content }}
+  <div class="prose mt-8 max-w-none">{{ . }}</div>
+  {{ end }}
+
+  {{/* Latest posts */}}
+  {{ with first 5 (where site.RegularPages "Section" "posts") }}
+  <section class="mt-12" aria-labelledby="recent-heading">
+    <div class="flex items-baseline justify-between">
+      <h2 id="recent-heading" class="text-sm font-semibold uppercase tracking-wider text-fg-faint">{{ i18n "home_recent_posts" | default "Recent Posts" }}</h2>
+      <a href="{{ "/posts/" | relLangURL }}" class="text-sm text-accent hover:text-accent-strong transition-colors no-underline">{{ i18n "home_view_all_posts" | default "View All Posts" }} &rarr;</a>
+    </div>
+    <ul class="mt-3 divide-y divide-line-soft border-y border-line-soft">
+      {{ range . }}
+      <li>
+        <a href="{{ .RelPermalink }}" class="group flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-5 py-3 no-underline">
+          <time datetime="{{ .Date.Format "2006-01-02" }}" class="w-28 shrink-0 text-sm text-fg-faint tabular-nums">{{ .Date.Format "2006-01-02" }}</time>
+          <span class="text-fg group-hover:text-accent transition-colors">{{ .Title }}</span>
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+  </section>
+  {{ end }}
+
+  {{/* Series */}}
+  {{ with site.Taxonomies.series }}{{ if gt (len .) 0 }}
+  <section class="mt-12" aria-labelledby="series-heading">
+    <h2 id="series-heading" class="text-sm font-semibold uppercase tracking-wider text-fg-faint">{{ i18n "series" | default "Series" }}</h2>
+    <ul class="mt-3 divide-y divide-line-soft border-y border-line-soft">
+      {{ range .ByCount }}
+      <li>
+        <a href="{{ .Page.RelPermalink }}" class="group flex items-baseline justify-between gap-4 py-3 no-underline">
+          <span class="text-fg group-hover:text-accent transition-colors">{{ .Page.Title }}</span>
+          <span class="text-sm text-fg-faint shrink-0">{{ .Count }} {{ i18n "articles" | default "articles" }}</span>
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+  </section>
+  {{ end }}{{ end }}
+</div>
 {{ end }}

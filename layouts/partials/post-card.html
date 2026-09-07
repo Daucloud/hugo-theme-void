@@ -1,0 +1,26 @@
+{{- /*
+  One post in a list. Whole card is a link; tag chips stay clickable on top.
+  @param {page}   page     The post.
+  @param {string} [current] Tag name to highlight (tag pages).
+*/ -}}
+{{- $p := .page -}}
+{{- $current := .current -}}
+<article class="post-card group relative rounded-lg border border-line-soft bg-surface hover:border-line transition-colors">
+  <a href="{{ $p.RelPermalink }}" class="absolute inset-0 z-10 rounded-lg" aria-label="{{ $p.Title }}"></a>
+  <div class="p-5">
+    <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4">
+      <h3 class="text-lg sm:text-xl font-medium text-fg group-hover:text-accent transition-colors">{{ $p.Title }}</h3>
+      <time datetime="{{ $p.Date.Format "2006-01-02" }}" class="text-sm text-fg-faint tabular-nums shrink-0">{{ $p.Date.Format (i18n "date_month_day_format" | default "Jan 02") }}</time>
+    </div>
+    {{- with partial "summary.html" $p }}
+    <p class="mt-2 text-sm leading-6 text-fg-muted line-clamp-2">{{ . }}</p>
+    {{- end }}
+    {{- with $p.Params.tags }}
+    <div class="mt-3 flex flex-wrap gap-2 relative z-20">
+      {{- range . }}
+      <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" class="tag-chip text-xs px-2 py-0.5 rounded {{ if eq . $current }}bg-accent-soft text-accent-strong{{ else }}bg-surface-2 text-fg-muted hover:bg-hover-strong{{ end }} transition-colors">{{ . }}</a>
+      {{- end }}
+    </div>
+    {{- end }}
+  </div>
+</article>

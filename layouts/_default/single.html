@@ -17,7 +17,7 @@
 
   <div class="article-layout{{ if $hasToc }} has-toc{{ end }}">
   <div class="article-main min-w-0">
-  <article class="max-w-4xl mx-auto bg-surface rounded-lg shadow-md overflow-hidden">
+  <article class="max-w-4xl mx-auto bg-surface rounded-lg border border-line-soft shadow-sm overflow-hidden">
     <header class="border-b border-line-soft relative">
       <div class="article-inner py-8">
 
@@ -32,7 +32,7 @@
       </div>
       {{ end }}
 
-      <h1 class="text-3xl sm:text-4xl font-bold text-fg-strong mb-4 relative" data-pagefind-meta="title">{{ .Title }}</h1>
+      <h1 class="text-3xl sm:text-4xl font-semibold text-fg-strong mb-4 relative" data-pagefind-meta="title">{{ .Title }}</h1>
 
       {{ $shareTitle := .Title }}
       {{ with .Params.share_title }}{{ $shareTitle = . }}{{ end }}
@@ -188,7 +188,7 @@
   </article>
 
   <!-- 使用懒加载Disqus评论 -->
-  <div class="max-w-4xl mx-auto mt-8 bg-surface rounded-lg shadow-md overflow-hidden theme-card" style="--tw-prose-body: #374151; --tw-prose-headings: #111827; --tw-prose-links: #2563eb; --tw-prose-links-hover: #1d4ed8; --tw-prose-code-bg: #f3f4f6; color: #374151;">
+  <div class="max-w-4xl mx-auto mt-8 bg-surface rounded-lg border border-line-soft overflow-hidden theme-card" style="--tw-prose-body: #374151; --tw-prose-headings: #111827; --tw-prose-links: #2563eb; --tw-prose-links-hover: #1d4ed8; --tw-prose-code-bg: #f3f4f6; color: #374151;">
     {{ partial "disqus_lazy.html" . }}
   </div>
   </div>{{/* .article-main */}}
