@@ -20,7 +20,7 @@
      Latin faces are part of main.css; preload the body face. The CJK face declaration
      (~200 unicode-range slices, ~60 KB gzipped) is loaded without blocking first paint:
      text shows in the system CJK font and swaps once the needed slices arrive. */}}
-<link rel="preload" href="{{ "fonts/source-serif-4-400.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="{{ "fonts/stix-two-text-400.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
 {{ with resources.Get "css/fonts/noto-serif-sc.css" }}
   {{ $cjk := . }}
   {{ if hugo.IsProduction }}{{ $cjk = $cjk | minify | fingerprint }}{{ end }}

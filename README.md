@@ -15,7 +15,8 @@ Void is a clean, modern Hugo blog theme built with [Tailwind CSS](https://tailwi
 - 🔗 In‑page anchor highlight and copy‑permalink by clicking headings
 - 🧱 Code blocks with header (language label + copy button), class-based Chroma light/dark palettes
 - 🧮 KaTeX math rendered at build time (no client-side JavaScript), CSS/fonts self-hosted
-- 🔤 Self-hosted fonts (Source Serif 4, Noto Serif SC, IBM Plex Mono), nothing from Google Fonts
+- 🔤 Self-hosted fonts (STIX Two Text, Noto Serif SC, JetBrains Mono), nothing from Google Fonts
+- 📐 TeX-flavoured article typography: justified text, indented paragraphs, numbered sections (`numbered = false` to opt out)
 - 🖼️ Responsive WebP images with srcset and intrinsic sizes via a render-image hook
 - 🌐 Per-post `language` front matter for a correct `<html lang>` on mixed-language blogs
 - 📰 Full-content RSS feed, 404 page, lazy-loaded Disqus with offline fallback
@@ -142,12 +143,18 @@ weight = 40
 - `languageCode` is the default `<html lang>`. Any page may override it with `language = "en"` (or `"zh-CN"`, …) in front matter, so a mostly-Chinese blog can keep `languageCode = 'zh-CN'` and tag its English posts. Hugo reserves the key `lang`, hence `language`.
 
 ### Fonts (self-hosted)
-- Body: Source Serif 4 (Latin) + Noto Serif SC (CJK); code: IBM Plex Mono. Nothing is fetched from Google Fonts.
+- Body: STIX Two Text (Latin) + Noto Serif SC (CJK); code: JetBrains Mono; math: KaTeX's own fonts. Nothing is fetched from Google Fonts at runtime.
 - Files live in `static/fonts/`, `@font-face` rules in `assets/css/fonts/`. The CJK declaration is loaded as a
   separate non-blocking stylesheet because its ~200 unicode-range slices are large; a page only downloads the
   slices it needs, and `local()` sources skip the download for visitors who have the font installed.
-- Regenerate with `tools/build-fonts.py` (Source Serif 4 from the desktop TTFs) and
-  `tools/fetch-google-font.py` (mirrors a Google Fonts family). See `static/fonts/README.md` for licenses.
+- Mirror a Google Fonts family with `tools/fetch-google-font.py`. See `static/fonts/README.md` for licenses.
+
+### Article typography (TeX flavour)
+- Paragraphs are justified with automatic hyphenation (driven by the page `lang`), indented two ems and set
+  without a gap between them. Chinese posts indent every paragraph; English posts skip the indent after a heading.
+- Headings use book-like proportions (1.5em / 1.25em / 1.1em) and are numbered 1, 1.1, 1.1.1 via CSS counters,
+  starting at the highest level the post uses (h1 or h2). Numbers also appear in the table of contents.
+  Set `numbered = false` in front matter to turn numbering off for a post.
 
 ### Feeds, 404, comments
 - `index.xml` is a full-content RSS feed (`content:encoded`) limited to the `posts` section; the head carries the autodiscovery link.

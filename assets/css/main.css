@@ -2,8 +2,8 @@
 /* Self-hosted Latin web fonts (see tools/build-fonts.py, tools/fetch-google-font.py).
    The CJK face (fonts/noto-serif-sc.css, ~200 unicode-range slices) is large, so
    head/css.html loads it as a separate non-blocking stylesheet instead. */
-@import "./fonts/source-serif-4.css";
-@import "./fonts/ibm-plex-mono.css";
+@import "./fonts/stix-two-text.css";
+@import "./fonts/jetbrains-mono.css";
 /* Syntax highlighting palettes */
 @import "./chroma-light.css";
 @import "./chroma-dark.css";
@@ -81,8 +81,8 @@
 
 /* 增强Markdown渲染样式 */
 @theme {
-  --font-bilingual: "Source Serif 4", "Noto Serif SC", "Source Han Serif SC", "Source Han Serif CN", "Songti SC", "STSong", ui-serif, serif;
-  --font-code: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-bilingual: "STIX Two Text", "Noto Serif SC", "Source Han Serif SC", "Source Han Serif CN", "Songti SC", "STSong", ui-serif, serif;
+  --font-code: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --font-ui: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -281,28 +281,40 @@ details.callout[open] > summary .callout-chevron::after { content: "\25BE"; } /*
 
 .article-prose {
   color: var(--fg);
-  font-size: 1rem;
+  font-size: 1.0625rem;
   font-weight: 400;
-  line-height: 1.82;
+  line-height: 1.85;
   letter-spacing: 0;
   font-kerning: normal;
   text-rendering: optimizeLegibility;
   hanging-punctuation: allow-end;
 }
 
-.article-prose p,
-.article-prose li {
-  line-height: 1.82;
-}
 
-.article-prose p {
-  margin-top: 0;
-  margin-bottom: 1.15rem;
-}
+/* English posts read better with a slightly tighter leading than CJK text */
+html[lang="en"] .article-prose { line-height: 1.7; }
 
-.article-prose p + p {
-  margin-top: 1.15rem;
+/* ---- TeX-style paragraphs: justified, first line indented two ems, no gap between paragraphs ---- */
+.prose.article-prose p {
+  margin: 0;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  text-indent: 2em;
 }
+/* Chinese convention indents every paragraph; English (LaTeX) does not indent the first one after a heading */
+html[lang="en"] .prose.article-prose > p:first-child,
+html[lang="en"] .prose.article-prose :is(h1, h2, h3, h4, h5, h6) + p { text-indent: 0; }
+/* No indent inside lists, quotes, callouts, captions, tables, footnotes, or for paragraphs that only hold an image / formula */
+.prose.article-prose :is(li, blockquote, .callout, figure, td, th, .footnotes) p,
+.prose.article-prose p:has(> img:only-child),
+.prose.article-prose p:has(> .katex-display:only-child) { text-indent: 0; }
+.prose.article-prose p:has(> img:only-child) { text-align: center; }
+/* Blocks that follow or precede a paragraph still need breathing room */
+.prose.article-prose p + :is(ul, ol, table, figure, blockquote),
+.prose.article-prose :is(ul, ol, table, figure, blockquote) + p { margin-top: .85em; }
+.prose.article-prose p + .math-block, .prose.article-prose p + .katex-display { margin-top: .6em; }
 
 .article-prose strong {
   font-weight: 650;
@@ -337,17 +349,34 @@ details.callout[open] > summary .callout-chevron::after { content: "\25BE"; } /*
 /* 任何带 id 的内容作为锚点时，考虑固定头部的偏移量 */
 .prose [id] { scroll-margin-top: 6.5rem; }
 
-.prose h1 {
-  @apply text-3xl mt-8 mb-4 pb-2 border-b border-line;
-}
+.prose h1 { font-size: 1.5em; line-height: 1.3; margin: 1.7em 0 .65em; }
+.prose h2 { font-size: 1.25em; line-height: 1.35; margin: 1.5em 0 .55em; }
+.prose h3 { font-size: 1.1em; line-height: 1.4; margin: 1.3em 0 .45em; }
+.prose h4, .prose h5, .prose h6 { font-size: 1em; margin: 1.2em 0 .4em; }
 
-.prose h2 {
-  @apply text-2xl mt-6 mb-3 pb-1 border-b border-line-soft;
+/* ---- Section numbering (class "numbered" on .article-prose, "top-hN" = the post's highest heading level) ---- */
+.article-prose.numbered { counter-reset: sec1 sec2 sec3; }
+.article-prose.numbered :is(h1, h2, h3, h4)::before {
+  font-variant-numeric: lining-nums tabular-nums;
+  margin-right: .6em;
+  color: var(--fg-muted);
 }
-
-.prose h3 {
-  @apply text-xl mt-6 mb-3;
-}
+.article-prose.numbered.top-h1 > h1 { counter-increment: sec1; counter-reset: sec2 sec3; }
+.article-prose.numbered.top-h1 > h2 { counter-increment: sec2; counter-reset: sec3; }
+.article-prose.numbered.top-h1 > h3 { counter-increment: sec3; }
+.article-prose.numbered.top-h1 > h1::before { content: counter(sec1); }
+.article-prose.numbered.top-h1 > h2::before { content: counter(sec1) "." counter(sec2); }
+.article-prose.numbered.top-h1 > h3::before { content: counter(sec1) "." counter(sec2) "." counter(sec3); }
+.article-prose.numbered.top-h2 > h2 { counter-increment: sec1; counter-reset: sec2 sec3; }
+.article-prose.numbered.top-h2 > h3 { counter-increment: sec2; counter-reset: sec3; }
+.article-prose.numbered.top-h2 > h4 { counter-increment: sec3; }
+.article-prose.numbered.top-h2 > h2::before { content: counter(sec1); }
+.article-prose.numbered.top-h2 > h3::before { content: counter(sec1) "." counter(sec2); }
+.article-prose.numbered.top-h2 > h4::before { content: counter(sec1) "." counter(sec2) "." counter(sec3); }
+/* the same numbers in the table of contents */
+.toc-nav.numbered ul { counter-reset: toc; }
+.toc-nav.numbered li { counter-increment: toc; }
+.toc-nav.numbered li > a::before { content: counters(toc, "."); font-variant-numeric: tabular-nums; margin-right: .5em; color: var(--fg-faint); }
 
 /* 列表样式增强 */
 .prose ul {
@@ -804,8 +833,6 @@ div#disqus_thread iframe[sandbox] {
 /* Improve spacing for paragraphs inside article content */
 .prose p { margin-bottom: 1rem; }
 .prose p + p { margin-top: 1rem; }
-.article-prose p { margin-bottom: 1.15rem; }
-.article-prose p + p { margin-top: 1.15rem; }
 
 /* --------------------------- */
 /* Dark mode overrides         */
@@ -925,11 +952,9 @@ div#disqus_thread iframe[sandbox] {
 .prose :not(pre) > code {
   background-color: var(--surface-2);
   color: var(--fg-strong);
-  padding: .03rem .3rem;
-  border-radius: .32rem;
-  border: 1px solid var(--line);
-  box-shadow: inset 0 1px 0 rgba(0,0,0,.04);
-  font-size: .84em;
+  padding: .04rem .32rem;
+  border-radius: .3rem;
+  font-size: .86em;
   line-height: 1;
   vertical-align: baseline;
   font-family: var(--font-code);
