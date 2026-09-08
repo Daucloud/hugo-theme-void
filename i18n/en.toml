@@ -1,18 +1,18 @@
 # Footer translations
 [footer_share_knowledge]
 other = "Sharing knowledge, experience, and ideas"
-  
+
 # Navigation section
 [footer_navigation]
 other = "Navigation"
-  
+
 # Contact section
 [footer_stay_connected]
 other = "Stay Connected"
-  
+
 [footer_subscribe_contact]
 other = "Subscribe to my content or contact me"
-  
+
 [footer_contact_me]
 other = "Contact Me"
 
@@ -25,19 +25,41 @@ other = "Zhihu"
 
 [footer_email]
 other = "Email"
-  
+
 # Copyright section
 [footer_rights_reserved]
 other = "All Rights Reserved"
-  
+
 [footer_built_with]
 other = "Built with"
-  
+
 [footer_built]
 other = "Built"
-  
+
 [footer_theme]
 other = "Theme"
+
+[footer_total_visits]
+other = "Total visits"
+
+# Main navigation (menu entries match these keys via `identifier`)
+[nav_home]
+other = "Home"
+
+[nav_posts]
+other = "Posts"
+
+[nav_categories]
+other = "Categories"
+
+[nav_tags]
+other = "Tags"
+
+[nav_about]
+other = "About"
+
+[skip_to_content]
+other = "Skip to content"
 
 # Homepage
 [home_recent_posts]
@@ -71,6 +93,9 @@ other = "View by category"
 [list_article_count]
 other = "{{ .Count }} articles in total"
 
+[all_posts]
+other = "All posts"
+
 # About page
 [about_skills]
 other = "Skills"
@@ -100,6 +125,18 @@ other = "Page Views"
 [back_to_home]
 other = "Back to Home"
 
+[last_updated]
+other = "Last updated on"
+
+[post_previous]
+other = "Previous"
+
+[post_next]
+other = "Next"
+
+[tags_label]
+other = "Tags"
+
 # Article date format
 [date_month_day_format]
 other = "Jan 02"
@@ -116,6 +153,9 @@ other = "All Tags"
 
 [tags_help_text]
 other = "Click on any tag to view related articles"
+
+[categories_help_text]
+other = "Click any category to expand or collapse its articles"
 
 [articles]
 other = "articles"
@@ -142,9 +182,7 @@ other = "Related Posts"
 [table_of_contents]
 other = "Table of Contents"
 
-[comments]
-other = "Comments"
-
+# Share
 [share]
 other = "Share"
 
@@ -172,8 +210,56 @@ other = "Copy failed."
 [share_native_failed]
 other = "Native sharing is unavailable."
 
-[last_updated]
-other = "Last updated on"
+# Comments
+[comments]
+other = "Comments"
 
 [load_comments]
-other = "Load Comments" 
+other = "Load Comments"
+
+[loading_comments]
+other = "Loading comments…"
+
+[comments_load_failed]
+other = "Comments failed to load. Disqus may be blocked on your network."
+
+[retry]
+other = "Retry"
+
+# 404
+[not_found_title]
+other = "Page not found"
+
+[not_found_body]
+other = "The page you are looking for does not exist or has been moved."
+
+# Series
+[series]
+other = "Series"
+
+[series_part_of]
+other = "Part of the series"
+
+[series_help_text]
+other = "Multi-part posts, in reading order"
+
+[all_series]
+other = "All series"
+
+
+# Search (Pagefind)
+[search]
+other = "Search"
+
+[search_unavailable]
+other = "The search index is generated at deploy time and is not available in this build."
+
+[search_zero_results]
+other = "No results for [SEARCH_TERM]"
+
+[search_clear]
+other = "Clear"
+
+[search_load_more]
+other = "Load more results"
+

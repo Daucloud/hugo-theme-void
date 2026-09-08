@@ -1,48 +1,19 @@
 {
-  "devDependencies": {
-    "@tailwindcss/cli": "^4.0.15",
-    "@tailwindcss/typography": "^0.5.16",
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^4.0.15"
-  },
-  "name": "void",
+  "name": "hugo-theme-void",
   "version": "1.0.0",
   "description": "A clean, modern Hugo blog theme built with Tailwind CSS",
-  "main": "index.js",
-  "dependencies": {
-    "braces": "^3.0.3",
-    "detect-libc": "^1.0.3",
-    "enhanced-resolve": "^5.18.1",
-    "fill-range": "^7.1.1",
-    "graceful-fs": "^4.2.11",
-    "is-extglob": "^2.1.1",
-    "is-glob": "^4.0.3",
-    "is-number": "^7.0.0",
-    "jiti": "^2.4.2",
-    "lightningcss": "^1.29.2",
-    "micromatch": "^4.0.8",
-    "mri": "^1.2.0",
-    "node-addon-api": "^7.1.1",
-    "picocolors": "^1.1.1",
-    "picomatch": "^2.3.1",
-    "tapable": "^2.2.1",
-    "to-regex-range": "^5.0.1"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/style.css --watch",
-    "build": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/style.css"
-  },
+  "private": true,
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Daucloud/hugo-theme-void.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "homepage": "https://github.com/Daucloud/hugo-theme-void#readme",
   "bugs": {
     "url": "https://github.com/Daucloud/hugo-theme-void/issues"
   },
-  "homepage": "https://github.com/Daucloud/hugo-theme-void#readme"
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.15",
+    "tailwindcss": "^4.0.15"
+  }
 }

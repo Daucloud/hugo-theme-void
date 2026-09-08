@@ -81,3 +81,5 @@ node_modules/
 assets/css/style.css
 
 # End of https://www.toptal.com/developers/gitignore/api/hugo,macos,node
+# oh-my-claudecode session state
+.omc/

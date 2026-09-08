@@ -1,0 +1,111 @@
+{{- /*
+  DEV ONLY (hugo server): floating typography panel on article pages.
+  Lets you try fonts / sizes / paragraph styles live and copy the resulting settings.
+  Never rendered in production builds (guarded in single.html by hugo.IsDevelopment).
+*/ -}}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Serif+SC:wght@500;600&family=Noto+Sans+SC:wght@400;500;700&family=Inter:wght@400;600;700&display=swap">
+<style>
+  /* ---- live overrides, driven by data-typo-* attributes on <html> ---- */
+  html[data-typo-latin], html[data-typo-cjk] { --font-bilingual: var(--typo-latin, "Source Serif 4"), var(--typo-cjk, "Noto Serif SC"), serif; }
+  html[data-typo-latin="stix"] { --typo-latin: "STIX Two Text"; }
+  html[data-typo-latin="notolatin"] { --typo-latin: "Noto Serif SC"; }
+  html[data-typo-latin="crimson"] { --typo-latin: "Crimson Pro"; }
+  html[data-typo-latin="sourceserif"] { --typo-latin: "Source Serif 4"; }
+  html[data-typo-latin="garamond"] { --typo-latin: "EB Garamond"; }
+  html[data-typo-latin="georgia"] { --typo-latin: Georgia; }
+  html[data-typo-latin="inter"] { --typo-latin: "Inter"; }
+  html[data-typo-latin="system"] { --typo-latin: -apple-system, BlinkMacSystemFont, "Segoe UI"; }
+  html[data-typo-cjk="noto"] { --typo-cjk: "Noto Serif SC"; }
+  html[data-typo-cjk="songti"] { --typo-cjk: "Songti SC", "SimSun"; }
+  html[data-typo-cjk="pingfang"] { --typo-cjk: "PingFang SC", "Microsoft YaHei"; }
+  html[data-typo-cjk="notosans"] { --typo-cjk: "Noto Sans SC", "PingFang SC"; }
+  html[data-typo-cjk="kai"] { --typo-cjk: "Kaiti SC", "KaiTi", "STKaiti"; }
+  html[data-typo-size="16"] .article-prose { font-size: 16px !important; }
+  html[data-typo-size="17"] .article-prose { font-size: 17px !important; }
+  html[data-typo-size="18"] .article-prose { font-size: 18px !important; }
+  html[data-typo-lh="1.6"] .article-prose, html[data-typo-lh="1.6"] .article-prose :is(p, li) { line-height: 1.6 !important; }
+  html[data-typo-lh="1.7"] .article-prose, html[data-typo-lh="1.7"] .article-prose :is(p, li) { line-height: 1.7 !important; }
+  html[data-typo-lh="1.8"] .article-prose, html[data-typo-lh="1.8"] .article-prose :is(p, li) { line-height: 1.8 !important; }
+  html[data-typo-lh="1.9"] .article-prose, html[data-typo-lh="1.9"] .article-prose :is(p, li) { line-height: 1.9 !important; }
+  html[data-typo-justify="off"] .prose.article-prose p { text-align: start !important; }
+  html[data-typo-indent="off"] .prose.article-prose p { text-indent: 0 !important; }
+  html[data-typo-gap="on"] .prose.article-prose p { margin-bottom: .9em !important; }
+  html[data-typo-numbered="off"] .article-prose :is(h1, h2, h3, h4)::before,
+  html[data-typo-numbered="off"] .toc-nav li > a::before { content: none !important; }
+  html[data-typo-numbered="on"] .article-prose.top-h1 > h1::before { content: counter(sec1) !important; }
+  html[data-typo-hw="600"] .prose :is(h1, h2, h3, h4, h5, h6), html[data-typo-hw="600"] article header h1 { font-weight: 600 !important; }
+  html[data-typo-hw="500"] .prose :is(h1, h2, h3, h4, h5, h6), html[data-typo-hw="500"] article header h1 { font-weight: 500 !important; }
+  html[data-typo-hsize="classic"] .prose h1 { font-size: 1.875em !important; padding-bottom: .3em; border-bottom: 1px solid var(--line); }
+  html[data-typo-hsize="classic"] .prose h2 { font-size: 1.5em !important; }
+  html[data-typo-hsize="classic"] .prose h3 { font-size: 1.25em !important; }
+  html[data-typo-hfont="hei"] .prose :is(h1, h2, h3, h4, h5, h6), html[data-typo-hfont="hei"] article header h1 { font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif !important; }
+  html[data-typo-hfont="inter"] .prose :is(h1, h2, h3, h4, h5, h6), html[data-typo-hfont="inter"] article header h1 { font-family: "Inter", "Noto Sans SC", "PingFang SC", sans-serif !important; }
+  html[data-typo-code="menlo"] .prose code, html[data-typo-code="menlo"] .code-block-body code, html[data-typo-code="menlo"] .code-block-body pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace !important; }
+  html[data-typo-code="plex"] .prose code, html[data-typo-code="plex"] .code-block-body code, html[data-typo-code="plex"] .code-block-body pre { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace !important; }
+
+  /* ---- the panel itself ---- */
+  #typo-panel { position: fixed; right: 16px; bottom: 16px; z-index: 9999; width: 320px; max-height: calc(100vh - 32px); overflow: auto; background: #fff; color: #111; border: 1px solid #cbd5e1; border-radius: 10px; box-shadow: 0 12px 34px rgba(0,0,0,.22); font: 13px/1.45 system-ui, -apple-system, "PingFang SC", sans-serif; }
+  #typo-panel.min { width: auto; }
+  #typo-panel.min .body { display: none; }
+  #typo-panel .head { display: flex; align-items: center; gap: .5rem; padding: .55rem .8rem; border-bottom: 1px solid #e5e7eb; font-weight: 600; cursor: pointer; }
+  #typo-panel .head span { flex: 1; }
+  #typo-panel .body { padding: .5rem .8rem .8rem; }
+  #typo-panel .row { display: grid; grid-template-columns: 5.5em 1fr; align-items: center; gap: .4rem; margin: .35rem 0; }
+  #typo-panel select, #typo-panel button { font: inherit; padding: .2rem .35rem; border: 1px solid #cbd5e1; border-radius: 5px; background: #fff; color: #111; }
+  #typo-panel .seg { display: flex; gap: .25rem; }
+  #typo-panel .seg button { flex: 1; cursor: pointer; }
+  #typo-panel .seg button.on { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
+  #typo-panel .actions { display: flex; gap: .4rem; margin-top: .6rem; }
+  #typo-panel .actions button { flex: 1; cursor: pointer; padding: .35rem; }
+  #typo-panel textarea { width: 100%; height: 3.6em; margin-top: .5rem; font: 11px/1.4 ui-monospace, Menlo, monospace; border: 1px solid #e5e7eb; border-radius: 5px; padding: .3rem; resize: none; }
+</style>
+<div id="typo-panel">
+  <div class="head" id="typo-head"><span>排版实验面板（仅本地预览）</span><b>−</b></div>
+  <div class="body">
+    <div class="row"><label>英文字体</label><select data-k="latin">
+      <option value="sourceserif">Source Serif 4（现在）</option><option value="notolatin">思源宋体自带的英文（中文页现在）</option><option value="stix">STIX Two Text</option><option value="crimson">Crimson Pro</option><option value="garamond">EB Garamond</option><option value="georgia">Georgia（系统）</option><option value="inter">Inter（无衬线）</option><option value="system">系统无衬线</option></select></div>
+    <div class="row"><label>中文字体</label><select data-k="cjk">
+      <option value="noto">思源宋体（现在）</option><option value="songti">系统宋体 Songti / SimSun</option><option value="pingfang">苹方 / 雅黑（无衬线）</option><option value="notosans">思源黑体</option><option value="kai">系统楷体</option></select></div>
+    <div class="row"><label>正文字号</label><div class="seg" data-k="size"><button data-v="16">16</button><button data-v="17">17</button><button data-v="18">18</button></div></div>
+    <div class="row"><label>行高</label><div class="seg" data-k="lh"><button data-v="1.6">1.6</button><button data-v="1.7">1.7</button><button data-v="1.8">1.8</button><button data-v="1.9">1.9</button></div></div>
+    <div class="row"><label>两端对齐</label><div class="seg" data-k="justify"><button data-v="on">开</button><button data-v="off">关</button></div></div>
+    <div class="row"><label>首行缩进</label><div class="seg" data-k="indent"><button data-v="on">开</button><button data-v="off">关</button></div></div>
+    <div class="row"><label>段间空行</label><div class="seg" data-k="gap"><button data-v="off">无</button><button data-v="on">有</button></div></div>
+    <div class="row"><label>标题编号</label><div class="seg" data-k="numbered"><button data-v="on">开</button><button data-v="off">关</button></div></div>
+    <div class="row"><label>标题字重</label><div class="seg" data-k="hw"><button data-v="700">700</button><button data-v="600">600</button><button data-v="500">500</button></div></div>
+    <div class="row"><label>标题大小</label><div class="seg" data-k="hsize"><button data-v="compact">紧凑</button><button data-v="classic">经典</button></div></div>
+    <div class="row"><label>标题字体</label><div class="seg" data-k="hfont"><button data-v="same">同正文</button><button data-v="hei">黑体</button><button data-v="inter">Inter</button></div></div>
+    <div class="row"><label>代码字体</label><div class="seg" data-k="code"><button data-v="jetbrains">JetBrains</button><button data-v="plex">Plex</button><button data-v="menlo">系统</button></div></div>
+    <div class="actions"><button id="typo-preset">资料推荐</button><button id="typo-copy">复制配置</button><button id="typo-reset">重置为当前线上</button></div>
+    <textarea id="typo-out" readonly></textarea>
+  </div>
+</div>
+<script>
+(() => {
+  const DEFAULTS = { latin: "sourceserif", cjk: "noto", size: "17", lh: "1.8", justify: "off", indent: "off", gap: "on", numbered: "off", hw: "700", hsize: "compact", hfont: "same", code: "jetbrains" };
+  const KEY = "typo-panel";
+  const html = document.documentElement, panel = document.getElementById("typo-panel"), out = document.getElementById("typo-out");
+  let state = { ...DEFAULTS };
+  try { Object.assign(state, JSON.parse(localStorage.getItem(KEY) || "{}")); } catch (_) {}
+  const apply = () => {
+    for (const [k, v] of Object.entries(state)) {
+      // defaults leave the site CSS untouched (e.g. the zh-first stack on Chinese pages)
+      if (v === DEFAULTS[k]) html.removeAttribute("data-typo-" + k); else html.setAttribute("data-typo-" + k, v);
+    }
+    panel.querySelectorAll("select[data-k]").forEach(s => s.value = state[s.dataset.k]);
+    panel.querySelectorAll(".seg[data-k]").forEach(seg => seg.querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.v === state[seg.dataset.k])));
+    const changed = Object.entries(state).filter(([k, v]) => v !== DEFAULTS[k]).map(([k, v]) => k + "=" + v);
+    out.value = changed.length ? "改动：" + changed.join("  ") : "与线上一致，没有改动";
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (_) {}
+  };
+  panel.addEventListener("change", (e) => { if (e.target.matches("select[data-k]")) { state[e.target.dataset.k] = e.target.value; apply(); } });
+  panel.addEventListener("click", (e) => {
+    const b = e.target.closest(".seg button"); if (b) { state[b.closest(".seg").dataset.k] = b.dataset.v; apply(); }
+  });
+  document.getElementById("typo-copy").addEventListener("click", () => { navigator.clipboard.writeText(out.value).catch(() => {}); out.select(); });
+  document.getElementById("typo-reset").addEventListener("click", () => { state = { ...DEFAULTS }; apply(); });
+  document.getElementById("typo-preset").addEventListener("click", () => { state = { ...DEFAULTS, latin: "sourceserif", size: "17", lh: "1.8", justify: "off", indent: "off", gap: "on", numbered: "off", hw: "700", hsize: "compact", hfont: "same", code: "jetbrains" }; apply(); });
+  document.getElementById("typo-head").addEventListener("click", () => panel.classList.toggle("min"));
+  apply();
+})();
+</script>

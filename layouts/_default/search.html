@@ -1,0 +1,36 @@
+{{ define "main" }}
+{{- /*
+  Site search powered by Pagefind (https://pagefind.app). The index is generated
+  after the Hugo build (see the site's CI: `npx pagefind --site public`), so it does
+  not exist in a plain `hugo server` session; the page then shows a notice instead.
+*/ -}}
+<div class="max-w-3xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-center text-fg mb-8">{{ .Title }}</h1>
+  <link rel="stylesheet" href="{{ "pagefind/pagefind-ui.css" | relURL }}">
+  <div id="search" class="pagefind-box"></div>
+  <p id="search-unavailable" class="hidden text-center text-sm text-fg-faint mt-6">
+    {{ i18n "search_unavailable" | default "The search index is generated at deploy time and is not available in this build." }}
+  </p>
+  <script src="{{ "pagefind/pagefind-ui.js" | relURL }}" onerror="document.getElementById('search-unavailable').classList.remove('hidden')"></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", function () {
+      if (typeof PagefindUI === "undefined") {
+        document.getElementById("search-unavailable").classList.remove("hidden");
+        return;
+      }
+      new PagefindUI({
+        element: "#search",
+        showSubResults: true,
+        showImages: false,
+        autofocus: true,
+        translations: {
+          placeholder: {{ i18n "search_placeholder" | default "Search..." | jsonify }},
+          zero_results: {{ i18n "search_zero_results" | default "No results for [SEARCH_TERM]" | jsonify }},
+          clear_search: {{ i18n "search_clear" | default "Clear" | jsonify }},
+          load_more: {{ i18n "search_load_more" | default "Load more results" | jsonify }}
+        }
+      });
+    });
+  </script>
+</div>
+{{ end }}

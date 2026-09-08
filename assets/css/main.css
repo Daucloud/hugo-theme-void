@@ -1,18 +1,112 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=Noto+Serif+SC:wght@200..900&family=Source+Serif+4:opsz,wght@8..60,400..600&display=swap");
-
 @import "tailwindcss";
+/* Self-hosted Latin web fonts (see tools/build-fonts.py, tools/fetch-google-font.py).
+   The CJK face (fonts/noto-serif-sc.css, ~200 unicode-range slices) is large, so
+   head/css.html loads it as a separate non-blocking stylesheet instead. */
+@import "./fonts/source-serif-4.css";
+@import "./fonts/jetbrains-mono.css";
+/* Syntax highlighting palettes */
+@import "./chroma-light.css";
+@import "./chroma-dark.css";
 @custom-variant dark (&:where(.dark, .dark *));
 @source "hugo_stats.json";
+
+/* ------------------------------------------------------------------ */
+/* Semantic color tokens. Light values on :root, dark values on .dark;  */
+/* templates use the utilities below (bg-surface, text-fg, border-line…) */
+/* so a single set of rules serves both modes.                         */
+/* ------------------------------------------------------------------ */
+:root {
+  --canvas: #f9fafb;          /* page background */
+  --surface: #ffffff;         /* cards, header */
+  --surface-2: #f3f4f6;       /* subtle fills (table heads, inline code, chips) */
+  --hover: #f3f4f6;           /* hover fill */
+  --hover-strong: #e5e7eb;
+  --fg-strong: #111827;       /* headings */
+  --fg: #1f2937;              /* body text */
+  --fg-2: #374151;            /* secondary text */
+  --fg-muted: #4b5563;        /* metadata */
+  --fg-faint: #6b7280;        /* captions, dates */
+  --fg-dim: #9ca3af;          /* icons */
+  --line: #e5e7eb;            /* borders */
+  --line-soft: #f3f4f6;
+  --line-strong: #d1d5db;
+  --accent: #2563eb;          /* links */
+  --accent-strong: #1d4ed8;   /* link hover, emphasised links */
+  --accent-soft: #eff6ff;     /* tinted fills */
+  --accent-soft-2: #dbeafe;
+  --accent-line: #93c5fd;     /* tinted borders */
+}
+.dark {
+  --canvas: #0b1220;
+  --surface: #0f172a;
+  --surface-2: #111827;
+  --hover: #1f2937;
+  --hover-strong: #334155;
+  --fg-strong: #f3f4f6;
+  --fg: #e5e7eb;
+  --fg-2: #e5e7eb;
+  --fg-muted: #cbd5e1;
+  --fg-faint: #94a3b8;
+  --fg-dim: #9ca3af;
+  --line: #334155;
+  --line-soft: #1f2937;
+  --line-strong: #475569;
+  --accent: #93c5fd;
+  --accent-strong: #bfdbfe;
+  --accent-soft: rgba(59, 130, 246, 0.18);
+  --accent-soft-2: rgba(59, 130, 246, 0.30);
+  --accent-line: #3b82f6;
+}
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-hover: var(--hover);
+  --color-hover-strong: var(--hover-strong);
+  --color-fg-strong: var(--fg-strong);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-faint: var(--fg-faint);
+  --color-fg-dim: var(--fg-dim);
+  --color-line: var(--line);
+  --color-line-soft: var(--line-soft);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-soft-2: var(--accent-soft-2);
+  --color-accent-line: var(--accent-line);
+}
 
 /* 增强Markdown渲染样式 */
 @theme {
   --font-bilingual: "Source Serif 4", "Noto Serif SC", "Source Han Serif SC", "Source Han Serif CN", "Songti SC", "STSong", ui-serif, serif;
-  --font-code: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --font-ui: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-code: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-ui: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-/* Hide elements until Alpine initializes */
-[x-cloak] { display: none !important; }
+/* Chinese pages put the CJK face first: its Latin (a tuned Source Serif) and its punctuation
+   (——、……、“”) then come from one family. English pages keep Source Serif 4 first for real italics. */
+html[lang^="zh"] {
+  --font-bilingual: "Noto Serif SC", "Source Serif 4", "Source Han Serif SC", "Source Han Serif CN", "Songti SC", "STSong", ui-serif, serif;
+}
+
+/* Skip link: visually hidden until focused via keyboard */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100%;
+  z-index: 50;
+  padding: .5rem .75rem;
+  border-radius: .375rem;
+  background-color: #1d4ed8;
+  color: #fff;
+  font-size: .875rem;
+  text-decoration: none;
+  transition: top .15s ease;
+}
+.skip-link:focus { top: 1rem; outline: 2px solid #93c5fd; outline-offset: 2px; }
 
 /* Ensure serif font stack is actually applied when body has class */
 body.font-bilingual, .font-bilingual {
@@ -39,16 +133,16 @@ time,
 }
 
 .prose table th {
-  @apply bg-gray-100 p-2 border border-gray-300 font-semibold;
+  @apply bg-surface-2 p-2 border border-line-strong font-semibold;
 }
 
 .prose table td {
-  @apply p-2 border border-gray-200;
+  @apply p-2 border border-line;
 }
 
 /* 引用块样式增强 */
 .prose blockquote {
-  @apply border-l-4 border-blue-500 bg-blue-50 italic;
+  @apply border-l-4 border-blue-500 bg-accent-soft italic;
   margin: 1.25rem 0;
   padding: 0.8rem 1rem 0.8rem 1.1rem;
 }
@@ -88,9 +182,16 @@ time,
   line-height: 1;
 }
 
-.callout[data-collapsible="true"] .callout-header {
+/* Collapsible callouts are <details>; the header is the <summary>. */
+details.callout > summary.callout-header {
   cursor: pointer;
+  list-style: none;
+  user-select: none;
 }
+details.callout > summary.callout-header::-webkit-details-marker { display: none; }
+details.callout > .callout-content { margin-top: .25rem; }
+.callout-chevron::after { content: "\25B8"; } /* ▸ */
+details.callout[open] > summary .callout-chevron::after { content: "\25BE"; } /* ▾ */
 
 /* Accent left border by type */
 .callout-info { background-color: #dbeafe; }
@@ -167,7 +268,6 @@ time,
 .prose .katex-display:focus-within::-webkit-scrollbar-thumb {
   background: rgba(148, 163, 184, 0.64);
 }
-.callout-content .callout-math { margin: 1rem 0; }
 
 /* Long-form article typography tuned for Chinese reading rhythm. */
 .article-inner {
@@ -186,37 +286,50 @@ time,
 }
 
 .article-prose {
-  color: #1f2937;
-  font-size: 1rem;
+  color: var(--fg);
+  font-size: 1.0625rem;
   font-weight: 400;
-  line-height: 1.82;
+  line-height: 1.8;
   letter-spacing: 0;
   font-kerning: normal;
   text-rendering: optimizeLegibility;
   hanging-punctuation: allow-end;
 }
 
-.article-prose p,
-.article-prose li {
-  line-height: 1.82;
+
+/* CSS Text 4 on Chinese pages only: quarter-em gap between Han and Latin/digits, tighter
+   consecutive CJK punctuation. Baseline browsers apply these, older ones ignore them. */
+html[lang^="zh"] .article-prose {
+  text-autospace: normal;
+  text-spacing-trim: normal;
 }
 
-.article-prose p {
-  margin-top: 0;
-  margin-bottom: 1.15rem;
+/* ---- Paragraphs: left aligned, separated by spacing (no first-line indent) ---- */
+.prose.article-prose p {
+  margin: 0 0 .9em;
+  text-align: start;
 }
+.prose.article-prose p:has(> img:only-child) { text-align: center; }
 
-.article-prose p + p {
-  margin-top: 1.15rem;
+/* Chinese emphasis: no italics in CJK type; use 着重号 (dots under the characters, clreq §5.3) */
+html[lang^="zh"] .prose em {
+  font-style: normal;
+  text-emphasis: filled dot;
+  -webkit-text-emphasis: filled dot;
+  text-emphasis-position: under right;
+  -webkit-text-emphasis-position: under right;
 }
 
 .article-prose strong {
   font-weight: 650;
 }
 
+/* 正文默认颜色 */
+.prose { color: var(--fg); }
+
 /* 链接样式增强 */
 .prose a {
-  @apply text-blue-600 hover:text-blue-800 transition-colors duration-200 underline underline-offset-2;
+  @apply text-accent hover:text-accent-strong transition-colors duration-200 underline underline-offset-2;
 }
 
 /* 标题样式增强 */
@@ -226,7 +339,7 @@ time,
 .prose h4,
 .prose h5,
 .prose h6 {
-  @apply font-bold text-gray-900 scroll-mt-20;
+  @apply font-bold text-fg-strong scroll-mt-20;
   position: relative;
 }
 /* Make headings feel interactive when they can be clicked to copy */
@@ -240,17 +353,34 @@ time,
 /* 任何带 id 的内容作为锚点时，考虑固定头部的偏移量 */
 .prose [id] { scroll-margin-top: 6.5rem; }
 
-.prose h1 {
-  @apply text-3xl mt-8 mb-4 pb-2 border-b border-gray-200;
-}
+.prose h1 { font-size: 1.5em; line-height: 1.3; margin: 1.7em 0 .65em; }
+.prose h2 { font-size: 1.25em; line-height: 1.35; margin: 1.5em 0 .55em; }
+.prose h3 { font-size: 1.1em; line-height: 1.4; margin: 1.3em 0 .45em; }
+.prose h4, .prose h5, .prose h6 { font-size: 1em; margin: 1.2em 0 .4em; }
 
-.prose h2 {
-  @apply text-2xl mt-6 mb-3 pb-1 border-b border-gray-100;
+/* ---- Section numbering (class "numbered" on .article-prose, "top-hN" = the post's highest heading level) ---- */
+.article-prose.numbered { counter-reset: sec1 sec2 sec3; }
+.article-prose.numbered :is(h1, h2, h3, h4)::before {
+  font-variant-numeric: lining-nums tabular-nums;
+  margin-right: .6em;
+  color: var(--fg-muted);
 }
-
-.prose h3 {
-  @apply text-xl mt-6 mb-3;
-}
+.article-prose.numbered.top-h1 > h1 { counter-increment: sec1; counter-reset: sec2 sec3; }
+.article-prose.numbered.top-h1 > h2 { counter-increment: sec2; counter-reset: sec3; }
+.article-prose.numbered.top-h1 > h3 { counter-increment: sec3; }
+.article-prose.numbered.top-h1 > h1::before { content: counter(sec1); }
+.article-prose.numbered.top-h1 > h2::before { content: counter(sec1) "." counter(sec2); }
+.article-prose.numbered.top-h1 > h3::before { content: counter(sec1) "." counter(sec2) "." counter(sec3); }
+.article-prose.numbered.top-h2 > h2 { counter-increment: sec1; counter-reset: sec2 sec3; }
+.article-prose.numbered.top-h2 > h3 { counter-increment: sec2; counter-reset: sec3; }
+.article-prose.numbered.top-h2 > h4 { counter-increment: sec3; }
+.article-prose.numbered.top-h2 > h2::before { content: counter(sec1); }
+.article-prose.numbered.top-h2 > h3::before { content: counter(sec1) "." counter(sec2); }
+.article-prose.numbered.top-h2 > h4::before { content: counter(sec1) "." counter(sec2) "." counter(sec3); }
+/* the same numbers in the table of contents */
+.toc-nav.numbered ul { counter-reset: toc; }
+.toc-nav.numbered li { counter-increment: toc; }
+.toc-nav.numbered li > a::before { content: counters(toc, "."); font-variant-numeric: tabular-nums; margin-right: .5em; color: var(--fg-faint); }
 
 /* 列表样式增强 */
 .prose ul {
@@ -311,7 +441,7 @@ time,
 }
 
 .prose figcaption {
-  @apply mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-gray-500;
+  @apply mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-fg-faint;
 }
 
 .prose figcaption p {
@@ -323,45 +453,34 @@ time,
 }
 
 .prose figcaption a {
-  @apply text-gray-500 underline decoration-gray-300 underline-offset-4 transition-colors duration-200;
+  @apply text-fg-faint underline decoration-line-strong underline-offset-4 transition-colors duration-200;
 }
 
 .prose figcaption a:hover {
-  @apply text-gray-700 decoration-gray-500;
+  @apply text-fg-2 decoration-fg-faint;
 }
 
 /* 水平线样式增强 */
 .prose hr {
-  @apply border-t-2 border-gray-200 my-8;
+  @apply border-t-2 border-line my-8;
 }
 
 /* 脚注样式增强 */
 .prose .footnotes {
-  @apply text-sm text-gray-600 mt-8 pt-6 border-t border-gray-200;
+  @apply text-sm text-fg-muted mt-8 pt-6 border-t border-line;
 }
 /* 避免脚注容器自带上边框与内部 <hr> 叠加成双线 */
 .prose .footnotes hr { display: none; }
 
-/* Dark mode: improve readability for footnotes */
-.dark .prose .footnotes {
-  @apply text-gray-300 border-slate-700;
-}
-.dark .prose .footnote-backref {
-  @apply text-blue-300 hover:text-blue-200 hover:bg-slate-700;
-}
-.dark .prose .footnote-ref,
-.dark .prose sup[id^="fnref"] {
-  @apply text-blue-300;
-}
 
 /* 添加脚注返回链接样式 */
 .prose .footnote-backref {
-  @apply ml-2 text-blue-600 no-underline hover:text-blue-800 transition-colors duration-200 text-base font-bold px-2 py-1 rounded hover:bg-blue-100;
+  @apply ml-2 text-accent no-underline hover:text-accent-strong transition-colors duration-200 text-base font-bold px-2 py-1 rounded hover:bg-accent-soft-2;
 }
 
 /* 脚注引用样式 */
 .prose .footnote-ref {
-  @apply no-underline text-blue-600 hover:text-blue-800 transition-colors duration-200 font-bold;
+  @apply no-underline text-accent hover:text-accent-strong transition-colors duration-200 font-bold;
 }
 
 /* 脚注高亮效果 */
@@ -371,7 +490,7 @@ time,
 
 /* 脚注引用样式 */
 .prose sup[id^="fnref"] {
-  @apply text-blue-600;
+  @apply text-accent;
 }
 
 /* 脚注列表样式 */
@@ -380,14 +499,9 @@ time,
 }
 
 .prose .footnotes li {
-  @apply text-gray-700;
+  @apply text-fg-2;
 }
 
-/* Dark mode footnote text color fix */
-.dark .prose .footnotes li,
-.dark .prose .footnotes p {
-  @apply text-gray-300;
-}
 
 /* Anchor highlight for in-page navigation (TOC, hash links) */
 .anchor-highlight {
@@ -409,31 +523,91 @@ blockquote.anchor-highlight {
   outline: 3px solid rgba(245, 158, 11, 0.45);
 }
 
+/* ---- Header navigation: inline on sm+, dropdown behind a hamburger below ---- */
+.menu-toggle .menu-icon-close { display: none; }
+.menu-open .menu-toggle .menu-icon-open { display: none; }
+.menu-open .menu-toggle .menu-icon-close { display: block; }
+@media (max-width: 39.99rem) {
+  .site-nav {
+    display: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    padding: .5rem 1rem 1rem;
+    background-color: var(--surface);
+    border-top: 1px solid var(--line-soft);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+  }
+  .menu-open .site-nav { display: block; }
+  .site-nav ul { flex-direction: column; align-items: stretch; gap: .25rem; }
+  .site-nav ul > li + li { margin-left: 0; }
+  .site-nav li a { display: block; padding: .6rem .75rem; }
+}
+
+/* ---- Article layout: sticky TOC sidebar in the right-hand gutter ----
+   The article column stays exactly where it is on every other page (56rem, centered,
+   aligned with the header). The sidebar only appears when the viewport leaves enough
+   room beside that column: 56rem + 2 x (14rem sidebar + 1.5rem gap) + 5rem main padding. */
+.toc-sidebar { display: none; }
+@media (min-width: 92rem) {
+  .site-main { max-width: 92rem; }
+  .article-layout.has-toc {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 56rem) minmax(0, 1fr);
+    align-items: start;
+  }
+  .article-layout.has-toc > .article-main { grid-column: 2; min-width: 0; }
+  .article-layout.has-toc .toc-inline { display: none; }
+  .toc-sidebar {
+    grid-column: 3;
+    display: block;
+    position: sticky;
+    top: 6rem;
+    width: 14rem;
+    margin-left: 1.5rem;
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+    padding-right: .25rem;
+    scrollbar-width: thin;
+  }
+  .toc-sidebar .toc-nav { font-size: .85rem; }
+  .toc-sidebar .toc-nav a { padding: .3rem .5rem; color: var(--fg-muted); }
+  .toc-sidebar .toc-nav a.toc-active { background-color: var(--accent-soft); color: var(--accent-strong); }
+}
+
+/* Table of Contents: native <details> */
+.toc > summary { list-style: none; }
+.toc > summary::-webkit-details-marker { display: none; }
+.toc .toc-icon-close { display: none; }
+.toc[open] .toc-icon-open { display: none; }
+.toc[open] .toc-icon-close { display: inline; }
+
 /* Table of Contents styling */
-#TableOfContents { font-size: .95rem; }
-#TableOfContents ul { list-style: none; padding-left: 0; margin: 0; }
-#TableOfContents li { margin: 0; }
-#TableOfContents > ul > li + li { margin-top: .35rem; }
-#TableOfContents a {
+.toc-nav { font-size: .95rem; }
+.toc-nav ul { list-style: none; padding-left: 0; margin: 0; }
+.toc-nav li { margin: 0; }
+.toc-nav nav > ul > li + li { margin-top: .35rem; }
+.toc-nav a {
   display: block;
   padding: .375rem .5rem; /* 6px 8px */
   border-radius: .375rem; /* rounded-md */
-  color: #374151; /* gray-700 */
+  color: var(--fg-2);
   text-decoration: none;
   transition: background-color .15s ease, color .15s ease;
 }
-#TableOfContents a:hover { background-color: #eef2ff; color: #1f2937; }
-#TableOfContents ul ul {
+.toc-nav a:hover { background-color: var(--accent-soft); color: var(--fg); }
+.toc-nav ul ul {
   margin-top: .15rem;
   margin-left: .5rem;
   padding-left: .75rem;
-  border-left: 1.5px solid #e5e7eb; /* gray-200 */
+  border-left: 1.5px solid var(--line);
 }
-#TableOfContents ul ul a { font-size: .92em; padding-left: .25rem; }
+.toc-nav ul ul a { font-size: .92em; padding-left: .25rem; }
 /* active item */
-#TableOfContents a.toc-active { background-color: #eef2ff; color: #3730a3; } /* indigo */
+.toc-nav a.toc-active { background-color: var(--accent-soft); color: var(--accent-strong); }
 /* focus visibility */
-#TableOfContents a:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
+.toc-nav a:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; }
 
 /* Heading anchor copy button */
 .heading-anchor { 
@@ -537,72 +711,68 @@ blockquote.anchor-highlight {
   overflow-x: auto;
 }
 
-.code-highlight-variant {
-  display: block;
+/* The container paints the background; Chroma's palette backgrounds would fight it. */
+.code-block-body .chroma,
+.code-block-body .chroma .lntable,
+.code-block-body .chroma .lntd,
+.dark .code-block-body .chroma,
+.dark .code-block-body .chroma .lntable,
+.dark .code-block-body .chroma .lntd {
+  background-color: transparent;
 }
 
-.code-highlight-dark {
-  display: none;
-}
-
-.dark .code-highlight-light {
-  display: none;
-}
-
-.dark .code-highlight-dark {
-  display: block;
-}
-
-.code-highlight-variant .highlight {
+.code-block-body .highlight {
   margin: 0;
 }
 
-.code-highlight-variant .highlight,
-.code-highlight-variant .highlight .chroma,
-.code-highlight-variant .highlight .lntable,
-.code-highlight-variant .highlight pre {
+.code-block-body .highlight,
+.code-block-body .highlight .chroma,
+.code-block-body .highlight .lntable,
+.code-block-body .highlight pre {
   margin: 0 !important;
   width: 100%;
 }
 
-.code-highlight-variant .highlight .lntable {
+.code-block-body .highlight .lntable {
   border-spacing: 0;
-  table-layout: fixed;
+  table-layout: auto; /* fixed layout collapsed the line-number column to 0px */
 }
 
-.code-highlight-variant .highlight .lntd {
+.code-block-body .highlight .lntd {
   padding: 0;
   vertical-align: top;
 }
 
-.code-highlight-variant .highlight .lntd:first-child {
+.code-block-body .highlight .lntd:first-child {
+  width: 1%;
+  white-space: nowrap;
   border-right: 1px solid rgba(203, 213, 225, 0.78);
   user-select: none;
 }
 
-.code-highlight-variant .highlight .lntd:last-child {
+.code-block-body .highlight .lntd:last-child {
   width: 100%;
 }
 
-.code-highlight-light .highlight .lntd:first-child {
+.code-block-body .highlight .lntd:first-child {
   background-color: rgba(255, 255, 255, 0.16);
 }
 
-.code-highlight-dark .highlight .lntd:first-child {
+.dark .code-block-body .highlight .lntd:first-child {
   border-color: rgba(51, 65, 85, 0.9);
   background-color: rgba(2, 6, 23, 0.12);
 }
 
-.code-highlight-variant .highlight .lntd:first-child pre {
+.code-block-body .highlight .lntd:first-child pre {
   padding: 0.8rem 0.7rem 0.9rem 0.75rem !important;
 }
 
-.code-highlight-variant .highlight .lntd:last-child pre {
+.code-block-body .highlight .lntd:last-child pre {
   padding: 0.8rem 0.9rem 0.9rem !important;
 }
 
-.code-highlight-variant .highlight .ln,
-.code-highlight-variant .highlight .lnt {
+.code-block-body .highlight .ln,
+.code-block-body .highlight .lnt {
   display: block;
   min-width: 2ch;
   text-align: right;
@@ -612,16 +782,18 @@ blockquote.anchor-highlight {
   font-variant-numeric: tabular-nums;
 }
 
-.code-highlight-variant .highlight .ln {
+.code-block-body .highlight .ln,
+.code-block-body .highlight .lnt {
   color: #94a3b8;
 }
 
-.code-highlight-dark .highlight .ln {
+.dark .code-block-body .highlight .ln,
+.dark .code-block-body .highlight .lnt {
   color: #64748b;
 }
 
-.code-highlight-variant .highlight pre,
-.code-highlight-variant .highlight code {
+.code-block-body .highlight pre,
+.code-block-body .highlight code {
   font-family: var(--font-code);
   font-size: var(--code-font-size);
   line-height: var(--code-line-height);
@@ -665,8 +837,6 @@ div#disqus_thread iframe[sandbox] {
 /* Improve spacing for paragraphs inside article content */
 .prose p { margin-bottom: 1rem; }
 .prose p + p { margin-top: 1rem; }
-.article-prose p { margin-bottom: 1.15rem; }
-.article-prose p + p { margin-top: 1.15rem; }
 
 /* --------------------------- */
 /* Dark mode overrides         */
@@ -701,44 +871,6 @@ div#disqus_thread iframe[sandbox] {
   .theme-toggle .icon-moon,
   .theme-toggle-btn { transition: none !important; }
 }
-.dark body { background-color: #0b1220 !important; }
-.dark .bg-white { background-color: #0f172a !important; }
-.dark .bg-gray-100 { background-color: #111827 !important; }
-.dark .border-gray-100 { border-color: #1f2937 !important; }
-.dark .bg-gray-50 { background-color: #0b1220 !important; }
-.dark .border-gray-200 { border-color: #334155 !important; }
-.dark .text-gray-900 { color: #e5e7eb !important; }
-.dark .text-gray-800 { color: #e5e7eb !important; }
-.dark .text-gray-700 { color: #e5e7eb !important; }
-.dark .text-gray-600 { color: #cbd5e1 !important; }
-.dark .text-gray-500 { color: #94a3b8 !important; }
-.dark .text-blue-700 { color: #93c5fd !important; }
-
-.dark .prose { color: #e5e7eb; }
-.dark .article-prose { color: #e5e7eb; }
-.dark .prose a { color: #60a5fa; }
-.dark .prose a:hover { color: #93c5fd; }
-.dark .prose figcaption { color: #94a3b8; }
-.dark .prose figcaption a { color: #94a3b8; text-decoration-color: #475569; }
-.dark .prose figcaption a:hover { color: #cbd5e1; text-decoration-color: #94a3b8; }
-.dark .prose h1,
-.dark .prose h2,
-.dark .prose h3,
-.dark .prose h4,
-.dark .prose h5,
-.dark .prose h6 { color: #e5e7eb; }
-
-/* 全局标题在暗色模式下的可读性 */
-.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 { color: #e5e7eb !important; }
-.dark .prose h1 { border-color: #374151; }
-.dark .prose h2 { border-color: #1f2937; }
-.dark .prose hr { border-color: #334155; }
-
-.dark #toc-content { background-color: #0f172a; border-color: #1f2937; }
-.dark #TableOfContents a { color: #e5e7eb; }
-.dark #TableOfContents a:hover { background-color: #1e293b; color: #e5e7eb; }
-.dark #TableOfContents a.toc-active { background-color: #1e293b; color: #93c5fd; }
-.dark #TableOfContents ul ul { border-left-color: #334155; }
 
 .dark .code-block-container {
   background-color: #0f172a;
@@ -790,24 +922,23 @@ div#disqus_thread iframe[sandbox] {
 
 .dark .anchor-highlight { background-color: rgba(245, 158, 11, 0.18); outline-color: rgba(245, 158, 11, 0.5); }
 
-/* theme card (e.g., disqus container) */
-.dark .theme-card { background-color: #0f172a !important; }
+.series-nav a, .related-posts a { text-decoration: none; }
+
+/* Pagefind search UI theming */
+.pagefind-box {
+  --pagefind-ui-scale: .9;
+  --pagefind-ui-primary: var(--accent);
+  --pagefind-ui-text: var(--fg);
+  --pagefind-ui-background: var(--surface);
+  --pagefind-ui-border: var(--line);
+  --pagefind-ui-tag: var(--accent-soft);
+  --pagefind-ui-border-width: 1px;
+  --pagefind-ui-border-radius: .5rem;
+  --pagefind-ui-font: var(--font-bilingual);
+}
 
 /* About page card separation in dark mode */
-.dark .about-card { background-color: #0f172a !important; border: 1px solid #1f2937 !important; }
-
-/* Dark-mode hover adjustments to avoid bright white backgrounds */
-.dark .hover\:bg-gray-50:hover { background-color: #1f2937 !important; }
-.dark .hover\:bg-gray-100:hover { background-color: #1f2937 !important; }
-.dark .hover\:bg-blue-50:hover { background-color: rgba(59,130,246,0.18) !important; }
-.dark .bg-blue-50 { background-color: rgba(59,130,246,0.18) !important; }
-
-/* -------- Tag chips dark mode fallback (works even if Tailwind dark: classes are purged) -------- */
-.dark .tag-chip { background-color: #1f2937 !important; color: #cbd5e1 !important; border-color: #334155 !important; }
-.dark .tag-chip:hover { background-color: #334155 !important; color: #93c5fd !important; }
-.dark .tag-chip .count-badge { background-color: #374151 !important; color: #93c5fd !important; }
-.dark .tags-container a { background-color: #1f2937 !important; color: #93c5fd !important; }
-.dark .tags-container a:hover { background-color: #334155 !important; }
+.dark .about-card { border: 1px solid var(--line-soft); }
 
 .dark .category-count-badge {
   background-color: rgba(16, 185, 129, 0.16) !important;
@@ -823,13 +954,11 @@ div#disqus_thread iframe[sandbox] {
 /* -------- Inline code & blockquotes: light + dark adaptations -------- */
 /* Inline code (avoid pre>code) */
 .prose :not(pre) > code {
-  background-color: #f3f4f6;
-  color: #111827;
-  padding: .03rem .3rem;
-  border-radius: .32rem;
-  border: 1px solid #e5e7eb;
-  box-shadow: inset 0 1px 0 rgba(0,0,0,.04);
-  font-size: .84em;
+  background-color: var(--surface-2);
+  color: var(--fg-strong);
+  padding: .04rem .32rem;
+  border-radius: .3rem;
+  font-size: .86em;
   line-height: 1;
   vertical-align: baseline;
   font-family: var(--font-code);
@@ -842,15 +971,6 @@ div#disqus_thread iframe[sandbox] {
   vertical-align: .02em;
 }
 
-.dark .prose :not(pre) > code {
-  background-color: #0f172a;
-  color: #e5e7eb;
-  border-color: #374151;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
-}
 
 /* Blockquote dark mode */
-.dark .prose blockquote {
-  border-color: #60a5fa; /* blue-400 */
-  background-color: rgba(59, 130, 246, 0.12); /* blue-500 @ 12% */
-}
+.dark .prose blockquote { border-color: #60a5fa; }

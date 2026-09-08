@@ -1,4 +1,4 @@
-<div class="py-8 border-t border-gray-200 bg-gray-50 shadow-inner mt-10">
+<div class="py-8 border-t border-line bg-canvas shadow-inner mt-10">
   <div class="container mx-auto px-4 max-w-4xl">
     <!-- 计算有多少个社交链接显示 -->
     {{ $socialCount := 0 }} 
@@ -17,7 +17,7 @@
           href="{{ . }}"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-gray-600 hover:text-gray-900"
+          class="text-fg-muted hover:text-fg-strong"
           aria-label="GitHub"
         >
           <svg
@@ -43,7 +43,7 @@
           href="{{ . }}"
           target="_blank"
           rel="noopener noreferrer"
-          class="text-gray-600 hover:text-gray-900"
+          class="text-fg-muted hover:text-fg-strong"
           aria-label="知乎"
         >
           <svg
@@ -66,7 +66,7 @@
         <a
           href="mailto:{{ . }}"
           rel="noopener noreferrer"
-          class="text-gray-600 hover:text-gray-900"
+          class="text-fg-muted hover:text-fg-strong"
           aria-label="邮箱"
         >
           <svg
@@ -87,9 +87,8 @@
       {{ end }}
     </div>
 
-    <div class="text-center mt-6 text-sm text-gray-500">
-      &copy; {{ now.Format "2006" }} {{ .Site.Title }} | Powered by <a href="https://github.com/Daucloud/hugo-theme-void" class="text-gray-600 hover:text-gray-900 hover:underline">hugo-theme-void</a> | <span id="busuanzi_container_site_pv" style="display: none;">Total visits: <span id="busuanzi_value_site_pv" class="text-gray-600"></span></span>
+    <div class="text-center mt-6 text-sm text-fg-faint">
+      &copy; {{ now.Format "2006" }} {{ .Site.Title }} | Powered by <a href="https://github.com/Daucloud/hugo-theme-void" class="text-fg-muted hover:text-fg-strong hover:underline">hugo-theme-void</a> | <span id="busuanzi_container_site_pv" style="display: none;">{{ i18n "footer_total_visits" | default "Total visits" }}: <span id="busuanzi_value_site_pv" class="text-fg-muted"></span></span>
     </div>
-    <!-- busuanzi script now loaded in head.html for faster page PV render -->
   </div>
 </div>

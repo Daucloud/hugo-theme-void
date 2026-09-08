@@ -1,36 +1,36 @@
 {{ define "main" }}
 <div class="max-w-4xl mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">{{.Title}}</h1>
+  <h1 class="text-3xl font-bold text-center text-fg mb-8">{{.Title}}</h1>
   
   <!-- Brief description -->
-  <div class="mb-8 text-center text-gray-600 text-sm">
+  <div class="mb-8 text-center text-fg-muted text-sm">
     <p>{{ i18n "categories_help_text" | default "Click any category to expand or collapse articles" }}</p>
   </div>
   
   <!-- Categories accordion -->
   <div class="space-y-4">
     {{ range $key, $value := .Data.Terms.Alphabetical }}
-      <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+      <div class="bg-surface shadow-sm rounded-lg overflow-hidden">
         <button class="category-toggle w-full text-left px-6 py-4 flex justify-between items-center focus:outline-none" data-target="category-{{ $key }}">
           <div class="flex items-center">
-            <span class="font-medium text-gray-800">{{ .Page.Title }}</span>
+            <span class="font-medium text-fg">{{ .Page.Title }}</span>
             <span class="category-count-badge ml-2 bg-green-50 text-green-600 px-2 py-0.5 text-xs rounded-full">
               {{ .Count }}
             </span>
           </div>
-          <svg class="category-icon h-5 w-5 text-gray-500 transform transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="category-icon h-5 w-5 text-fg-faint transform transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
         
-        <div id="category-{{ $key }}" class="category-content hidden px-6 pb-4 border-t border-gray-100">
+        <div id="category-{{ $key }}" class="category-content hidden px-6 pb-4 border-t border-line-soft">
           <div class="space-y-3 pt-3">
             {{ range .Pages }}
-              <article class="hover:bg-gray-50 dark:hover:bg-slate-800 rounded p-3 transition-colors cursor-pointer article-link" data-href="{{ .RelPermalink }}">
-                <h3 class="text-base font-medium mb-1 text-gray-800">
+              <article class="hover:bg-hover rounded p-3 transition-colors cursor-pointer article-link" data-href="{{ .RelPermalink }}">
+                <h3 class="text-base font-medium mb-1 text-fg">
                   {{ .Title }}
                 </h3>
-                <div class="text-xs text-gray-500">
+                <div class="text-xs text-fg-faint">
                   {{ .Date.Format "2006-01-02" }}
                 </div>
               </article>
@@ -43,7 +43,7 @@
   
   <!-- Back to home link -->
   <div class="mt-10 text-center">
-    <a href="{{ "/" | relLangURL }}" class="inline-flex items-center text-gray-600 hover:text-green-600 transition-colors">
+    <a href="{{ "/" | relLangURL }}" class="inline-flex items-center text-fg-muted hover:text-green-600 transition-colors">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
       </svg>

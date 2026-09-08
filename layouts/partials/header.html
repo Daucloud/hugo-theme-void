@@ -1,12 +1,19 @@
 <div class="flex items-center justify-between py-3">
   <div class="text-lg sm:text-xl font-bold flex-shrink-0 max-w-[40%] sm:max-w-md truncate">
-    <a href="{{ "/" | relLangURL }}" class="no-underline transition-colors text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-300">
+    <a href="{{ "/" | relLangURL }}" class="no-underline transition-colors text-fg-strong hover:text-accent">
       {{.Site.Title}}
     </a>
   </div>
   <div class="flex items-center gap-2">
     {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
-    <button id="theme-toggle" type="button" class="theme-toggle theme-toggle-btn ml-2 relative inline-flex h-7 w-7 items-center justify-center p-0 bg-transparent border-0 text-gray-700 dark:text-gray-200 focus:outline-none cursor-pointer" aria-label="Toggle dark mode" aria-pressed="false">
+    <a href="{{ "/search/" | relLangURL }}" class="search-link inline-flex h-8 w-8 items-center justify-center rounded-md text-fg-2 hover:bg-hover transition-colors" aria-label="{{ i18n "search" | default "Search" }}" title="{{ i18n "search" | default "Search" }}">
+      <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z" /></svg>
+    </a>
+    <button id="menu-toggle" type="button" class="menu-toggle sm:hidden inline-flex h-8 w-8 items-center justify-center rounded-md text-fg-2 hover:bg-hover transition-colors" aria-label="Menu" aria-expanded="false" aria-controls="site-nav">
+      <svg class="menu-icon-open h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+      <svg class="menu-icon-close h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+    </button>
+    <button id="theme-toggle" type="button" class="theme-toggle theme-toggle-btn ml-2 relative inline-flex h-7 w-7 items-center justify-center p-0 bg-transparent border-0 text-fg-2 focus:outline-none cursor-pointer" aria-label="Toggle dark mode" aria-pressed="false">
       <!-- Light icon (provided) -->
       <svg class="icon-sun h-full w-full" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M512 192c179.2 0 320 140.8 320 320s-140.8 320-320 320-320-140.8-320-320S332.8 192 512 192M512 128C300.8 128 128 300.8 128 512s172.8 384 384 384 384-172.8 384-384S723.2 128 512 128L512 128z" fill="currentColor"></path>

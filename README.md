@@ -11,10 +11,15 @@ Void is a clean, modern Hugo blog theme built with [Tailwind CSS](https://tailwi
 
 - 🎨 Tailwind CSS design · fully responsive
 - 🌗 Dark/Light mode with animated icon toggle (no flash on load)
-- 🧭 Collapsible Table of Contents with active item highlight
+- 🧭 Table of Contents: folded <details> in the article, or a sticky sidebar in the right gutter on wide screens (>= 1472px), with scroll-spy highlighting
 - 🔗 In‑page anchor highlight and copy‑permalink by clicking headings
-- 🧱 Code blocks with header (language label + copy) + HLJS light/dark themes
-- 🧮 KaTeX math support (inline/display) with common macros
+- 🧱 Code blocks with header (language label + copy button), class-based Chroma light/dark palettes
+- 🧮 KaTeX math rendered at build time (no client-side JavaScript), CSS/fonts self-hosted
+- 🔤 Self-hosted fonts (Source Serif 4, Noto Serif SC, JetBrains Mono), nothing from Google Fonts
+- 📐 Language-aware typography: CJK-first stack on Chinese pages, 着重号 emphasis, optional section numbering (`numbered = true`)
+- 🖼️ Responsive WebP images with srcset and intrinsic sizes via a render-image hook
+- 🌐 Per-post `language` front matter for a correct `<html lang>` on mixed-language blogs
+- 📰 Full-content RSS feed, 404 page, lazy-loaded Disqus with offline fallback
 - ✍️ Readability tweaks: paragraph/list spacing, footnotes, tag chips, cards
 - 🏷️ Tags & categories, reading time, social links
 
@@ -52,7 +57,10 @@ Add the following configuration options to your `hugo.toml` (or `config.toml`):
 
 ```toml
 baseURL = 'https://example.org/'
-languageCode = 'en-US'
+languageCode = 'zh-CN'          # default <html lang>; per-page override via `language` front matter
+defaultContentLanguage = 'en'   # UI language: picks i18n/en.toml
+hasCJKLanguage = true           # correct word counts / summaries for Chinese content
+enableRobotsTXT = true
 title = 'Your Site Title'
 theme = "void"
 
@@ -65,9 +73,11 @@ theme = "void"
   [params.avatar]
     url = "https://example.com/your-avatar.jpg"
 
-# Main menu
+# Main menu. `identifier` matches an i18n key (nav_home, nav_posts, ...) so the
+# label follows the site language; drop it to show `name` verbatim.
 [[menus.main]]
 name = 'Home'
+identifier = 'nav_home'
 pageRef = '/'
 weight = 10
 
@@ -85,6 +95,24 @@ weight = 30
 name = 'About'
 pageRef = '/about'
 weight = 40
+
+# Required for the theme's code blocks (class-based Chroma output)
+[markup.highlight]
+  noClasses = false
+  lineNos = true
+  lineNumbersInTable = true
+
+# Math: KaTeX is rendered at build time from these passthrough delimiters
+[markup.goldmark.extensions.passthrough]
+  enable = true
+  [markup.goldmark.extensions.passthrough.delimiters]
+    block = [['$$', '$$'], ['\\[', '\\]']]
+    inline = [['$', '$'], ['\\(', '\\)']]
+
+# Image processing defaults used by the render-image hook / figure shortcode
+[imaging]
+  quality = 85
+  resampleFilter = 'Lanczos'
 
 # Table of Contents (recommended)
 [markup]
@@ -107,8 +135,33 @@ weight = 40
 ### Code & Math
 - Use fenced code blocks with a language hint (```go, ```python, …).
 - Each block is wrapped with a small header showing the language and a copy button.
-- Highlight.js switches themes automatically in dark/light mode.
-- KaTeX supports `$…$` (inline) and `$$…$$` (display). Macros: `\E`, `\Var`, `\argmax`, `\argmin`.
+- Chroma highlighting switches themes automatically in dark/light mode (`markup.highlight.noClasses = false` required, see below).
+- KaTeX supports `$…$` (inline) and `$$…$$` (display), rendered at build time by `transform.ToMath`; append `{#some-id}` on the line after a display block to make it linkable.
+
+### Mixed-language content
+- UI strings follow the site language: `defaultContentLanguage` picks `i18n/<lang>.toml`.
+- `languageCode` is the default `<html lang>`. Any page may override it with `language = "en"` (or `"zh-CN"`, …) in front matter, so a mostly-Chinese blog can keep `languageCode = 'zh-CN'` and tag its English posts. Hugo reserves the key `lang`, hence `language`.
+
+### Fonts (self-hosted)
+- Body: Source Serif 4 (Latin) + Noto Serif SC (CJK); code: JetBrains Mono; math: KaTeX's own fonts. Nothing is fetched from Google Fonts at runtime.
+- Chinese pages (`<html lang="zh-…">`) put Noto Serif SC first so Latin letters, digits and punctuation come from one family; English pages keep Source Serif 4 first for real italics.
+- Files live in `static/fonts/`, `@font-face` rules in `assets/css/fonts/`. The CJK declaration is loaded as a
+  separate non-blocking stylesheet because its ~200 unicode-range slices are large; a page only downloads the
+  slices it needs, and `local()` sources skip the download for visitors who have the font installed.
+- Mirror a Google Fonts family with `tools/fetch-google-font.py`. See `static/fonts/README.md` for licenses.
+
+### Article typography
+- 17px body, leading 1.8, left aligned, paragraphs separated by spacing; `text-autospace` / `text-spacing-trim`
+  give quarter-em CJK–Latin gaps and tighter CJK punctuation in browsers that support them.
+- Chinese emphasis (`<em>`) renders as 着重号 (dots under the characters) instead of a slanted fake italic.
+- Headings use book proportions (1.5em / 1.25em / 1.1em). Set `numbered = true` in front matter to number
+  sections 1 / 1.1 / 1.1.1 (also in the table of contents); counters start at the post's highest heading level.
+- In `hugo server` a floating panel on article pages lets you try fonts and settings live (never rendered in production).
+
+### Feeds, 404, comments
+- `index.xml` is a full-content RSS feed (`content:encoded`) limited to the `posts` section; the head carries the autodiscovery link.
+- `layouts/404.html` is served by GitHub Pages / Netlify automatically.
+- Disqus (`[services.disqus] shortname`) loads lazily when the comment box scrolls into view; if the embed is blocked or times out, a message with a retry button replaces the spinner.
 
 ### Callouts
 - Shortcode: `{{< callout title="Note" type="info" >}}...{{< /callout >}}`
@@ -138,6 +191,10 @@ weight = 40
   {{< /callout >}}
   ```
 
+### Colors and dark mode
+- All colors go through semantic tokens defined at the top of `assets/css/main.css` (`--canvas`, `--surface`, `--fg`, `--fg-muted`, `--line`, `--accent`, …). `:root` holds the light values, `.dark` the dark ones, and `@theme inline` exposes them as Tailwind utilities (`bg-surface`, `text-fg-muted`, `border-line`, `hover:bg-hover`, `text-accent`).
+- Use those utilities in templates instead of raw palette classes; there is no `dark:` variant to maintain and no override block.
+
 ### Dark/Light Toggle
 - The toggle is a plain icon button in the header; state persists in `localStorage` and respects system preference when unset.
 - No white‑flash on initial load: the theme is applied as early as possible.
@@ -154,16 +211,18 @@ weight = 40
 
 ## Development
 
-If you want to modify the theme, you need to install Node.js and npm. Then:
+CSS is compiled by Hugo itself through `css.TailwindCSS` (Tailwind v4, CSS-first
+config in `assets/css/main.css`). The Tailwind CLI has to be resolvable from the
+**site** root, not the theme:
 
 ```bash
-cd themes/void
-npm install
-npm run dev   # Development mode with auto CSS compilation
-npm run build # Build once (optional)
+cd yourHugoSite
+npm install -D tailwindcss @tailwindcss/cli
+hugo server
 ```
 
-This theme ships a Tailwind v4 pipeline via Hugo assets. You normally do not need to run `build` unless you want the prebuilt CSS artifact.
+JavaScript lives in `assets/js/` as ES modules and is bundled by Hugo's `js.Build`
+(esbuild); `assets/js/main.js` is the entry point. No separate build step is needed.
 
 ## License
 

@@ -1,0 +1,60 @@
+{{- /*
+  Full-content RSS feed. Hugo's embedded template only emits <description> with
+  the summary; feed readers get the whole article via <content:encoded>.
+*/ -}}
+{{- $pctx := . -}}
+{{- if .IsHome }}{{ $pctx = .Site }}{{ end -}}
+{{- $pages := slice -}}
+{{- if or $.IsHome $.IsSection -}}
+  {{- $pages = $pctx.RegularPages -}}
+{{- else -}}
+  {{- $pages = $pctx.Pages -}}
+{{- end -}}
+{{- if .IsHome -}}
+  {{- /* The site feed should only carry blog posts, not standalone pages such as About. */ -}}
+  {{- $pages = where $pages "Section" "posts" -}}
+{{- end -}}
+{{- $limit := .Site.Config.Services.RSS.Limit -}}
+{{- if ge $limit 1 -}}
+  {{- $pages = $pages | first $limit -}}
+{{- end -}}
+{{- $base := strings.TrimSuffix "/" site.BaseURL -}}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>{{ if or .IsHome (eq .Title site.Title) }}{{ site.Title }}{{ else }}{{ with .Title }}{{ . }} | {{ end }}{{ site.Title }}{{ end }}</title>
+    <link>{{ .Permalink }}</link>
+    <description>{{ with site.Params.description }}{{ . }}{{ else }}Recent content on {{ site.Title }}{{ end }}</description>
+    <generator>Hugo {{ hugo.Version }} -- gohugo.io</generator>
+    <language>{{ site.Language.LanguageCode }}</language>
+    {{- with site.Copyright }}
+    <copyright>{{ . }}</copyright>
+    {{- end }}
+    {{- if and (not .Date.IsZero) (gt (len $pages) 0) }}
+    <lastBuildDate>{{ (index $pages.ByLastmod.Reverse 0).Lastmod.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>
+    {{- end }}
+    {{- with .OutputFormats.Get "RSS" }}
+    {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
+    {{- end }}
+    {{- range $pages }}
+    {{- $content := printf "%s" .Content -}}
+    {{- /* Strip UI-only markup that makes no sense in a feed reader. */ -}}
+    {{- $content = replaceRE `(?s)<a class="heading-anchor".*?</a>` "" $content -}}
+    {{- $content = replaceRE `(?s)<div class="code-block-header">.*?</div>` "" $content -}}
+    {{- /* Make root-relative and page-relative URLs absolute. */ -}}
+    {{- $content = replaceRE `(src|href)="/([^/"][^"]*)"` (printf `$1="%s/$2"` $base) $content -}}
+    {{- $content = replaceRE `src="([^"/:#][^":]*)"` (printf `src="%s$1"` .Permalink) $content -}}
+    <item>
+      <title>{{ .Title }}</title>
+      <link>{{ .Permalink }}</link>
+      <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      {{- with site.Params.author.email }}
+      <author>{{ . }}{{ with site.Params.author.name }} ({{ . }}){{ end }}</author>
+      {{- end }}
+      <guid>{{ .Permalink }}</guid>
+      <description>{{ partial "summary.html" . | transform.XMLEscape | safeHTML }}</description>
+      <content:encoded>{{ $content | transform.XMLEscape | safeHTML }}</content:encoded>
+    </item>
+    {{- end }}
+  </channel>
+</rss>

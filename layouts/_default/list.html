@@ -1,16 +1,16 @@
 {{ define "main" }}
   <div class="max-w-4xl mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">{{ .Title }}</h1>
+    <h1 class="text-3xl font-bold text-center text-fg mb-8">{{ .Title }}</h1>
     
     <div class="space-y-16">
       {{ range .Pages.GroupByDate "2006" }}
       <div class="relative">
         <!-- 年份指示器 -->
         <div class="mb-6 flex items-center">
-          <div class="year-indicator-badge flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-blue-50 to-blue-100 dark:from-slate-700/40 dark:to-slate-800/40 flex items-center justify-center text-blue-700 dark:text-blue-300 font-bold text-xl shadow-sm">
+          <div class="year-indicator-badge flex-shrink-0 w-16 h-16 rounded-full bg-gradient-to-br from-accent-soft to-accent-soft-2 flex items-center justify-center text-accent-strong font-bold text-xl shadow-sm">
             {{ .Key }}
           </div>
-          <div class="ml-4 h-px bg-gradient-to-r from-blue-200 dark:from-slate-600 to-transparent flex-grow"></div>
+          <div class="ml-4 h-px bg-gradient-to-r from-accent-line to-transparent flex-grow"></div>
         </div>
         
         <!-- 文章列表 -->
@@ -18,31 +18,29 @@
           {{ range .Pages.ByDate.Reverse }}
           <div class="relative">
             <a href="{{ .RelPermalink }}" class="absolute inset-0 z-10" aria-label="{{ .Title }}"></a>
-            <div class="bg-white dark:bg-slate-900 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden group">
+            <div class="bg-surface rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden group">
               <div class="p-5">
                 <div class="flex flex-col sm:flex-row sm:items-baseline justify-between mb-3">
-                  <h3 class="text-xl font-medium text-gray-800 dark:text-gray-100 group-hover:text-blue-600 transition-colors">
+                  <h3 class="text-xl font-medium text-fg group-hover:text-accent transition-colors">
                     {{ .Title }}
                   </h3>
-                  <time class="text-sm text-gray-500 dark:text-gray-400 mt-1 sm:mt-0 sm:ml-4 flex-shrink-0 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <time class="text-sm text-fg-faint mt-1 sm:mt-0 sm:ml-4 flex-shrink-0 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 text-fg-dim" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                     {{ .Date.Format (i18n "date_month_day_format" | default "01月02日") }}
                   </time>
                 </div>
                 
-                {{ if .Summary }}
-                <div class="text-gray-600 dark:text-gray-300 text-sm line-clamp-2">
-                  {{ .Summary | plainify | truncate 140 }}
-                </div>
+                {{ with partial "summary.html" . }}
+                <div class="text-fg-muted text-sm line-clamp-2">{{ . }}</div>
                 {{ end }}
                 
                 {{ if .Params.tags }}
                 <div class="mt-3 flex flex-wrap gap-2 relative z-20">
                   {{ range .Params.tags }}
                   <a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}" 
-                     class="tag-chip text-xs bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
+                     class="tag-chip text-xs bg-surface-2 text-fg-muted px-2 py-1 rounded hover:bg-hover-strong transition-colors"
                      onclick="event.stopPropagation();">
                     {{ . }}
                   </a>
@@ -51,7 +49,7 @@
                 {{ end }}
                 
                 <div class="mt-4">
-                  <span class="inline-flex items-center text-blue-600 text-sm group-hover:translate-x-1 transition-transform duration-300">
+                  <span class="inline-flex items-center text-accent text-sm group-hover:translate-x-1 transition-transform duration-300">
                     {{ i18n "list_read_more" | default "阅读全文" }}
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -70,7 +68,7 @@
     {{ if or .Paginator.HasPrev .Paginator.HasNext }}
     <div class="mt-12 flex justify-between">
       {{ if .Paginator.HasPrev }}
-      <a href="{{ .Paginator.Prev.URL }}" class="px-4 py-2 bg-white dark:bg-slate-900 shadow-sm rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
+      <a href="{{ .Paginator.Prev.URL }}" class="px-4 py-2 bg-surface shadow-sm rounded-md text-fg-2 hover:bg-hover transition-colors">
         &larr; {{ i18n "pagination_previous" | default "上一页" }}
       </a>
       {{ else }}
@@ -78,7 +76,7 @@
       {{ end }}
       
       {{ if .Paginator.HasNext }}
-      <a href="{{ .Paginator.Next.URL }}" class="px-4 py-2 bg-white dark:bg-slate-900 shadow-sm rounded-md text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
+      <a href="{{ .Paginator.Next.URL }}" class="px-4 py-2 bg-surface shadow-sm rounded-md text-fg-2 hover:bg-hover transition-colors">
         {{ i18n "pagination_next" | default "下一页" }} &rarr;
       </a>
       {{ else }}

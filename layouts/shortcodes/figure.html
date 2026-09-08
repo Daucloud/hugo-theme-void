@@ -1,0 +1,33 @@
+{{- /*
+  figure shortcode, same parameters as Hugo's built-in one (src, link, target, rel,
+  title, caption, class, alt, attr, attrlink, loading) but the image goes through
+  partials/responsive-image.html when it is a page-bundle or assets/ resource.
+
+  {{< figure src="bg.jpg" alt="…" caption="…" attr="Source: X" attrlink="https://…" >}}
+*/ -}}
+{{- $src := .Get "src" -}}
+{{- $img := "" -}}
+{{- with .Page.Resources.Get $src -}}
+  {{- $img = . -}}
+{{- else -}}
+  {{- with resources.Get (strings.TrimPrefix "/" $src) }}{{ $img = . }}{{ end -}}
+{{- end -}}
+{{- $alt := .Get "alt" | default (.Get "caption" | markdownify | plainify) -}}
+<figure{{ with .Get "class" }} class="{{ . }}"{{ end }}>
+  {{- with .Get "link" }}<a href="{{ . }}"{{ with $.Get "target" }} target="{{ . }}"{{ end }}{{ with $.Get "rel" }} rel="{{ . }}"{{ end }}>{{ end -}}
+  {{ partial "responsive-image.html" (dict "img" $img "src" $src "alt" $alt "title" (.Get "title") "loading" (.Get "loading" | default "lazy")) }}
+  {{- if .Get "link" }}</a>{{ end -}}
+  {{- if or (.Get "title") (.Get "caption") (.Get "attr") }}
+  <figcaption>
+    {{- with .Get "title" }}<h4>{{ . }}</h4>{{ end -}}
+    {{- if or (.Get "caption") (.Get "attr") }}
+    <p>
+      {{- .Get "caption" | markdownify -}}
+      {{- with .Get "attrlink" }} <a href="{{ . }}">{{ else }} {{ end -}}
+      {{- .Get "attr" | markdownify -}}
+      {{- if .Get "attrlink" }}</a>{{ end -}}
+    </p>
+    {{- end }}
+  </figcaption>
+  {{- end }}
+</figure>

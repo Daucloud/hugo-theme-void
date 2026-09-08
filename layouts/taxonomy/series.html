@@ -1,0 +1,28 @@
+{{ define "main" }}
+<div class="max-w-4xl mx-auto px-4 py-8">
+  <div class="mb-8 text-center">
+    <div class="text-sm text-fg-faint mb-1">{{ i18n "series" | default "Series" }}</div>
+    <h1 class="text-3xl font-bold text-fg">{{ .Title }}</h1>
+    <div class="text-fg-muted text-sm mt-2">{{ len .Pages }} {{ i18n "articles" | default "articles" }}</div>
+  </div>
+  <ol class="space-y-4">
+    {{ range $i, $p := .Pages.ByDate }}
+    <li class="relative">
+      <a href="{{ $p.RelPermalink }}" class="absolute inset-0 z-10" aria-label="{{ $p.Title }}"></a>
+      <div class="bg-surface rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-5 flex gap-4 group">
+        <div class="series-index w-8 shrink-0 text-2xl font-bold text-blue-200 group-hover:text-blue-400 transition-colors">{{ add $i 1 }}</div>
+        <div class="min-w-0">
+          <h3 class="text-xl font-medium text-fg group-hover:text-accent transition-colors">{{ $p.Title }}</h3>
+          <time class="text-sm text-fg-faint">{{ $p.Date.Format "2006-01-02" }}</time>
+          {{ with partial "summary.html" $p }}<p class="text-fg-muted text-sm mt-2 line-clamp-2">{{ . }}</p>{{ end }}
+        </div>
+      </div>
+    </li>
+    {{ end }}
+  </ol>
+  <div class="mt-10 flex justify-center space-x-8">
+    <a href="{{ "series" | relURL }}" class="text-fg-muted hover:text-accent transition-colors">{{ i18n "all_series" | default "All series" }}</a>
+    <a href="{{ "/" | relLangURL }}" class="text-fg-muted hover:text-accent transition-colors">{{ i18n "back_to_home" | default "Back to Home" }}</a>
+  </div>
+</div>
+{{ end }}
