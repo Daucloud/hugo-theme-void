@@ -4,6 +4,7 @@
    head/css.html loads it as a separate non-blocking stylesheet instead. */
 @import "./fonts/source-serif-4.css";
 @import "./fonts/jetbrains-mono.css";
+@import "./fonts/cjk-punct.css";
 /* Syntax highlighting palettes */
 @import "./chroma-light.css";
 @import "./chroma-dark.css";
@@ -86,10 +87,11 @@
   --font-ui: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-/* Chinese pages put the CJK face first: its Latin (a tuned Source Serif) and its punctuation
-   (——、……、“”) then come from one family. English pages keep Source Serif 4 first for real italics. */
+/* Chinese pages: Latin letters still come from Source Serif 4 (same look as the English
+   pages), but the shared punctuation (—— …… “ ” ·) is taken from the CJK face through the
+   tiny "Noto Serif SC Punct" family (fonts/cjk-punct.css). */
 html[lang^="zh"] {
-  --font-bilingual: "Noto Serif SC", "Source Serif 4", "Source Han Serif SC", "Source Han Serif CN", "Songti SC", "STSong", ui-serif, serif;
+  --font-bilingual: "Noto Serif SC Punct", "Source Serif 4", "Noto Serif SC", "Source Han Serif SC", "Source Han Serif CN", "Songti SC", "STSong", ui-serif, serif;
 }
 
 /* Skip link: visually hidden until focused via keyboard */

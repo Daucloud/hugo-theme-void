@@ -1,0 +1,6 @@
+/* On Chinese pages Latin letters use Source Serif 4, but the punctuation that both fonts
+   contain (em dash, ellipsis, double quotes, middle dot) should come from the CJK face so
+   that 「——」 joins, 「……」 sits on the baseline and “ ” are full-width. This tiny family
+   maps just those code points to the Noto Serif SC slice that carries them (v35, slice 100). */
+@font-face{font-family:"Noto Serif SC Punct";font-style:normal;font-weight:400;font-display:swap;src:local("Noto Serif SC"),local("NotoSerifSC-Regular"),local("Source Han Serif SC"),local("SourceHanSerifSC-Regular"),url(/fonts/noto-serif-sc/noto-serif-sc-400-100.woff2) format("woff2");unicode-range:U+00B7,U+2014,U+2026,U+201C-201D}
+@font-face{font-family:"Noto Serif SC Punct";font-style:normal;font-weight:700;font-display:swap;src:local("Noto Serif SC Bold"),local("NotoSerifSC-Bold"),local("Source Han Serif SC Bold"),local("SourceHanSerifSC-Bold"),url(/fonts/noto-serif-sc/noto-serif-sc-700-100.woff2) format("woff2");unicode-range:U+00B7,U+2014,U+2026,U+201C-201D}
